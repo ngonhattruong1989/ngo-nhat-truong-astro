@@ -14,13 +14,13 @@
         "description": "<p>Hình tượng Quán Thế Âm đã đi vào tâm trí tôi từ lúc còn nhỏ xíu bằng những lần phụ ngoại lau dọn bàn thờ, thắp hương; những lần hành hương cùng ngoại; những câu chuyện kể của ngoại về sự linh ứng của Quán Thế Âm đã nghe thấy tiếng nguyện cầu của ngoại. Sau này tôi còn thấy Quán Thế Âm trong ngoại, trong mẹ, trong các dì, trong những cái cây quanh nhà hay trong rừng, trong bạn bè, trong người điều trị bệnh, trong người nghệ sỹ, trong đám mây, trong cơn mưa, trong vạt nắng…</p><p>Tôi không nhớ lần đầu tiên vẽ Quán Thế Âm là từ khi nào. Chỉ nhớ lần đó tôi thấy vui lắm, cứ nhìn ngắm mãi. Tôi khoe ngoại, ngoại đi khoe khắp “thằng Lỳ giỏi chưa nè”. Tôi không biết vẽ gì khác ngoài chủ đề Quán Thế Âm. Nói tôi không biết vẽ thì bạn sẽ nói tôi nói dóc nhưng nếu nhìn kỹ bạn sẽ thấy tôi vẽ sai lung tung. Tất cả tranh này, tôi đã vẽ bằng sự thôi thúc bên trong mà không biết tại sao đã hoàn thành được. Đó là những gì thân thuộc và tự nhiên nhất. Cố nhiên là không thể hoàn hảo. Tôi sẽ phải mãi thực hành.</p><blockquote><p>Bức tranh này tôi đã dâng tặng cho Trạm Nhiên - Làng Mai tại Buôn Mê Thuột.</p></blockquote>"
       },
       {
-        "id": "sen-trang",
-        "title": "Sen trắng",
-        "thumbnail": "",
+        "id": "quan-am",
+        "title": "Quan Âm",
+        "thumbnail": "https://public.ngonhattruong.com/paintings/quan-am/quan-am-1.jpg",
         "images": [],
-        "medium": "màu nước trên giấy dó",
+        "medium": "giấy dó, màu gouache",
         "date": "Mùa thu 2025",
-        "description": "<p>Bức tranh vẽ một đóa sen trắng duy nhất trong hồ. Sự cô đơn không đáng sợ, nó là khoảng không cần thiết để vẻ đẹp tỏa sáng.</p>"
+        "description": "<p>hình test</p>"
       },
       {
         "id": "pho-vang",
@@ -30,6 +30,15 @@
         "medium": "ký họa chì than",
         "date": "2024",
         "description": "<p>Góc phố cổ Hội An vào một buổi sáng sớm mờ sương. Chưa có du khách, chỉ có những bức tường vàng im lìm kể chuyện thời gian.</p>"
+      },
+      {
+        "id": "",
+        "title": "",
+        "thumbnail": "",
+        "images": [],
+        "medium": "",
+        "date": "",
+        "description": ""
       }
     ]
   },
