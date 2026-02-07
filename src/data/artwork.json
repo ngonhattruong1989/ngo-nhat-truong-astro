@@ -1,0 +1,71 @@
+{
+  "vi": {
+    "title": "artwork",
+    "layout": "grid",
+    "description": "Những thử nghiệm kỹ thuật số và thiết kế ý niệm.",
+    "items": [
+      {
+        "id": "poster-mua-he-vinh-cuu",
+        "title": "Poster: Mùa hè vĩnh cửu",
+        "thumbnail": "",
+        "date": "2025",
+        "excerpt": "Thiết kế poster cho phim ngắn độc lập.",
+        "content": "Sử dụng kỹ thuật Collage Art để tái hiện cảm giác ngột ngạt nhưng rực rỡ của mùa hè nhiệt đới."
+      },
+      {
+        "id": "digital-sketch-pho",
+        "title": "Digital Sketch: Phố",
+        "thumbnail": "",
+        "date": "2024",
+        "excerpt": "Ký họa trên iPad.",
+        "content": "Những phác thảo nhanh về chuyển động của dòng người và ánh đèn đô thị."
+      }
+    ]
+  },
+  "en": {
+    "title": "artwork",
+    "layout": "grid",
+    "description": "Digital experiments and conceptual designs.",
+    "items": [
+      {
+        "id": "poster-mua-he-vinh-cuu",
+        "title": "Poster: Eternal Summer",
+        "thumbnail": "",
+        "date": "2025",
+        "excerpt": "Poster design for an independent short film.",
+        "content": "Using Collage Art technique to recreate the stifling yet brilliant atmosphere of a tropical summer."
+      },
+      {
+        "id": "digital-sketch-pho",
+        "title": "Digital Sketch: The Street",
+        "thumbnail": "",
+        "date": "2024",
+        "excerpt": "iPad sketches.",
+        "content": "Quick sketches capturing the movement of crowds and city lights."
+      }
+    ]
+  },
+  "fr": {
+    "title": "artwork",
+    "layout": "grid",
+    "description": "Expérimentations numériques et conceptions conceptuelles.",
+    "items": [
+      {
+        "id": "poster-mua-he-vinh-cuu",
+        "title": "Affiche : Été Éternel",
+        "thumbnail": "",
+        "date": "2025",
+        "excerpt": "Conception d'affiche pour un court métrage indépendant.",
+        "content": "Utilisation de la technique du Collage Art pour recréer l'atmosphère étouffante mais brillante d'un été tropical."
+      },
+      {
+        "id": "digital-sketch-pho",
+        "title": "Croquis Numérique : La Rue",
+        "thumbnail": "",
+        "date": "2024",
+        "excerpt": "Croquis sur iPad.",
+        "content": "Croquis rapides capturant le mouvement des foules et les lumières de la ville."
+      }
+    ]
+  }
+}

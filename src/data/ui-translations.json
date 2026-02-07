@@ -1,0 +1,20 @@
+{
+  "vi": {
+    "tagline": "người làm phim, làm vườn, viết và sắp đặt không gian.",
+    "menu": ["trang chủ", "về tôi", "phim", "nhạc", "tranh", "thơ", "artwork", "không gian", "blog", "liên hệ"],
+    "footer": "© 2026 ngô nhật trường — lưu giữ từng hơi thở",
+    "homeWelcome": "Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống."
+  },
+  "en": {
+    "tagline": "filmmaker, gardener, writer and space curator.",
+    "menu": ["home", "about", "films", "music", "paintings", "poetry", "artwork", "spaces", "blog", "contact"],
+    "footer": "© 2026 ngo nhat truong — keeping every breath",
+    "homeWelcome": "Welcome to Truong's little corner. A place to keep slices of life through lenses, strokes, and moments of silence in living spaces."
+  },
+  "fr": {
+    "tagline": "cinéaste, jardinier, écrivain et curateur d'espace.",
+    "menu": ["accueil", "à propos", "films", "musique", "peintures", "poésie", "artwork", "espaces", "blog", "contact"],
+    "footer": "© 2026 ngo nhat truong — garder chaque souffle",
+    "homeWelcome": "Bienvenue dans le petit coin de Truong. Un lieu pour garder des tranches de vie à travers des objectifs, des traits et des moments de silence dans les espaces de vie."
+  }
+}

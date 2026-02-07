@@ -1,0 +1,215 @@
+{
+  "vi": {
+    "title": "phim",
+    "layout": "grid",
+    "description": "Những câu chuyện được kể bằng ánh sáng.",
+    "items": [
+      {
+        "id": "phuc-sinh",
+        "title": "Phục Sinh",
+        "thumbnail": "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+        "genre": "Phim ngắn",
+        "year": "2022",
+        "duration": "",
+        "youtubeId": "w9I_AQBpKps",
+        "poster": "/films/phuc-sinh/phuc-sinh-poster.jpeg",
+        "stills": [
+          "/films/phuc-sinh/still/phuc-sinh-still-1.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-2.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-3.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-5.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-6.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-7.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-8.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-9.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-10.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-11.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-12.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-13.jpeg"
+        ],
+        "crew": "<p><strong>Đạo diễn / Kịch bản / Dựng phim:</strong> Đức Đoàn</p><p><strong>Diễn viên:</strong> Ngô Nhật Trường, Phát Triển, Phan Nhật Khoa, Trầm Hương</p><p><strong>Quay phim:</strong> Lê Văn Hoàng</p><p><strong>Sản xuất:</strong> Đoàn Tôn Vân Anh, Phương Hương Giang</p><p><strong>Âm thanh:</strong> Đại Việt</p><p><strong>Âm nhạc:</strong> Đoàn Tuấn Đức, Nguyễn Thảo, Lê Như Ngọc Mai</p><p><strong>Đơn vị sản xuất:</strong> Enlightenment Pictures</p>",
+        "bts": [
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-1.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-2.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
+        ]
+      },
+      {
+        "id": "hai-chu-chau",
+        "title": "Hai Chú Cháu",
+        "thumbnail": "https://img.youtube.com/vi/AcXZ9b-ye9w/maxresdefault.jpg",
+        "genre": "Phim ngắn",
+        "year": "2016",
+        "duration": "05:32",
+        "youtubeId": "AcXZ9b-ye9w",
+        "poster": "",
+        "stills": [],
+        "crew": "<li><b>Chuyển thể từ truyện ngắn của:</b> Hữu Thắng</li><li><b>Đạo diễn / Quay phim / Dựng phim:</b> Nguyễn Đình Quý Anh</li><li><b>Diễn viên:</b> Ngô Nhật Trường, Trần Hoàng Phi, Hạnh Phúc, Nguyễn Huỳnh Long, Lê Nhã, Thanh Trúc, Trương Ngọc Quốc Dũng</li><li><b>Sản xuất:</b> Huỳnh Ngọc Việt Triều</li><li><b>Trợ lý đạo diễn:</b> Trương Ngọc Quốc Dũng</li><li><b>Thư ký / Phục trang:</b> Lê Nhã</li><li><b>Âm thanh:</b> Trần Quang Huyền</li>",
+        "bts": [
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-1.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-2.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-3.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-4.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-5.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-6.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-7.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-8.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-9.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
+        ]
+      },
+      {
+        "id": "ba-oi-dung-noi-doi",
+        "title": "Ba Ơi, Đừng Nói Dối",
+        "thumbnail": "https://assets.phamhuutri.com/assets/commercial/Batdongsan_thumbnail.gif",
+        "genre": "Phim ngắn / Drama",
+        "year": "2026",
+        "duration": "39:50",
+        "youtubeId": "ooWID56SmHk",
+        "poster": "",
+        "stills": [],
+        "crew": "<p>Cast: Ngô Nhật Trường, Cô Nhum, Vũ Nguyễn Uy Nhân</p><p>Director and Screenwriter: Phạm Hữu Trí</p><p>Director's Consultant: NSND. Đào Bá Sơn</p><p>Producer: Thục Mai</p><p>Co-Producer: Thảo Quiêng</p><p>Project Manager: Phạm Văn Nam</p><p>Cinematographer: Nguyễn Tùng Lâm</p><p>Production Designer: Dzuy Tom</p><p>Art Director: Hoàng Bảo Uyên</p><p>First Assistant Director: Lê Diễm Quỳnh</p><p>Second Assistant Director: Kon Lớn</p><p>Script Supervisor: Hồ Minh Khoa</p><p>Gaffer: Khoa Too</p><p>Assistant Camera: Đặng Xuân Hoàng, Nguyễn Kim Hậu</p><p>Focus Puller: Văn Ngọc Thành</p><p>Best boy: Nguyễn Trung Hiếu, Gia Bảo, Mai Ngọc Hiền</p><p>Assistant Production Design: Ruby</p><p>Set Design and Set Decorator: Nicholas Nguyễn, Kaii Khải Hân, HaiBkk</p><p>Wardrobe: Minh Thảo</p><p>Make-up Artist: Bia Huyền</p><p>Sound Recordist: Crister Nguyên</p><p>Storyboard Artist: Phạm Hữu Trí</p><p>Production Assistant: Khương Ngọc, Vương Linh</p><p>Post-Producer: Thục Mai, Thảo Quiêng</p><p>Post-Production Supervisor: Văn Ngọc Thành</p><p>Editor: Phạm Hữu Trí</p><p>Colorist: Nguyễn Tùng Lâm</p><p>Music Composer: Huy Đẹp Trai</p><p>Sound Design and Mastering: [Đang cập nhật]</p>",
+        "bts": [
+          "https://assets.phamhuutri.com/assets/short-films/BODND/BTS/BODND-BTS-1.jpeg"
+        ]
+      }
+    ]
+  },
+  "en": {
+    "title": "films",
+    "layout": "grid",
+    "description": "Stories told by light.",
+    "items": [
+      {
+        "id": "phuc-sinh",
+        "title": "Resurrection",
+        "thumbnail": "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+        "genre": "Short Film",
+        "year": "2022",
+        "duration": "",
+        "youtubeId": "w9I_AQBpKps",
+        "poster": "/films/phuc-sinh/phuc-sinh-poster.jpeg",
+        "stills": [
+          "/films/phuc-sinh/still/phuc-sinh-still-1.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-2.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-3.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-5.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-6.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-7.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-8.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-9.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-10.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-11.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-12.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-13.jpeg"
+        ],
+        "crew": "<li><b>Director / Screenplay / Editor:</b> Đức Đoàn</li><li><b>Cast:</b> Ngô Nhật Trường, Phát Triển, Phan Nhật Khoa, Trầm Hương</li><li><b>Photography:</b> Lê Văn Hoàng</li><li><b>Producer:</b> Đoàn Tôn Vân Anh, Phương Hương Giang</li><li><b>Sound:</b> Đại Việt</li><li><b>Music:</b> Đoàn Tuấn Đức, Nguyễn Thảo, Lê Như Ngọc Mai</li><li><b>Production:</b> Enlightenment Pictures</li>",
+        "bts": [
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-1.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-2.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
+        ]
+      },
+      {
+        "id": "hai-chu-chau",
+        "title": "Two Uncles and Nephews",
+        "thumbnail": "https://img.youtube.com/vi/AcXZ9b-ye9w/maxresdefault.jpg",
+        "genre": "Short Film",
+        "year": "2016",
+        "duration": "05:32",
+        "youtubeId": "AcXZ9b-ye9w",
+        "poster": "",
+        "stills": [],
+        "crew": "<li><b>Based on the short story of:</b> Hữu Thắng</li><li><b>Director / Cinematographer / Editor:</b> Nguyễn Đình Quý Anh</li><li><b>Cast:</b> Ngô Nhật Trường, Trần Hoàng Phi, Hạnh Phúc, Nguyễn Huỳnh Long, Lê Nhã, Thanh Trúc, Trương Ngọc Quốc Dũng</li><li><b>Producer:</b> Huỳnh Ngọc Việt Triều</li><li><b>Assistant Director:</b> Trương Ngọc Quốc Dũng</li><li><b>Secretary / Wardrobe:</b> Lê Nhã</li><li><b>Sound:</b> Trần Quang Huyền</li>",
+        "bts": [
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-1.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-2.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-3.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-4.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-5.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-6.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-7.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-8.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-9.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
+        ]
+      }
+    ]
+  },
+  "fr": {
+    "title": "films",
+    "layout": "grid",
+    "description": "Histoires racontées par la lumière.",
+    "items": [
+      {
+        "id": "phuc-sinh",
+        "title": "Résurrection",
+        "thumbnail": "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+        "genre": "Court Métrage",
+        "year": "2022",
+        "duration": "",
+        "youtubeId": "w9I_AQBpKps",
+        "poster": "/films/phuc-sinh/phuc-sinh-poster.jpeg",
+        "stills": [
+          "/films/phuc-sinh/still/phuc-sinh-still-1.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-2.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-3.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-4.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-5.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-6.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-7.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-8.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-9.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-10.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-11.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-12.jpeg",
+          "/films/phuc-sinh/still/phuc-sinh-still-13.jpeg"
+        ],
+        "crew": "<li><b>Réalisateur / Scénario / Montage :</b> Đức Đoàn</li><li><b>Distribution :</b> Ngô Nhật Trường, Phát Triển, Phan Nhật Khoa, Trầm Hương</li><li><b>Photographie :</b> Lê Văn Hoàng</li><li><b>Producteur :</b> Đoàn Tôn Vân Anh, Phương Hương Giang</li><li><b>Son :</b> Đại Việt</li><li><b>Musique :</b> Đoàn Tuấn Đức, Nguyễn Thảo, Lê Như Ngọc Mai</li><li><b>Production :</b> Enlightenment Pictures</li>",
+        "bts": [
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-1.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-2.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
+          "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
+        ]
+      },
+      {
+        "id": "hai-chu-chau",
+        "title": "Deux Oncles et Neveux",
+        "thumbnail": "https://img.youtube.com/vi/AcXZ9b-ye9w/maxresdefault.jpg",
+        "genre": "Court Métrage",
+        "year": "2016",
+        "duration": "05:32",
+        "youtubeId": "AcXZ9b-ye9w",
+        "poster": "",
+        "stills": [],
+        "crew": "<li><b>Basé sur la nouvelle de:</b> Hữu Thắng</li><li><b>Réalisateur / Directeur Photo / Monteur:</b> Nguyễn Đình Quý Anh</li><li><b>Distribution:</b> Ngô Nhật Trường, Trần Hoàng Phi, Hạnh Phúc, Nguyễn Huỳnh Long, Lê Nhã, Thanh Trúc, Trương Ngọc Quốc Dũng</li><li><b>Producteur:</b> Huỳnh Ngọc Việt Triều</li><li><b>Assistant Réalisateur:</b> Trương Ngọc Quốc Dũng</li><li><b>Secrétaire / Costumes:</b> Lê Nhã</li><li><b>Son:</b> Trần Quang Huyền</li>",
+        "bts": [
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-1.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-2.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-3.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-4.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-5.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-6.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-7.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-8.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-9.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
+          "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
+        ]
+      }
+    ]
+  }
+}

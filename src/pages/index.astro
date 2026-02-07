@@ -1,0 +1,691 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Import all data at build time
+import uiTranslations from '../data/ui-translations.json';
+import aboutData from '../data/about.json';
+import filmsData from '../data/films.json';
+import musicData from '../data/music.json';
+import paintingsData from '../data/paintings.json';
+import poetryData from '../data/poetry.json';
+import artworkData from '../data/artwork.json';
+import spacesData from '../data/spaces.json';
+import blogData from '../data/blog.json';
+import contactData from '../data/contact.json';
+
+// Bundle all section data for client-side use
+const allSectionData = {
+  about: aboutData,
+  films: filmsData,
+  music: musicData,
+  paintings: paintingsData,
+  poets: poetryData,
+  artwork: artworkData,
+  space: spacesData,
+  blog: blogData,
+  contact: contactData
+};
+---
+
+<BaseLayout>
+    <!-- Intro Screen -->
+    <div id="intro-screen">
+        <img src="/home/logo-moc.png" alt="Ngô Nhật Trường Logo">
+    </div>
+
+    <div class="wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="/home/logo-moc.png" alt="ngô nhật trường calligraphy" class="logo-image">
+                </div>
+                <h1>ngô nhật trường</h1>
+                <p class="tagline">người làm phim, làm vườn, viết và sắp đặt không gian.</p>
+            </div>
+
+            <nav class="navigation">
+                <ul>
+                    <li><a href="#home">trang chủ</a></li>
+                    <li><a href="#about">về tôi</a></li>
+                    <li><a href="#films">phim</a></li>
+                    <li><a href="#music">nhạc</a></li>
+                    <li><a href="#paintings">tranh</a></li>
+                    <li><a href="#poets">thơ</a></li>
+                    <li><a href="#artwork">artwork</a></li>
+                    <li><a href="#space">không gian</a></li>
+                    <li><a href="#blog">blog</a></li>
+                    <li><a href="#contact">liên hệ</a></li>
+                </ul>
+            </nav>
+
+            <div class="lang-switcher">
+                <span class="lang-opt" data-lang="en">EN</span>
+                <span class="separator">-</span>
+                <span class="lang-opt active" data-lang="vi">VI</span>
+                <span class="separator">-</span>
+                <span class="lang-opt" data-lang="fr">FR</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <section id="home" class="section section-active">
+                <div class="hero-slider">
+                    <div class="slides-container">
+                        <img src="/home/home-image/home-image-1.jpeg" class="slide active" alt="không gian 1">
+                        <img src="/home/home-image/home-image-2.jpeg" class="slide" alt="không gian 2">
+                    </div>
+                    <button class="nav-btn prev" id="slide-prev">&#10094;</button>
+                    <button class="nav-btn next" id="slide-next">&#10095;</button>
+                </div>
+
+                <div class="intro-text">
+                    <p>Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống.</p>
+                </div>
+            </section>
+
+            <div id="dynamic-display"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 ngô nhật trường — lưu giữ từng hơi thở</p>
+        </footer>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="img-lightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <!-- Painting Lightbox -->
+    <div id="painting-lightbox" class="painting-lightbox">
+        <span class="painting-lb-close" id="painting-lb-close">&times;</span>
+        <div class="painting-lb-content">
+            <div class="painting-lb-left">
+                <img id="painting-lb-img" src="" alt="">
+                <button class="painting-lb-nav prev" id="painting-lb-prev">&#8249;</button>
+                <button class="painting-lb-nav next" id="painting-lb-next">&#8250;</button>
+                <div class="painting-lb-counter" id="painting-lb-counter"></div>
+            </div>
+            <div class="painting-lb-right" id="painting-lb-info"></div>
+        </div>
+    </div>
+
+    <!-- Client-side data and scripts -->
+    <script define:vars={{ uiTranslations, allSectionData }}>
+        window.__UI_TRANSLATIONS = uiTranslations;
+        window.__SECTION_DATA = allSectionData;
+    </script>
+
+    <script>
+        // --- 1. GLOBAL STATE ---
+        let currentLang = 'vi';
+        let currentSectionId = 'home';
+        let currentFilmIndex = -1;
+
+        // --- 2. DATA ACCESS ---
+        function getSectionData(id) {
+            const data = window.__SECTION_DATA;
+            if (data && data[id]) return data[id];
+            return null;
+        }
+
+        // --- 3. INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Intro screen
+            const introScreen = document.getElementById('intro-screen');
+            if (introScreen) {
+                introScreen.addEventListener('click', function() {
+                    this.classList.add('hidden');
+                    setTimeout(() => { this.remove(); }, 1000);
+                });
+            }
+
+            // Language switcher
+            document.querySelectorAll('.lang-opt').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    if (lang) switchLanguage(lang);
+                });
+            });
+
+            // Navigation
+            document.querySelectorAll('.navigation a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    if (currentSectionId !== targetId || targetId === 'films') {
+                        currentFilmIndex = -1;
+                    }
+                    currentSectionId = targetId;
+                    switchSection(targetId);
+                });
+            });
+
+            // Slider
+            document.getElementById('slide-prev')?.addEventListener('click', () => changeSlide(-1));
+            document.getElementById('slide-next')?.addEventListener('click', () => changeSlide(1));
+
+            // Lightbox
+            document.getElementById('img-lightbox')?.addEventListener('click', closeLightbox);
+
+            // Init language & menu
+            switchLanguage(currentLang);
+            highlightMenu('home');
+        });
+
+        // --- 4. SLIDER ---
+        let currentSlide = 0;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide += direction;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // --- 5. LANGUAGE ---
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const translations = window.__UI_TRANSLATIONS;
+
+            // Update language buttons
+            document.querySelectorAll('.lang-opt').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Translate static content
+            const content = translations[lang];
+            if (content) {
+                const taglineEl = document.querySelector('.tagline');
+                const footerEl = document.querySelector('.footer p');
+                const homeIntroEl = document.querySelector('.intro-text p');
+
+                if (taglineEl) taglineEl.textContent = content.tagline;
+                if (footerEl) footerEl.textContent = content.footer;
+                if (homeIntroEl) homeIntroEl.textContent = content.homeWelcome;
+
+                // Translate menu
+                const menuItems = document.querySelectorAll('.navigation a');
+                menuItems.forEach((item, index) => {
+                    if (content.menu[index]) {
+                        item.textContent = content.menu[index];
+                    }
+                });
+            }
+
+            // Reload dynamic content if not on home
+            if (currentSectionId !== 'home') {
+                const data = getSectionData(currentSectionId);
+                if (data) renderDynamicPage(data);
+            }
+        }
+
+        // --- 6. NAVIGATION ---
+        function highlightMenu(targetId) {
+            document.querySelectorAll('.navigation a').forEach(link => {
+                link.classList.remove('nav-active');
+                if (link.getAttribute('href').substring(1) === targetId) {
+                    link.classList.add('nav-active');
+                }
+            });
+        }
+
+        function switchSection(targetId) {
+            highlightMenu(targetId);
+            const dynamicDisplay = document.getElementById('dynamic-display');
+
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('section-active'));
+
+            if (dynamicDisplay) {
+                dynamicDisplay.innerHTML = '';
+                dynamicDisplay.classList.remove('section-active');
+            }
+
+            const staticSection = document.getElementById(targetId);
+
+            if (staticSection) {
+                staticSection.classList.add('section-active');
+            } else {
+                const data = getSectionData(targetId);
+                if (data) {
+                    renderDynamicPage(data);
+                    if (dynamicDisplay) {
+                        dynamicDisplay.classList.add('section', 'section-active');
+                    }
+                }
+            }
+        }
+
+        // --- 7. RENDER DYNAMIC CONTENT ---
+        function renderDynamicPage(fullData) {
+            const dynamicDisplay = document.getElementById('dynamic-display');
+            if (!fullData || !dynamicDisplay) return;
+
+            const data = fullData[currentLang];
+            if (!data) return;
+
+            // CASE A: GRID LAYOUT
+            if (data.layout === 'grid') {
+                const isFilmSection = currentSectionId === 'films';
+                let html = `
+                    <div class="dynamic-content fade-in">
+                        <h2>${data.title}</h2>
+                        ${data.description ? `<p class="dynamic-desc">${data.description}</p>` : ''}
+                        <div id="grid-view" class="gallery-grid">
+                `;
+
+                if (data.items) {
+                    data.items.forEach((item, index) => {
+                        if (item.thumbnail) {
+                            html += `
+                                <div class="gallery-item" data-item-index="${index}">
+                                    <img src="${item.thumbnail}" alt="${item.title}">
+                                    <div class="gallery-title">${item.title}</div>
+                                </div>
+                            `;
+                        } else {
+                            html += `
+                                <div class="gallery-item gallery-item-text" data-item-index="${index}">
+                                    <div class="gallery-text-card">
+                                        <div class="gallery-text-title">${item.title}</div>
+                                        ${item.date ? `<div class="gallery-text-date">${item.date}</div>` : ''}
+                                        ${item.excerpt ? `<div class="gallery-text-excerpt">${item.excerpt}</div>` : ''}
+                                    </div>
+                                    <div class="gallery-title">${item.title}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+
+                html += `</div><div id="detail-view"></div></div>`;
+                dynamicDisplay.innerHTML = html;
+
+                // Store current grid data
+                window.currentGridData = data.items;
+                window.currentGridIsFilm = isFilmSection;
+
+                // Add click handlers
+                dynamicDisplay.querySelectorAll('.gallery-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const idx = parseInt(this.getAttribute('data-item-index'));
+                        if (isFilmSection) {
+                            openFilmDetail(idx);
+                        } else {
+                            openGenericDetail(idx);
+                        }
+                    });
+                });
+
+                // Restore detail if was viewing one
+                if (currentFilmIndex !== -1) {
+                    if (window.currentGridData && window.currentGridData[currentFilmIndex]) {
+                        if (isFilmSection) {
+                            openFilmDetail(currentFilmIndex, false);
+                        } else {
+                            openGenericDetail(currentFilmIndex, false);
+                        }
+                    } else {
+                        currentFilmIndex = -1;
+                    }
+                }
+            }
+            // CASE B: COLLAGE LAYOUT (PAINTINGS)
+            else if (data.layout === 'collage') {
+                let html = `
+                    <div class="dynamic-content fade-in">
+                        <h2>${data.title}</h2>
+                        ${data.description ? `<p class="dynamic-desc">${data.description}</p>` : ''}
+                        <div class="collage-grid">
+                `;
+
+                if (data.items) {
+                    data.items.forEach((item, index) => {
+                        if (item.thumbnail) {
+                            html += `
+                                <div class="collage-item" data-painting-index="${index}">
+                                    <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
+                                    <div class="collage-overlay">
+                                        <span class="collage-label">${item.title}</span>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            html += `
+                                <div class="collage-item-text" data-painting-index="${index}">
+                                    <div class="collage-text-title">${item.title}</div>
+                                    ${item.medium ? `<div class="collage-text-medium">${item.medium}</div>` : ''}
+                                    ${item.date ? `<div class="collage-text-date">${item.date}</div>` : ''}
+                                </div>
+                            `;
+                        }
+                    });
+                }
+
+                html += `</div></div>`;
+                dynamicDisplay.innerHTML = html;
+
+                window.currentPaintingData = data.items;
+
+                dynamicDisplay.querySelectorAll('[data-painting-index]').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const idx = parseInt(this.getAttribute('data-painting-index'));
+                        openPaintingDetail(idx);
+                    });
+                });
+            }
+            // CASE C: LIST LAYOUT
+            else {
+                let descriptionHTML = data.description
+                    ? `<p class="dynamic-desc">${data.description}</p>`
+                    : '';
+
+                let htmlContent = `
+                    <div class="dynamic-content fade-in">
+                        <h2>${data.title}</h2>
+                        ${descriptionHTML}
+                        <div class="items-list">
+                `;
+
+                if (data.items && data.items.length > 0) {
+                    data.items.forEach(item => {
+                        let headerHTML = '';
+                        if (item.title || item.date) {
+                            headerHTML = `
+                                <div class="item-header">
+                                    <span class="item-title">${item.title || ''}</span>
+                                    ${item.date ? `<span class="item-date"> — ${item.date}</span>` : ''}
+                                </div>`;
+                        }
+                        htmlContent += `
+                            <div class="item-card">
+                                ${headerHTML}
+                                <div class="item-body">
+                                    ${item.excerpt ? `<p><strong>${item.excerpt}</strong></p>` : ''}
+                                    ${item.content ? `<div style="white-space: pre-line; margin-top:10px;">${item.content}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    htmlContent += `<p><em>(Nội dung đang được cập nhật...)</em></p>`;
+                }
+
+                htmlContent += `</div></div>`;
+                dynamicDisplay.innerHTML = htmlContent;
+            }
+        }
+
+        // --- 8. FILM DETAIL ---
+        function openFilmDetail(index, doScroll = true) {
+            if (!window.currentGridData || !window.currentGridData[index]) return;
+
+            currentFilmIndex = index;
+            const film = window.currentGridData[index];
+            const gridView = document.getElementById('grid-view');
+            const detailView = document.getElementById('detail-view');
+
+            if (gridView) gridView.style.display = 'none';
+
+            // Poster
+            let posterHTML = '';
+            if (film.poster) {
+                posterHTML = `<div style="text-align: center; margin-bottom: 40px; margin-top: 20px;">
+                    <img src="${film.poster}" style="max-width: 300px; width: 100%; height: auto; border-radius: 2px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);" class="zoomable">
+                </div>`;
+            }
+
+            // Stills (direct array)
+            let stillsHTML = '';
+            if (film.stills && film.stills.length > 0) {
+                stillsHTML = `<div class="bts-section"><h3>Still</h3><div class="bts-grid">`;
+                film.stills.forEach(img => {
+                    stillsHTML += `<img src="${img}" loading="lazy">`;
+                });
+                stillsHTML += `</div></div>`;
+            }
+
+            // BTS (direct array)
+            let btsHTML = '';
+            if (film.bts && film.bts.length > 0) {
+                btsHTML = `<div class="bts-section"><h3>Behind The Scene</h3><div class="bts-grid">`;
+                film.bts.forEach(img => {
+                    btsHTML += `<img src="${img}" loading="lazy">`;
+                });
+                btsHTML += `</div></div>`;
+            }
+
+            let durationHTML = film.duration ? `<span class="meta-line"><strong>Duration:</strong> ${film.duration}</span>` : '';
+
+            detailView.innerHTML = `
+                <div class="film-detail-view fade-in">
+                    <a class="btn-back" id="btn-back-film" href="javascript:void(0)">&#8592;</a>
+
+                    <h2>${film.title}</h2>
+
+                    <div class="film-meta">
+                        <span class="meta-line"><strong>Genre:</strong> ${film.genre}</span>
+                        <span class="meta-line"><strong>Year:</strong> ${film.year}</span>
+                        ${durationHTML}
+                    </div>
+
+                    <div class="video-wrapper-limit">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${film.youtubeId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    ${posterHTML}
+                    ${stillsHTML}
+
+                    <div class="crew-section">
+                        <h3>Crew</h3>
+                        <ul class="crew-list">${film.crew}</ul>
+                    </div>
+
+                    ${btsHTML}
+
+                    <div style="height:50px"></div>
+                </div>
+            `;
+
+            // Back button
+            document.getElementById('btn-back-film')?.addEventListener('click', closeFilmDetail);
+
+            // Lightbox for all images in detail
+            detailView.querySelectorAll('img').forEach(img => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', function() {
+                    openLightbox(this.src);
+                });
+            });
+
+            if (doScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // --- 8b. GENERIC DETAIL ---
+        function openGenericDetail(index, doScroll = true) {
+            if (!window.currentGridData || !window.currentGridData[index]) return;
+
+            currentFilmIndex = index;
+            const item = window.currentGridData[index];
+            const gridView = document.getElementById('grid-view');
+            const detailView = document.getElementById('detail-view');
+
+            if (gridView) gridView.style.display = 'none';
+
+            let thumbnailHTML = '';
+            if (item.thumbnail) {
+                thumbnailHTML = `<div style="margin-bottom: 30px;">
+                    <img src="${item.thumbnail}" style="max-width: 100%; height: auto; border-radius: 2px;" class="zoomable">
+                </div>`;
+            }
+
+            detailView.innerHTML = `
+                <div class="film-detail-view fade-in">
+                    <a class="btn-back" id="btn-back-generic" href="javascript:void(0)">&#8592;</a>
+                    <h2>${item.title}</h2>
+                    ${item.date ? `<div class="film-meta"><span class="meta-line">${item.date}</span></div>` : ''}
+                    ${thumbnailHTML}
+                    ${item.excerpt ? `<p style="font-style: italic; margin-bottom: 20px; color: #555;">${item.excerpt}</p>` : ''}
+                    ${item.content ? `<div style="white-space: pre-line; line-height: 1.8; font-size: 15px;">${item.content}</div>` : ''}
+                    <div style="height:50px"></div>
+                </div>
+            `;
+
+            document.getElementById('btn-back-generic')?.addEventListener('click', closeFilmDetail);
+
+            detailView.querySelectorAll('img').forEach(img => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', function() {
+                    openLightbox(this.src);
+                });
+            });
+
+            if (doScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // --- 8c. PAINTING DETAIL (LIGHTBOX) ---
+        let paintingImageIndex = 0;
+
+        function openPaintingDetail(index) {
+            if (!window.currentPaintingData || !window.currentPaintingData[index]) return;
+
+            const painting = window.currentPaintingData[index];
+            const lightbox = document.getElementById('painting-lightbox');
+            const img = document.getElementById('painting-lb-img');
+            const info = document.getElementById('painting-lb-info');
+            const counter = document.getElementById('painting-lb-counter');
+
+            if (!lightbox || !img || !info) return;
+
+            // Determine images array: use images[] if available, else thumbnail as single image
+            let images = [];
+            if (painting.images && painting.images.length > 0) {
+                images = painting.images;
+            } else if (painting.thumbnail) {
+                images = [painting.thumbnail];
+            }
+
+            paintingImageIndex = 0;
+            window.currentPaintingImages = images;
+
+            // Show image or placeholder
+            if (images.length > 0) {
+                img.src = images[0];
+                img.style.display = 'block';
+            } else {
+                img.src = '';
+                img.style.display = 'none';
+            }
+
+            // Counter
+            if (counter) {
+                counter.textContent = images.length > 1 ? `1 / ${images.length}` : '';
+                counter.style.display = images.length > 1 ? 'block' : 'none';
+            }
+
+            // Nav buttons visibility
+            const prevBtn = document.getElementById('painting-lb-prev');
+            const nextBtn = document.getElementById('painting-lb-next');
+            if (prevBtn) prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
+            if (nextBtn) nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
+
+            // Info panel
+            let mediumLabel = currentLang === 'fr' ? 'Matériau' : (currentLang === 'en' ? 'Medium' : 'Chất liệu');
+            let dateLabel = currentLang === 'fr' ? 'Date' : (currentLang === 'en' ? 'Date' : 'Ngày');
+
+            info.innerHTML = `
+                <h2>${painting.title}</h2>
+                <div class="painting-lb-meta">
+                    ${painting.medium ? `<div class="meta-row"><span class="meta-label">${mediumLabel}</span><span class="meta-value">${painting.medium}</span></div>` : ''}
+                    ${painting.date ? `<div class="meta-row"><span class="meta-label">${dateLabel}</span><span class="meta-value">${painting.date}</span></div>` : ''}
+                </div>
+                ${painting.description ? `<div class="painting-lb-desc">${painting.description}</div>` : ''}
+            `;
+
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function changePaintingImage(delta) {
+            const images = window.currentPaintingImages;
+            if (!images || images.length <= 1) return;
+
+            paintingImageIndex = (paintingImageIndex + delta + images.length) % images.length;
+
+            const img = document.getElementById('painting-lb-img');
+            const counter = document.getElementById('painting-lb-counter');
+            if (img) img.src = images[paintingImageIndex];
+            if (counter) counter.textContent = `${paintingImageIndex + 1} / ${images.length}`;
+        }
+
+        function closePaintingLightbox() {
+            const lightbox = document.getElementById('painting-lightbox');
+            if (lightbox) lightbox.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Painting lightbox event listeners
+        document.getElementById('painting-lb-close')?.addEventListener('click', closePaintingLightbox);
+        document.getElementById('painting-lb-prev')?.addEventListener('click', () => changePaintingImage(-1));
+        document.getElementById('painting-lb-next')?.addEventListener('click', () => changePaintingImage(1));
+        document.getElementById('painting-lightbox')?.addEventListener('click', function(e) {
+            if (e.target === this) closePaintingLightbox();
+        });
+
+        // Keyboard nav for painting lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('painting-lightbox');
+            if (!lightbox || lightbox.style.display !== 'flex') return;
+            if (e.key === 'Escape') closePaintingLightbox();
+            if (e.key === 'ArrowLeft') changePaintingImage(-1);
+            if (e.key === 'ArrowRight') changePaintingImage(1);
+        });
+
+        // --- 9. CLOSE FILM DETAIL ---
+        function closeFilmDetail() {
+            currentFilmIndex = -1;
+            const gridView = document.getElementById('grid-view');
+            const detailView = document.getElementById('detail-view');
+
+            if (detailView) detailView.innerHTML = '';
+            if (gridView) {
+                gridView.style.display = 'grid';
+                gridView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // --- 10. LIGHTBOX ---
+        function openLightbox(src) {
+            const lightbox = document.getElementById('img-lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+
+            if (lightbox && lbImg) {
+                lbImg.src = src;
+                lightbox.style.display = 'flex';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('img-lightbox');
+            if (lightbox) {
+                lightbox.style.display = 'none';
+            }
+        }
+    </script>
+</BaseLayout>

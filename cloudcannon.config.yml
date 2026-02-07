@@ -1,0 +1,95 @@
+# CloudCannon Configuration for Ngô Nhật Trường Portfolio
+# https://cloudcannon.com/documentation/
+
+# Source and paths
+source: ''
+paths:
+  data: src/data
+  static: public
+  uploads: public/uploads
+
+# Collections - Editable content
+collections_config:
+  data:
+    path: src/data
+    disable_add: true
+    disable_remove: true
+    description: 'Content data files for all sections (trilingual: VI/EN/FR)'
+
+# Data editing config
+data_config:
+  about:
+    path: src/data/about.json
+    name: About / Về tôi
+  films:
+    path: src/data/films.json
+    name: Films / Phim
+  music:
+    path: src/data/music.json
+    name: Music / Nhạc
+  paintings:
+    path: src/data/paintings.json
+    name: Paintings / Tranh
+  poetry:
+    path: src/data/poetry.json
+    name: Poetry / Thơ
+  artwork:
+    path: src/data/artwork.json
+    name: Artwork
+  spaces:
+    path: src/data/spaces.json
+    name: Spaces / Không gian
+  blog:
+    path: src/data/blog.json
+    name: Blog
+  contact:
+    path: src/data/contact.json
+    name: Contact / Liên hệ
+  ui-translations:
+    path: src/data/ui-translations.json
+    name: UI Translations / Bản dịch giao diện
+
+# File upload paths
+uploads_dir: uploads
+
+# Build configuration
+_editables: {}
+
+# Input configuration for structured editing
+_inputs:
+  title:
+    type: text
+    label: Title
+  date:
+    type: text
+    label: Date
+  excerpt:
+    type: text
+    label: Excerpt / Trích dẫn
+  content:
+    type: textarea
+    label: Content / Nội dung
+  description:
+    type: html
+    label: Description / Mô tả
+  thumbnail:
+    type: image
+    label: Thumbnail
+  poster:
+    type: image
+    label: Poster
+  youtubeId:
+    type: text
+    label: YouTube Video ID
+  genre:
+    type: text
+    label: Genre / Thể loại
+  year:
+    type: text
+    label: Year / Năm
+  duration:
+    type: text
+    label: Duration / Thời lượng
+  crew:
+    type: html
+    label: Crew / Ê-kíp
