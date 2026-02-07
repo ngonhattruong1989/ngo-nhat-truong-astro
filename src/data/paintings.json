@@ -32,13 +32,13 @@
         "description": "<p>Góc phố cổ Hội An vào một buổi sáng sớm mờ sương. Chưa có du khách, chỉ có những bức tường vàng im lìm kể chuyện thời gian.</p>"
       },
       {
-        "id": "",
-        "title": "",
-        "thumbnail": "",
+        "id": "still-bodnd",
+        "title": "Still Ba Ơi, Đừng Nói Dối",
+        "thumbnail": "https://public.ngonhattruong.com/paintings/still-bodnd/still-bodnd-1.png",
         "images": [],
-        "medium": "",
-        "date": "",
-        "description": ""
+        "medium": "still film",
+        "date": "2025",
+        "description": "<p>still test</p>"
       }
     ]
   },
