@@ -1,5 +1,6 @@
 name = "ngo-nhat-truong-astro"
 main = "@astrojs/cloudflare/entrypoints/server"
+account_id = "7f3ac865c1b6f8baf7bd7a10795077b9"
 compatibility_date = "2026-10-17"
 compatibility_flags = ["nodejs_compat"]
 
@@ -10,6 +11,7 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "ngo-nhat-truong-cms"
+database_id = "6b395722-8012-4dcf-94ca-95812d1c039f"
 migrations_dir = "./migrations"
 
 [[r2_buckets]]
