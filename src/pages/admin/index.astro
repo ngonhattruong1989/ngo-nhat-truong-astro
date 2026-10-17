@@ -1,0 +1,16 @@
+---
+import { env } from 'cloudflare:workers';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { CMS_SECTIONS, getSectionData } from '../../lib/cms/content.mjs';
+export const prerender = false;
+const labels = { about: 'Về tôi', artwork: 'Artwork', blog: 'Blog', contact: 'Liên hệ', films: 'Phim', music: 'Nhạc', paintings: 'Tranh', poetry: 'Thơ', spaces: 'Không gian', 'ui-translations': 'Bản dịch giao diện' };
+const cards = await Promise.all(CMS_SECTIONS.map(async (key) => {
+  const data = await getSectionData(key, env.DB);
+  const items = data?.vi?.items?.length ?? 0;
+  return { key, label: labels[key] || key, items };
+}));
+---
+<AdminLayout title="Tổng quan" active="dashboard">
+  <div class="page-head"><div><div class="eyebrow">Không gian quản trị</div><h1>Nội dung website</h1><p class="subtle">Chọn một mục để chỉnh sửa nội dung bằng tiếng Việt, English hoặc Français.</p></div></div>
+  <div class="section-grid">{cards.map((card) => <a class="section-card" href={`/admin/${card.key}`}><strong>{card.label}</strong><span>{card.items} mục nội dung · 3 ngôn ngữ</span></a>)}</div>
+</AdminLayout>

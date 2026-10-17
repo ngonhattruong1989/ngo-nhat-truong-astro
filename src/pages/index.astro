@@ -1,19 +1,22 @@
 ---
+import { env } from 'cloudflare:workers';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSectionData } from '../lib/cms/content.mjs';
 
-// Import all data at build time
-import uiTranslations from '../data/ui-translations.json';
-import aboutData from '../data/about.json';
-import filmsData from '../data/films.json';
-import musicData from '../data/music.json';
-import paintingsData from '../data/paintings.json';
-import poetryData from '../data/poetry.json';
-import artworkData from '../data/artwork.json';
-import spacesData from '../data/spaces.json';
-import blogData from '../data/blog.json';
-import contactData from '../data/contact.json';
-
-// Bundle all section data for client-side use
+export const prerender = false;
+const db = env.DB;
+const [uiTranslations, aboutData, filmsData, musicData, paintingsData, poetryData, artworkData, spacesData, blogData, contactData] = await Promise.all([
+  getSectionData('ui-translations', db),
+  getSectionData('about', db),
+  getSectionData('films', db),
+  getSectionData('music', db),
+  getSectionData('paintings', db),
+  getSectionData('poetry', db),
+  getSectionData('artwork', db),
+  getSectionData('spaces', db),
+  getSectionData('blog', db),
+  getSectionData('contact', db),
+]);
 const allSectionData = {
   about: aboutData,
   films: filmsData,
