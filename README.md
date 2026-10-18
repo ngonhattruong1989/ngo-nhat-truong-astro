@@ -33,16 +33,31 @@ Generate a secret locally with `openssl rand -hex 32`; set it in `.dev.vars` for
 
 ## Cloudflare deployment
 
-`wrangler.toml` declares the Worker, D1 binding `DB`, and R2 binding `BUCKET`. Create the D1 database and media bucket in the intended Cloudflare account, then put their real IDs/names into `wrangler.toml` (never copy the IDs from another project). Apply the D1 migration before deploying:
+`wrangler.toml` declares the Worker, D1 binding `DB`, and R2 binding `BUCKET`. Production uses:
+
+- D1 `ngo-nhat-truong-cms` (id in `wrangler.toml`).
+- R2 bucket `public`, which owns the custom domain `public.ngonhattruong.com`. Media keys are the R2 object keys (`films/<slug>/…`), so `https://public.ngonhattruong.com/<key>` is the public URL.
+- Worker routes `ngonhattruong.com/*` and `www.ngonhattruong.com/*`, so the whole site renders from D1 per request (no static rebuild needed after a CMS edit).
+
+Deploy and seed:
 
 ```sh
-npx wrangler d1 create ngo-nhat-truong-cms
-npx wrangler r2 bucket create ngo-nhat-truong-media
+export CLOUDFLARE_ACCOUNT_ID=<account that owns the zone and bucket>
 npm run d1:migrate:remote
+node scripts/backfill-r2.mjs --dry          # xem trước
+node scripts/backfill-r2.mjs --commit r2    # đẩy media trong public/ lên R2
+node scripts/backfill-r2.mjs --commit d1    # rewrite src/data sang URL R2
+node scripts/seed-remote.mjs --commit       # ghi 10 section vào D1 remote
 npm run deploy
 ```
 
-Cloudflare CLI prints the D1 database ID; add it to the D1 binding in `wrangler.toml` before applying remote migrations. Production secrets must be configured before the CMS login will work. Deployment is a Cloudflare Worker and needs the appropriate Cloudflare account authorization.
+`npm run deploy` builds and uploads both the Worker and its static assets. Production secrets (`ADMIN_PASSWORD`, `AUTH_SECRET`) are Worker secrets:
+
+```sh
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put AUTH_SECRET
+```
+
 
 ## Content behavior
 
