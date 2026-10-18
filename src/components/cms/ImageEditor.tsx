@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { mediaKeyOf, replaceImage, restoreImage, imageMeta, type MediaTarget } from '../../lib/cms/client';
 import { RATIOS, centeredRect, clampRect, moveRect, resizeRect, outputSize, ratioValue } from '../../lib/cms/crop.mjs';
 
@@ -160,7 +161,7 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
 
   const originalKey = mediaKeyOf(src);
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" role="dialog" aria-modal="true">
       <div className="modal image-editor">
         <div className="modal-head">
@@ -237,6 +238,7 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
           <button type="button" className="btn" onClick={apply} disabled={busy || !natural.w}>{busy ? 'Đang lưu…' : 'Lưu ảnh đã cắt'}</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

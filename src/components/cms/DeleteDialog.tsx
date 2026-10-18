@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type Props = {
   open: boolean;
@@ -14,7 +15,7 @@ export default function DeleteDialog({ open, title, slug, locales, mediaKeys, on
   const [typed, setTyped] = useState('');
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" role="dialog" aria-modal="true">
       <div className="modal">
         <div className="modal-head">
@@ -42,6 +43,7 @@ export default function DeleteDialog({ open, title, slug, locales, mediaKeys, on
           <button type="button" className="btn danger" disabled={typed !== slug} onClick={onConfirm}>Xóa vĩnh viễn</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

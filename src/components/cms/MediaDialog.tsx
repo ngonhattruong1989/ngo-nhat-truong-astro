@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { MediaTarget, UploadFn } from '../../lib/cms/client';
 
 type Tab = 'image' | 'video' | 'youtube';
@@ -56,7 +57,7 @@ export default function MediaDialog({ open, initialTab = 'image', target, upload
     }
   }
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" role="dialog" aria-modal="true">
       <div className="modal">
         <div className="modal-head">
@@ -111,6 +112,7 @@ export default function MediaDialog({ open, initialTab = 'image', target, upload
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
