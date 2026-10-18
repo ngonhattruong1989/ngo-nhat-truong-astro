@@ -95,5 +95,5 @@ Every image field and every gallery thumbnail has a **Chỉnh sửa ảnh** acti
 - ratios: free, original, 1:1, 4:3, 3:2, 16:9, 3:4, 2:3, 9:16 — picking one centers the largest rect with that ratio;
 - drag inside the box to move, drag a corner to resize (ratio locked unless "Tự do");
 - export caps the long edge at 2400px and **overwrites the same R2 object**, so the URL never changes; the first crop copies the untouched bytes to `.originals/<key>` and the editor offers «Đặt lại về ảnh gốc» to put them back;
-- repo assets under `/films/**`, `/uploads/**`, `/home/**` are overridden at runtime by `src/middleware.ts`: if an R2 object exists at the same key it wins over the bundled file, which is what makes in-place cropping work without touching the codebase;
+- every image on the site (films, uploads, home hero, logos) is served from R2 at `https://public.ngonhattruong.com/<key>`, so the crop overwrite is immediately visible without rebuilding anything;
 - the browser cannot read R2 pixels directly (no CORS), so the editor loads bytes through `GET /api/cms/image?url=…` (session-protected, private hosts blocked).

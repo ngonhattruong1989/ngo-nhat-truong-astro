@@ -3,30 +3,30 @@
     "title": "ngô nhật trường",
     "tagline": "người làm phim, làm vườn, viết và sắp đặt không gian.",
     "intro": "Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống.",
-    "logo": "/home/logo-moc.png",
+    "logo": "https://public.ngonhattruong.com/home/logo-moc.png",
     "heroImages": [
-      "/home/home-image/home-image-1.jpeg",
-      "/home/home-image/home-image-2.jpeg"
+      "https://public.ngonhattruong.com/home/home-image/home-image-1.jpeg",
+      "https://public.ngonhattruong.com/home/home-image/home-image-2.jpeg"
     ]
   },
   "en": {
     "title": "ngô nhật trường",
     "tagline": "người làm phim, làm vườn, viết và sắp đặt không gian.",
     "intro": "Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống.",
-    "logo": "/home/logo-moc.png",
+    "logo": "https://public.ngonhattruong.com/home/logo-moc.png",
     "heroImages": [
-      "/home/home-image/home-image-1.jpeg",
-      "/home/home-image/home-image-2.jpeg"
+      "https://public.ngonhattruong.com/home/home-image/home-image-1.jpeg",
+      "https://public.ngonhattruong.com/home/home-image/home-image-2.jpeg"
     ]
   },
   "fr": {
     "title": "ngô nhật trường",
     "tagline": "người làm phim, làm vườn, viết và sắp đặt không gian.",
     "intro": "Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống.",
-    "logo": "/home/logo-moc.png",
+    "logo": "https://public.ngonhattruong.com/home/logo-moc.png",
     "heroImages": [
-      "/home/home-image/home-image-1.jpeg",
-      "/home/home-image/home-image-2.jpeg"
+      "https://public.ngonhattruong.com/home/home-image/home-image-1.jpeg",
+      "https://public.ngonhattruong.com/home/home-image/home-image-2.jpeg"
     ]
   }
 }
