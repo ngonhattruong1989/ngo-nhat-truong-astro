@@ -37,11 +37,6 @@ const allSectionData = {
 ---
 
 <BaseLayout>
-    <!-- Intro Screen -->
-    <div id="intro-screen">
-        <img src={homeLogo} alt="Ngô Nhật Trường Logo">
-    </div>
-
     <div class="wrapper">
         <!-- Header -->
         <header class="header">
@@ -146,22 +141,6 @@ const allSectionData = {
 
         // --- 3. INIT ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Splash: chỉ hiện ở lần vào đầu tiên của phiên, reload không hiện lại.
-            const introScreen = document.getElementById('intro-screen');
-            if (introScreen) {
-                if (document.documentElement.classList.contains('skip-intro')) {
-                    introScreen.remove();
-                } else {
-                    const dismissIntro = () => {
-                        introScreen.classList.add('hidden');
-                        try { sessionStorage.setItem('nnt:splash', '1'); } catch (e) {}
-                        window.setTimeout(() => introScreen.remove(), 900);
-                    };
-                    introScreen.addEventListener('click', dismissIntro);
-                    window.setTimeout(dismissIntro, 1800);
-                }
-            }
-
             // Language switcher
             document.querySelectorAll('.lang-opt').forEach(btn => {
                 btn.addEventListener('click', function() {

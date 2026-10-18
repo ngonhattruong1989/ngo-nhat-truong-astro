@@ -102,4 +102,4 @@ Every image field and every gallery thumbnail has a **Chỉnh sửa ảnh** acti
 
 - The site is a single Astro entry (`src/pages/[...path].astro`) that renders section views on the client: `/`, `/about`, `/films`, `/films/<slug>`, `/poets/<id>`… Navigation uses `history.pushState`, so URLs are real and shareable.
 - Reloading keeps the current URL: `/films/phuc-sinh` reopens that film, `/about` reopens the canvas. `popstate` restores the previous view.
-- The logo splash (`#intro-screen`) shows once per browser session: an inline script in `BaseLayout.astro` adds `skip-intro` when `sessionStorage['nnt:splash']` is set, so reloads and later visits go straight to content. It dismisses itself after 1.8s or on click.
+- There is no splash/intro overlay: the page paints content immediately on first visit and on every reload. The brand logo lives only in the header (`.brand-logo img`).
