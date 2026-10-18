@@ -1,8 +1,9 @@
-export type SectionKind = 'canvas' | 'films' | 'items' | 'translations';
+export type SectionKind = 'canvas' | 'films' | 'home' | 'items' | 'translations';
 
 export type SectionMeta = { label: string; kind: SectionKind; blurb: string };
 
 export const SECTION_META: Record<string, SectionMeta> = {
+  home: { label: 'Trang chủ', kind: 'home', blurb: 'Hero, logo, lời chào' },
   about: { label: 'Về tôi', kind: 'canvas', blurb: 'Canvas tự do, 3 ngôn ngữ' },
   films: { label: 'Phim', kind: 'films', blurb: 'Mỗi phim một block' },
   music: { label: 'Nhạc', kind: 'items', blurb: 'Playlist và bản thu' },
@@ -16,7 +17,7 @@ export const SECTION_META: Record<string, SectionMeta> = {
 };
 
 export const SECTION_ORDER = [
-  'about', 'films', 'music', 'paintings', 'poetry', 'artwork', 'spaces', 'blog', 'contact', 'ui-translations',
+  'home', 'about', 'films', 'music', 'paintings', 'poetry', 'artwork', 'spaces', 'blog', 'contact', 'ui-translations',
 ];
 
 export const ITEM_SECTIONS = ['music', 'paintings', 'poetry', 'artwork', 'spaces', 'blog'];

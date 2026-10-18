@@ -76,7 +76,7 @@ export default function TranslationsEditor() {
         </div>
       </section>
 
-      <SaveBar savedAt={savedAt} status={status} onSave={save} liveHref="http://localhost:4321" />
+      <SaveBar savedAt={savedAt} status={status} onSave={save} liveHref="/" />
     </>
   );
 }

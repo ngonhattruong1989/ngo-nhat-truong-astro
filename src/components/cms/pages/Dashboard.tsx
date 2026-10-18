@@ -3,6 +3,11 @@ import { SECTION_META, SECTION_ORDER } from '../../../lib/cms/sections';
 import { previewSrc, store } from '../../../lib/cms/client';
 
 function coverFor(section: string): string {
+  if (section === 'home') {
+    const payload = store.get('home');
+    const hero = payload?.vi?.heroImages?.[0] || payload?.vi?.logo || '';
+    return previewSrc(hero);
+  }
   if (section === 'films') {
     const first = store.item('films', store.ids('films')[0], 'vi');
     return previewSrc(first?.poster || first?.thumbnail || '');
@@ -21,7 +26,7 @@ export default function Dashboard() {
           <h1>Nội dung website</h1>
           <p className="subtle">Chọn một trang để đi vào danh sách block, rồi bấm vào block để sửa nội dung, media và preview.</p>
         </div>
-        <a className="btn ghost" href="http://localhost:4321" target="_blank" rel="noreferrer">Mở website thật ↗</a>
+        <a className="btn ghost" href="/" target="_blank" rel="noreferrer">Mở website thật ↗</a>
       </div>
 
       <div className="grid-cards">

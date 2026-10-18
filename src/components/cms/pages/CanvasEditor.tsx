@@ -77,7 +77,7 @@ export default function CanvasEditor({ section }: { section: 'about' | 'contact'
         <PreviewPane title={payload.title || ''} html={html} />
       </div>
 
-      <SaveBar savedAt={savedAt} status={status} onSave={save} liveHref={`http://localhost:4321/#${section}`} />
+      <SaveBar savedAt={savedAt} status={status} onSave={save} liveHref={`/#${section}`} />
     </>
   );
 }

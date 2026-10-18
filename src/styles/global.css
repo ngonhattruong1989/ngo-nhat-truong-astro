@@ -143,7 +143,6 @@ body {
 .dynamic-content h2 {
     font-size: 2rem;
     margin-bottom: 10px;
-    text-transform: capitalize;
 }
 
 .dynamic-desc {
@@ -337,7 +336,6 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 .gallery-title {
     font-size: 14px;
     font-weight: 600;
-    text-transform: capitalize;
     color: #000;
     margin-top: 5px;
 }
@@ -372,7 +370,6 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 .gallery-text-title {
     font-size: 15px;
     font-weight: 600;
-    text-transform: capitalize;
     color: #000;
     margin-bottom: 8px;
     line-height: 1.4;
@@ -709,7 +706,6 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 .crew-section h3, .bts-section h3 {
     font-size: 16px;
     font-weight: 600;
-    text-transform: capitalize;
     margin-bottom: 20px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
@@ -838,7 +834,6 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
     color: #fff;
     font-size: 13px;
     font-weight: 500;
-    text-transform: capitalize;
 }
 
 /* Text placeholder when no thumbnail */

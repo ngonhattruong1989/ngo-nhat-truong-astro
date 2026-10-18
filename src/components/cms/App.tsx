@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Shell from './Shell';
 import Dashboard from './pages/Dashboard';
+import HomeEditor from './pages/HomeEditor';
 import FilmsList from './pages/FilmsList';
 import FilmEditor from './pages/FilmEditor';
 import ItemsList from './pages/ItemsList';
@@ -49,6 +50,7 @@ function Content() {
     <Routes>
       <Route element={<Shell />}>
         <Route index element={<Dashboard />} />
+        <Route path="home" element={<HomeEditor />} />
         <Route path="films" element={<FilmsList />} />
         <Route path="films/:id" element={<FilmEditor />} />
         <Route path="about" element={<CanvasEditor section="about" />} />

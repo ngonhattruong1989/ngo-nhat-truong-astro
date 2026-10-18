@@ -5,7 +5,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 
 const DB = 'ngo-nhat-truong-cms';
-const SECTIONS = ['about', 'artwork', 'blog', 'contact', 'films', 'music', 'paintings', 'poetry', 'spaces', 'ui-translations'];
+const SECTIONS = ['home', 'about', 'artwork', 'blog', 'contact', 'films', 'music', 'paintings', 'poetry', 'spaces', 'ui-translations'];
 const commit = process.argv.includes('--commit');
 
 const statements = [];

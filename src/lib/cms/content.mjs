@@ -3,6 +3,7 @@ import artwork from '../../data/artwork.json' with { type: 'json' };
 import blog from '../../data/blog.json' with { type: 'json' };
 import contact from '../../data/contact.json' with { type: 'json' };
 import films from '../../data/films.json' with { type: 'json' };
+import home from '../../data/home.json' with { type: 'json' };
 import music from '../../data/music.json' with { type: 'json' };
 import paintings from '../../data/paintings.json' with { type: 'json' };
 import poetry from '../../data/poetry.json' with { type: 'json' };
@@ -11,6 +12,7 @@ import uiTranslations from '../../data/ui-translations.json' with { type: 'json'
 
 export const SECTION_DATA = {
   about,
+  home,
   artwork,
   blog,
   contact,
@@ -35,6 +37,18 @@ export function validateSectionData(section, data) {
     const value = data[locale];
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       return { valid: false, error: `Missing locale: ${locale}.` };
+    }
+    if (section === 'home') {
+      if (typeof value.title !== 'string' || typeof value.tagline !== 'string' || typeof value.intro !== 'string') {
+        return { valid: false, error: `Invalid home copy for ${locale}.` };
+      }
+      if (!Array.isArray(value.heroImages) || value.heroImages.some((url) => typeof url !== 'string')) {
+        return { valid: false, error: `Invalid home heroImages for ${locale}.` };
+      }
+      if (value.logo !== undefined && typeof value.logo !== 'string') {
+        return { valid: false, error: `Invalid home logo for ${locale}.` };
+      }
+      continue;
     }
     if (section === 'ui-translations') {
       if (typeof value.title !== 'string' && value.title !== undefined) return { valid: false, error: `Invalid title for ${locale}.` };

@@ -17,6 +17,12 @@ const [uiTranslations, aboutData, filmsData, musicData, paintingsData, poetryDat
   getSectionData('blog', db),
   getSectionData('contact', db),
 ]);
+const homeData = await getSectionData('home', db);
+const home = homeData?.vi || {};
+const homeLogo = home.logo || '/home/logo-moc.png';
+const homeHero = Array.isArray(home.heroImages) && home.heroImages.length
+  ? home.heroImages
+  : ['/home/home-image/home-image-1.jpeg', '/home/home-image/home-image-2.jpeg'];
 const allSectionData = {
   about: aboutData,
   films: filmsData,
@@ -33,7 +39,7 @@ const allSectionData = {
 <BaseLayout>
     <!-- Intro Screen -->
     <div id="intro-screen">
-        <img src="/home/logo-moc.png" alt="Ngô Nhật Trường Logo">
+        <img src={homeLogo} alt="Ngô Nhật Trường Logo">
     </div>
 
     <div class="wrapper">
@@ -41,10 +47,10 @@ const allSectionData = {
         <header class="header">
             <div class="brand">
                 <div class="brand-logo">
-                    <img src="/home/logo-moc.png" alt="ngô nhật trường calligraphy" class="logo-image">
+                    <img src={homeLogo} alt="ngô nhật trường calligraphy" class="logo-image">
                 </div>
-                <h1>ngô nhật trường</h1>
-                <p class="tagline">người làm phim, làm vườn, viết và sắp đặt không gian.</p>
+                <h1>{home.title || "ngô nhật trường"}</h1>
+                <p class="tagline">{home.tagline || "người làm phim, làm vườn, viết và sắp đặt không gian."}</p>
             </div>
 
             <nav class="navigation">
@@ -76,15 +82,16 @@ const allSectionData = {
             <section id="home" class="section section-active">
                 <div class="hero-slider">
                     <div class="slides-container">
-                        <img src="/home/home-image/home-image-1.jpeg" class="slide active" alt="không gian 1">
-                        <img src="/home/home-image/home-image-2.jpeg" class="slide" alt="không gian 2">
+                        {homeHero.map((src, index) => (
+                            <img src={src} class={index === 0 ? 'slide active' : 'slide'} alt="" loading={index === 0 ? 'eager' : 'lazy'} />
+                        ))}
                     </div>
                     <button class="nav-btn prev" id="slide-prev">&#10094;</button>
                     <button class="nav-btn next" id="slide-next">&#10095;</button>
                 </div>
 
                 <div class="intro-text">
-                    <p>Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống.</p>
+                    <p>{home.intro || "Chào mừng bạn đến với góc nhỏ của Trường. Nơi lưu giữ những lát cắt của cuộc sống qua ống kính, nét vẽ và những khoảng lặng trong không gian sống."}</p>
                 </div>
             </section>
 
