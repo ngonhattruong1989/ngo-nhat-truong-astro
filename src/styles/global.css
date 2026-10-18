@@ -929,10 +929,11 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
     flex: 0.8;
     overflow-y: auto;
     color: #fff;
-    padding: 20px 0;
+    padding: 24px 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 0;
 }
 
 .painting-lb-right::-webkit-scrollbar {
@@ -1078,3 +1079,7 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 .preview-gallery h3 { font: 600 15px/1.4 Inter, sans-serif; margin: 0 0 10px; }
 .preview-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
 .preview-gallery-grid img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4 / 3; border-radius: 2px; }
+
+.painting-lb-desc p { margin: 0 0 14px; }
+.painting-lb-desc p:last-child { margin-bottom: 0; }
+.painting-lb-title, .painting-lb-meta { padding-right: 8px; }
