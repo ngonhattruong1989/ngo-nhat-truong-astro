@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { previewSrc, store, mediaKeyOf, type MediaTarget } from '../../lib/cms/client';
+import ImageEditor from './ImageEditor';
 
 type Props = {
   items: string[];
@@ -12,6 +13,7 @@ type Props = {
 export default function MediaGallery({ items, onChange, target, kind, label }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [url, setUrl] = useState('');
+  const [editing, setEditing] = useState<{ index: number; src: string } | null>(null);
   const [error, setError] = useState('');
 
   async function add(files: FileList | null) {
@@ -60,6 +62,7 @@ export default function MediaGallery({ items, onChange, target, kind, label }: P
             <div className="tools">
               <button type="button" onClick={() => move(index, -1)} title="Lên">↑</button>
               <button type="button" onClick={() => move(index, 1)} title="Xuống">↓</button>
+              <button type="button" onClick={() => setEditing({ index, src: url })} title="Chỉnh sửa ảnh">✂</button>
               <button type="button" onClick={() => remove(index)} title="Xóa">✕</button>
             </div>
           </div>
@@ -79,6 +82,20 @@ export default function MediaGallery({ items, onChange, target, kind, label }: P
         <button type="button" className="btn ghost" onClick={() => inputRef.current?.click()}>Tải lên</button>
       </div>
       {error ? <div className="status error">{error}</div> : null}
+      {editing ? (
+        <ImageEditor
+          open
+          src={editing.src}
+          target={target}
+          onClose={() => setEditing(null)}
+          onSaved={(next) => {
+            const copy = [...items];
+            copy[editing.index] = next;
+            onChange(copy);
+            setEditing(null);
+          }}
+        />
+      ) : null}
       <div className="hint">Thứ tự ảnh = thứ tự hiển thị ngoài website. Ảnh upload lưu vào <code>{target.scope === 'film' ? `films/${target.id}` : `${target.page}/${target.id}`}/{kind}/</code>.</div>
     </div>
   );

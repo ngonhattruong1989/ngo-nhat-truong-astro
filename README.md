@@ -87,3 +87,12 @@ node scripts/migrate-v2.mjs
 - `src/pages/api/cms/` — bootstrap, item PATCH, rename, upload, media delete.
 - `migrations/` — D1 schema migrations.
 
+
+## Image editing
+
+Every image field and every gallery thumbnail has a **Chỉnh sửa ảnh** action (the ✂ button on gallery items):
+
+- ratios: free, original, 1:1, 4:3, 3:2, 16:9, 3:4, 2:3, 9:16 — picking one centers the largest rect with that ratio;
+- drag inside the box to move, drag a corner to resize (ratio locked unless "Tự do");
+- export caps the long edge at 2400px and writes a **new** R2 object (`<prefix>/<kind>/<stamp>-<name>-crop.jpg`), so the original is never destroyed;
+- the browser cannot read R2 pixels directly (no CORS), so the editor loads bytes through `GET /api/cms/image?url=…` (session-protected, private hosts blocked).

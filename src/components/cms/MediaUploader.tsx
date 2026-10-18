@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { previewSrc, store, mediaKeyOf, type MediaTarget } from '../../lib/cms/client';
+import ImageEditor from './ImageEditor';
 
 type Props = {
   value: string;
@@ -17,6 +18,7 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
   const [pending, setPending] = useState<{ key: string; url: string } | null>(null);
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const [editing, setEditing] = useState(false);
 
   async function handleFiles(files: FileList | null) {
     const file = files?.[0];
@@ -73,8 +75,14 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
         onDrop={(event) => { event.preventDefault(); setDragging(false); handleFiles(event.dataTransfer.files); }}
         onClick={() => inputRef.current?.click()}
       >
-        Kéo thả {media === 'video' ? 'video' : 'ảnh'} vào đây — prototype lưu tạm trong trình duyệt
+        Kéo thả {media === 'video' ? 'video' : 'ảnh'} vào đây — lưu thẳng vào R2
       </div>
+      {value && media === 'image' ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          <button type="button" className="btn secondary" onClick={() => setEditing(true)}>Chỉnh sửa ảnh</button>
+          <span className="subtle" style={{ alignSelf: 'center' }}>cắt theo tỉ lệ, lưu thành object mới</span>
+        </div>
+      ) : null}
       {value ? (
         <div className="media-preview">
           {media === 'video' ? (
@@ -87,6 +95,13 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
       {error ? <div className="status error">{error}</div> : null}
       {pending ? <div style={{ marginTop: 6 }}><span className="key-hint">sẽ lưu: {pending.key}</span></div> : null}
       {value && folder ? <div style={{ marginTop: 6 }}><span className="key-hint">R2 folder: {folder}</span></div> : null}
+      <ImageEditor
+        open={editing}
+        src={value}
+        target={target}
+        onClose={() => setEditing(false)}
+        onSaved={(url) => { setPending(null); onChange(url); }}
+      />
     </div>
   );
 }
