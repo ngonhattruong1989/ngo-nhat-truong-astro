@@ -46,15 +46,29 @@ Cloudflare CLI prints the D1 database ID; add it to the D1 binding in `wrangler.
 
 ## Content behavior
 
-- The public page reads each section from D1 on request; if the D1 row is absent or invalid, it falls back to the corresponding checked-in JSON file.
-- Saving one section stores the complete JSON object for that section, preserving unedited locale data and unrecognized fields.
-- The editor supports scalar values, nested objects, arrays, item removal/reordering, and appending a new item based on the existing item shape. Use the upload control on media fields to store JPEG, PNG, WebP, GIF, MP4, or WebM files (maximum 25 MB per file).
-- Content may contain HTML as existing data does. Only trusted administrators should have access to the CMS.
+- `/admin` is a three-level editor: overview (all pages) → block list (one card per film, painting, post…) → editor for a single block with a Word-like canvas (bold, italic, underline, font size, alignment, line height, images, video, YouTube).
+- `about` and `contact` are single free-form canvases per locale; every other section is a list of blocks.
+- Content lives in D1 (`cms_content`) and media in R2; the CMS never writes to `src/data/*.json`. The bundled JSON is only the fallback used when a D1 row is missing or invalid.
+- Media keys are folder-scoped: `films/<slug>/<kind>/<stamp>-<name>.<ext>`, `<section>/<item-id>/<kind>/…`, `<section>/<locale>/<kind>/…`. `<kind>` ∈ poster, thumbnail, stills, bts, video, images, hero.
+- Pasting an R2/public URL into any image field is supported, including legacy `/uploads/…` paths.
+- Renaming the title changes the slug only when **Lưu** is pressed; the item id, the three locale copies and the R2 folder are all moved (`copyPrefix` → `deletePrefix`).
+- Deleting a block removes it from all three locales and deletes its R2 folder. Invariant: what the CMS does not reference should not stay in R2.
+- Limits: images 15 MB, video 60 MB (Worker memory cap). Sanitizer keeps `<video>` and YouTube `<iframe>` only.
+- `PUBLIC_MEDIA_BASE_URL` (default `https://public.ngonhattruong.com`) is the public R2 domain used for previews; `/media/<key>` remains the Worker fallback in local dev.
+
+Legacy data migration (plain text → `html`):
+
+```sh
+node scripts/migrate-v2.mjs
+```
 
 ## Structure
 
-- `src/data/` — canonical initial content, three locales.
-- `src/lib/cms/` — content validation/loading, session signing, and editor helpers.
-- `src/pages/admin/` — authenticated admin dashboard and section editor.
-- `src/pages/api/cms/` — authenticated content save and media upload APIs.
+- `src/data/` — fallback content, three locales, schema v2 (`html` per item, `html` per canvas page).
+- `src/lib/cms/` — content validation/loading, session signing, media keys, slug rename, R2 helpers.
+- `src/lib/render.mjs` — shared renderers (`bodyHtml`, `filmVideoHTML`, `previewItemHTML`) used by the public page and the CMS preview.
+- `src/components/cms/` — React SPA (shell, lists, editors, TipTap canvas, media dialogs).
+- `src/pages/admin/` — `/admin/*` SPA entry and `/admin/preview` (renders with the site CSS).
+- `src/pages/api/cms/` — bootstrap, item PATCH, rename, upload, media delete.
 - `migrations/` — D1 schema migrations.
+
