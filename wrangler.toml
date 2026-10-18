@@ -20,36 +20,12 @@ migrations_dir = "./migrations"
 
 [[r2_buckets]]
 binding = "BUCKET"
-bucket_name = "ngo-nhat-truong-media"
+bucket_name = "public"
 
 [[routes]]
-pattern = "ngonhattruong.com/admin*"
+pattern = "ngonhattruong.com/*"
 zone_name = "ngonhattruong.com"
 
 [[routes]]
-pattern = "ngonhattruong.com/api/*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "ngonhattruong.com/media/*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "www.ngonhattruong.com/admin*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "www.ngonhattruong.com/api/*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "www.ngonhattruong.com/media/*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "ngonhattruong.com/_astro/*"
-zone_name = "ngonhattruong.com"
-
-[[routes]]
-pattern = "www.ngonhattruong.com/_astro/*"
+pattern = "www.ngonhattruong.com/*"
 zone_name = "ngonhattruong.com"
