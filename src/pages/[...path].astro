@@ -34,9 +34,52 @@ const allSectionData = {
   blog: blogData,
   contact: contactData
 };
+
+// --- Meta cho chia sẻ (Open Graph) theo từng URL ---
+const SECTION_LABELS: Record<string, string> = {
+  home: 'Portfolio', about: 'About', films: 'Films', music: 'Music', paintings: 'Paintings',
+  poets: 'Poetry', artwork: 'Artwork', space: 'Spaces', blog: 'Blog', contact: 'Contact',
+};
+const SECTION_LOOKUP: Record<string, any> = {
+  about: aboutData, films: filmsData, music: musicData, paintings: paintingsData,
+  poets: poetryData, artwork: artworkData, space: spacesData, blog: blogData, contact: contactData,
+};
+
+const routeParts = Astro.url.pathname.split('/').filter(Boolean);
+const routeSection = routeParts[0] || 'home';
+const routeItemId = routeParts[1] || '';
+const routeLabel = SECTION_LABELS[routeSection] || routeSection;
+const routePayload = SECTION_LOOKUP[routeSection]?.vi;
+const routeItem = routeItemId
+  ? (Array.isArray(routePayload?.items) ? routePayload.items.find((entry: any) => entry.id === routeItemId) : null)
+  : null;
+
+const plain = (value: unknown, limit = 180) =>
+  String(value ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, limit);
+
+let metaTitle = "Ngo Nhat Truong's Portfolio";
+let metaDescription = 'filmmaker, gardener, writer and space curator.';
+let metaImage = '/og-image.jpg';
+let metaType = 'website';
+
+if (routeItem) {
+  metaTitle = `${routeItem.title || routeItemId} — ${routeLabel} — ngô nhật trường`;
+  metaDescription = plain(
+    [routeItem.genre, routeItem.year, routeItem.medium, routeItem.date, routeItem.description, routeItem.excerpt]
+      .filter(Boolean)
+      .join(' · '),
+  ) || `${routeLabel} của ngô nhật trường.`;
+  metaImage = routeSection === 'films'
+    ? (routeItem.stills?.[0] || routeItem.poster || routeItem.thumbnail || '/og-image.jpg')
+    : (routeItem.thumbnail || routeItem.images?.[0] || '/og-image.jpg');
+  metaType = routeSection === 'films' ? 'video.movie' : 'article';
+} else if (routeSection !== 'home') {
+  metaTitle = `${routeLabel} — ngô nhật trường`;
+  metaDescription = plain(routePayload?.description || routePayload?.title) || metaDescription;
+}
 ---
 
-<BaseLayout>
+<BaseLayout title={metaTitle} description={metaDescription} image={metaImage} type={metaType}>
     <!-- Splash: logo lớn ở lần vào đầu, click để mờ dần và mở website -->
     <div id="intro-screen">
         <img src={homeLogo} alt="Ngô Nhật Trường Logo">

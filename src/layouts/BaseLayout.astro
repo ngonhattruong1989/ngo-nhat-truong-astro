@@ -3,8 +3,32 @@ import '../styles/global.css';
 
 interface Props {
   title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
 }
-const { title = "ngô nhật trường" } = Astro.props;
+
+const SITE_NAME = "Ngo Nhat Truong's Portfolio";
+const DEFAULT_DESCRIPTION = 'filmmaker, gardener, writer and space curator.';
+const {
+  title = SITE_NAME,
+  description = DEFAULT_DESCRIPTION,
+  image = '/og-image.jpg',
+  type = 'website',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/+$/, ''), Astro.url.origin).toString();
+const imageUrl = new URL(image, Astro.url.origin).toString();
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'ngô nhật trường',
+  alternateName: 'Ngo Nhat Truong',
+  jobTitle: 'filmmaker, gardener, writer and space curator',
+  url: 'https://ngonhattruong.com/',
+  image: new URL('/og-image.jpg', Astro.url.origin).toString(),
+};
 ---
 <!DOCTYPE html>
 <html lang="vi">
@@ -12,7 +36,29 @@ const { title = "ngô nhật trường" } = Astro.props;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/home/logo-moc.png" />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
     <script is:inline>
       // Splash chỉ hiện khi lần cuối xem cách đây hơn 30 phút (reload không hiện lại).
