@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { previewSrc, store, mediaKeyOf, type MediaTarget } from '../../lib/cms/client';
+import { previewSrc, store, mediaKeyOf, withVersion, type MediaTarget } from '../../lib/cms/client';
 import ImageEditor from './ImageEditor';
 
 type Props = {
@@ -19,6 +19,7 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [editing, setEditing] = useState(false);
+  const [version, setVersion] = useState(0);
 
   async function handleFiles(files: FileList | null) {
     const file = files?.[0];
@@ -88,7 +89,7 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
           {media === 'video' ? (
             <video src={previewSrc(pending?.url || value)} controls />
           ) : (
-            <img src={previewSrc(pending?.url || value)} alt="" />
+            <img src={previewSrc(withVersion(pending?.url || value, version))} alt="" />
           )}
         </div>
       ) : null}
@@ -100,7 +101,7 @@ export default function MediaUploader({ value, onChange, target, label = 'Ảnh'
         src={value}
         target={target}
         onClose={() => setEditing(false)}
-        onSaved={(url) => { setPending(null); onChange(url); }}
+        onSaved={(url) => { setPending(null); onChange(url); setVersion(Date.now()); }}
       />
     </div>
   );

@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ params }) => {
   return new Response(object.body, {
     headers: {
       'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
-      'Cache-Control': object.httpMetadata?.cacheControl || 'public, max-age=31536000, immutable',
+      'Cache-Control': object.httpMetadata?.cacheControl || 'public, max-age=60, must-revalidate',
       'X-Content-Type-Options': 'nosniff',
     },
   });

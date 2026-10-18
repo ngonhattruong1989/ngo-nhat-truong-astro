@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { previewSrc, store, mediaKeyOf, type MediaTarget } from '../../lib/cms/client';
+import { previewSrc, store, mediaKeyOf, withVersion, type MediaTarget } from '../../lib/cms/client';
 import ImageEditor from './ImageEditor';
 
 type Props = {
@@ -14,6 +14,7 @@ export default function MediaGallery({ items, onChange, target, kind, label }: P
   const inputRef = useRef<HTMLInputElement>(null);
   const [url, setUrl] = useState('');
   const [editing, setEditing] = useState<{ index: number; src: string } | null>(null);
+  const [version, setVersion] = useState(0);
   const [error, setError] = useState('');
 
   async function add(files: FileList | null) {
@@ -58,7 +59,7 @@ export default function MediaGallery({ items, onChange, target, kind, label }: P
       <div className="media-list">
         {items.map((url, index) => (
           <div className="media-item" key={`${url}-${index}`}>
-            <img src={previewSrc(url)} alt="" />
+            <img src={previewSrc(withVersion(url, version))} alt="" />
             <div className="tools">
               <button type="button" onClick={() => move(index, -1)} title="Lên">↑</button>
               <button type="button" onClick={() => move(index, 1)} title="Xuống">↓</button>
@@ -92,6 +93,7 @@ export default function MediaGallery({ items, onChange, target, kind, label }: P
             const copy = [...items];
             copy[editing.index] = next;
             onChange(copy);
+            setVersion(Date.now());
             setEditing(null);
           }}
         />

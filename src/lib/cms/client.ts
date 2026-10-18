@@ -168,6 +168,31 @@ export const store = {
 export type UploadFn = (file: File, target: MediaTarget) => Promise<{ url: string; key: string }>;
 export const upload: UploadFn = (file, target) => store.upload(file, target);
 
+// Ảnh crop ghi đè đúng object cũ; thêm ?v= để preview không dùng cache trình duyệt.
+export function withVersion(url: string, version: number): string {
+  if (!url || !version) return url;
+  return `${url}${url.includes('?') ? '&' : '?'}v=${version}`;
+}
+
+export async function imageMeta(url: string) {
+  return request(`/api/cms/image?meta=1&url=${encodeURIComponent(url)}`, { cache: 'no-store' });
+}
+
+export async function replaceImage(url: string, blob: Blob) {
+  const form = new FormData();
+  form.append('action', 'replace');
+  form.append('url', url);
+  form.append('file', new File([blob], url.split('/').pop()?.split('?')[0] || 'image', { type: blob.type }));
+  return request('/api/cms/image', { method: 'POST', body: form });
+}
+
+export async function restoreImage(url: string) {
+  const form = new FormData();
+  form.append('action', 'restore');
+  form.append('url', url);
+  return request('/api/cms/image', { method: 'POST', body: form });
+}
+
 // Preview thật: lưu draft vào sessionStorage rồi mở trang render bằng CSS của site.
 export function openPreview(section: string, id: string, locale: string, item: unknown) {
   try {

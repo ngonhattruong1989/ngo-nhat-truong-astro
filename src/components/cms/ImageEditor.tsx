@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { store, mediaKeyOf, type MediaTarget } from '../../lib/cms/client';
+import { mediaKeyOf, replaceImage, restoreImage, imageMeta, type MediaTarget } from '../../lib/cms/client';
 import { RATIOS, centeredRect, clampRect, moveRect, resizeRect, outputSize, ratioValue } from '../../lib/cms/crop.mjs';
 
 type Props = {
@@ -21,6 +21,7 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [hasOriginal, setHasOriginal] = useState(false);
   const urlRef = useRef('');
   const imgRef = useRef<HTMLImageElement | null>(null);
   const boxRef = useRef<HTMLDivElement | null>(null);
@@ -32,6 +33,9 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
     setLoading(true);
     setError('');
     setNatural({ w: 0, h: 0 });
+    imageMeta(src)
+      .then((meta) => { if (!cancelled) setHasOriginal(Boolean(meta?.hasOriginal)); })
+      .catch(() => { if (!cancelled) setHasOriginal(false); });
     fetch(`/api/cms/image?url=${encodeURIComponent(src)}`, { credentials: 'same-origin' })
       .then(async (response) => {
         if (!response.ok) throw new Error('Không tải được ảnh để chỉnh sửa.');
@@ -129,14 +133,26 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
       const blob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, type, keepPng ? undefined : 0.92));
       if (!blob) throw new Error('Không xuất được ảnh.');
 
-      const baseName = (filename || src.split('/').pop() || 'anh').replace(/\.[a-z0-9]+$/i, '');
-      const extension = keepPng ? 'png' : 'jpg';
-      const file = new File([blob], `${baseName}-crop.${extension}`, { type });
-      const result = await store.upload(file, target);
-      onSaved(result.url);
+      await replaceImage(src, blob);
+      setHasOriginal(true);
+      onSaved(src);
       onClose();
     } catch (cause: any) {
       setError(cause?.message || 'Lưu ảnh đã cắt thất bại.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function restore() {
+    setBusy(true);
+    setError('');
+    try {
+      await restoreImage(src);
+      onSaved(src);
+      onClose();
+    } catch (cause: any) {
+      setError(cause?.message || 'Không khôi phục được ảnh gốc.');
     } finally {
       setBusy(false);
     }
@@ -205,7 +221,7 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
               {ratio === 'free' ? ' · kéo góc để đổi kích thước' : ''}
             </div>
             <div className="crop-readout subtle">
-              Ảnh đã cắt được lưu thành object mới trong R2 ({target.scope === 'film' ? `films/${target.id}` : `${target.page}/${target.id || target.locale}`}); ảnh gốc giữ nguyên.
+              Lưu sẽ ghi đè chính ảnh này trong R2 (URL không đổi). Bản gốc được giữ tự động để «Đặt lại về ảnh gốc».
             </div>
 
             {error ? <div className="status error">{error}</div> : null}
@@ -213,9 +229,12 @@ export default function ImageEditor({ open, src, target, filename, onClose, onSa
         </div>
 
         <div className="modal-foot">
-          <button type="button" className="btn ghost" onClick={() => { setRect({ x: 0, y: 0, w: natural.w, h: natural.h }); setRatio('free'); }}>Đặt lại</button>
+          {hasOriginal ? (
+            <button type="button" className="btn ghost" onClick={restore} disabled={busy}>Đặt lại về ảnh gốc</button>
+          ) : null}
+          <button type="button" className="btn ghost" onClick={() => { setRect({ x: 0, y: 0, w: natural.w, h: natural.h }); setRatio('free'); }}>Bỏ vùng chọn</button>
           <button type="button" className="btn ghost" onClick={onClose}>Huỷ</button>
-          <button type="button" className="btn" onClick={apply} disabled={busy || !natural.w}>{busy ? 'Đang lưu…' : 'Lưu vào R2'}</button>
+          <button type="button" className="btn" onClick={apply} disabled={busy || !natural.w}>{busy ? 'Đang lưu…' : 'Lưu ảnh đã cắt'}</button>
         </div>
       </div>
     </div>
