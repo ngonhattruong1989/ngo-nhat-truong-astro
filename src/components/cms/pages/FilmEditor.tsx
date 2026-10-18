@@ -5,7 +5,6 @@ import RichText from '../RichText';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
 import PreviewPane from '../PreviewPane';
-import DeleteDialog from '../DeleteDialog';
 import SaveBar from '../SaveBar';
 import { upload, store, openPreview, type Dict, type Locale } from '../../../lib/cms/client';
 import { createEmptyFilm } from '../../../lib/cms/content-model.mjs';
@@ -20,7 +19,6 @@ export default function FilmEditor() {
   const [draft, setDraft] = useState<Dict | null>(null);
   const [status, setStatus] = useState<Status>(null);
   const [savedAt, setSavedAt] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [present, setPresent] = useState<Record<Locale, boolean>>({ vi: false, en: false, fr: false });
   const [storedTitle, setStoredTitle] = useState('');
 
@@ -33,7 +31,6 @@ export default function FilmEditor() {
     setStatus(null);
   }, [id, locale]);
 
-  const mediaKeys = useMemo(() => (confirmDelete ? store.mediaKeysFor('films', id) : []), [confirmDelete, id]);
 
   function set(field: string, value: unknown) {
     setDraft((current) => (current ? { ...current, [field]: value } : current));
@@ -85,7 +82,6 @@ export default function FilmEditor() {
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <LocaleTabs value={locale} onChange={setLocale} present={present} />
-          <button type="button" className="btn danger" onClick={() => setConfirmDelete(true)}>Xóa phim</button>
         </div>
       </div>
 
@@ -187,17 +183,6 @@ export default function FilmEditor() {
         </>
       )}
 
-      <DeleteDialog
-        open={confirmDelete}
-        title={draft?.title || id}
-        slug={id}
-        locales={3}
-        mediaKeys={mediaKeys}
-        onCancel={() => setConfirmDelete(false)}
-        onConfirm={() => {
-          void store.deleteEverywhere('films', id).then(() => navigate('/films'));
-        }}
-      />
     </>
   );
 }

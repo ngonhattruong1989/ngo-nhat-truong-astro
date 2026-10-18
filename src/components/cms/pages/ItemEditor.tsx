@@ -5,7 +5,6 @@ import RichText from '../RichText';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
 import PreviewPane from '../PreviewPane';
-import DeleteDialog from '../DeleteDialog';
 import SaveBar from '../SaveBar';
 import { upload, store, openPreview, type Dict, type Locale } from '../../../lib/cms/client';
 import { createEmptyItem } from '../../../lib/cms/content-model.mjs';
@@ -21,7 +20,6 @@ export default function ItemEditor() {
   const [draft, setDraft] = useState<Dict | null>(null);
   const [status, setStatus] = useState<Status>(null);
   const [savedAt, setSavedAt] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [present, setPresent] = useState<Record<Locale, boolean>>({ vi: false, en: false, fr: false });
   const [storedTitle, setStoredTitle] = useState('');
   const meta = SECTION_META[section];
@@ -37,7 +35,6 @@ export default function ItemEditor() {
     setStatus(null);
   }, [section, id, locale]);
 
-  const mediaKeys = useMemo(() => (confirmDelete ? store.mediaKeysFor(section, id) : []), [confirmDelete, section, id]);
 
   if (!meta || meta.kind !== 'items') {
     return <section className="card">Trang không tồn tại. <Link to="/">Về tổng quan</Link></section>;
@@ -91,7 +88,6 @@ export default function ItemEditor() {
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <LocaleTabs value={locale} onChange={setLocale} present={present} />
-          <button type="button" className="btn danger" onClick={() => setConfirmDelete(true)}>Xóa mục</button>
         </div>
       </div>
 
@@ -166,17 +162,6 @@ export default function ItemEditor() {
         </>
       )}
 
-      <DeleteDialog
-        open={confirmDelete}
-        title={draft?.title || id}
-        slug={id}
-        locales={3}
-        mediaKeys={mediaKeys}
-        onCancel={() => setConfirmDelete(false)}
-        onConfirm={() => {
-          void store.deleteEverywhere(section, id).then(() => navigate(`/${section}`));
-        }}
-      />
     </>
   );
 }

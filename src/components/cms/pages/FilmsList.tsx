@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LocaleTabs from '../LocaleTabs';
+import DeleteTileButton from '../DeleteTileButton';
 import { previewSrc, store, type Locale } from '../../../lib/cms/client';
 
 export default function FilmsList() {
@@ -55,6 +56,7 @@ export default function FilmsList() {
               <div className="tile-tools">
                 <button type="button" title="Lên" onClick={() => { void store.moveItem('films', locale, id, 'up').then(() => force((n) => n + 1)); }}>↑</button>
                 <button type="button" title="Xuống" onClick={() => { void store.moveItem('films', locale, id, 'down').then(() => force((n) => n + 1)); }}>↓</button>
+                <DeleteTileButton section="films" id={id} title={item?.title || id} onDeleted={() => force((n) => n + 1)} />
               </div>
             </div>
           );
