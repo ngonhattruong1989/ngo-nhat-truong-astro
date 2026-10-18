@@ -5,6 +5,7 @@ import { upsertItem, removeItem, removeEverywhere } from '../../../../../lib/cms
 import { sanitizeHtml } from '../../../../../lib/cms/sanitize.mjs';
 import { verifySession } from '../../../../../lib/cms/auth.mjs';
 import { deletePrefix, prefixForItem } from '../../../../../lib/cms/r2.mjs';
+import { syncItemMedia } from '../../../../../lib/cms/media-sync.mjs';
 
 export const prerender = false;
 
@@ -35,7 +36,9 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   if (!env?.DB) return json({ error: 'Content database is not configured.' }, 503);
 
   const item = { ...clean(body.item), id };
-  const next = upsertItem(current, locale, item, { append: body.append !== false });
+  const upserted = upsertItem(current, locale, item, { append: body.append !== false });
+  // Ảnh/video dùng chung 3 ngôn ngữ; chữ giữ riêng từng ngôn ngữ.
+  const next = syncItemMedia(upserted, locale, item);
   const result = await saveSectionData(section, next, env.DB);
   if (!result.valid) return json({ error: result.error }, 400);
   return json({ success: true, item });

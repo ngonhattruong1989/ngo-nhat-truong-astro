@@ -45,8 +45,8 @@ export default function FilmEditor() {
   const pendingSlug = draft && titleChanged ? store.slugFor('films', draft.title || '', id) : id;
 
   function createTranslation() {
-    const base = store.item('films', id, 'vi') || store.item('films', id, 'en');
-    setDraft(createEmptyFilm(id, base?.title || ''));
+    // Ảnh dùng chung, chữ để trống để tự nhập.
+    setDraft({ ...createEmptyFilm(id, ''), ...store.sharedMedia('films', id) });
   }
 
   async function save() {
@@ -88,7 +88,7 @@ export default function FilmEditor() {
       {!draft ? (
         <section className="card">
           <h3 style={{ marginTop: 0 }}>Bản dịch này chưa có</h3>
-          <p className="subtle">Phim <strong>{id}</strong> chưa có nội dung ở {locale.toUpperCase()}. Tạo bản trống rồi nhập lại — không tự copy từ ngôn ngữ khác.</p>
+          <p className="subtle">Phim <strong>{id}</strong> chưa có nội dung ở {locale.toUpperCase()}. Ảnh dùng chung với ngôn ngữ khác, chỉ phần chữ là bạn tự nhập.</p>
           <div style={{ display: 'flex', gap: 8 }}>
             <button type="button" className="btn" onClick={createTranslation}>Tạo bản dịch trống</button>
             <button type="button" className="btn ghost" onClick={() => navigate('/films')}>Quay lại danh sách</button>

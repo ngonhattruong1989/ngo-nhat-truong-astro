@@ -3,6 +3,7 @@ import {
   sectionIds, itemsFor, upsertItem, removeItem, removeEverywhere, reorderItem,
   createEmptyFilm, createEmptyItem,
 } from '../../lib/cms/content-model.mjs';
+import { ITEM_MEDIA_FIELDS } from '../../lib/cms/media-sync.mjs';
 
 export type Locale = 'vi' | 'en' | 'fr';
 export type Dict = Record<string, any>;
@@ -16,6 +17,11 @@ export type CmsBootstrap = {
 };
 
 let db: CmsBootstrap = { sections: {}, updatedAt: {}, mediaBase: '' };
+
+export function isBlank(value: unknown): boolean {
+  return value === undefined || value === null || value === ''
+    || (Array.isArray(value) && value.length === 0);
+}
 
 export function hydrate(initial: CmsBootstrap) {
   db = initial;
@@ -64,7 +70,30 @@ export const store = {
       itemsFor(db.sections[section], locale).some((item: Dict) => item.id === id)) as Locale[];
   },
   item(section: string, id: string, locale: Locale): Dict | undefined {
-    return itemsFor(db.sections[section], locale).find((item: Dict) => item.id === id);
+    const direct = itemsFor(db.sections[section], locale).find((item: Dict) => item.id === id);
+    if (!direct) return undefined;
+    // Ảnh/video dùng chung: nếu bản dịch này chưa có ảnh thì lấy từ ngôn ngữ khác.
+    const merged: Dict = { ...direct };
+    const copies = (LOCALES as Locale[])
+      .map((code) => itemsFor(db.sections[section], code).find((entry: Dict) => entry.id === id))
+      .filter(Boolean) as Dict[];
+    for (const field of ITEM_MEDIA_FIELDS) {
+      if (!isBlank(merged[field])) continue;
+      const source = copies.find((copy) => !isBlank(copy[field]));
+      if (source) merged[field] = source[field];
+    }
+    return merged;
+  },
+  sharedMedia(section: string, id: string): Dict {
+    const shared: Dict = {};
+    for (const code of LOCALES as Locale[]) {
+      const copy = itemsFor(db.sections[section], code).find((entry: Dict) => entry.id === id);
+      if (!copy) continue;
+      for (const field of ITEM_MEDIA_FIELDS) {
+        if (isBlank(shared[field]) && !isBlank(copy[field])) shared[field] = copy[field];
+      }
+    }
+    return shared;
   },
   slugFor(section: string, title: string, currentId?: string): string {
     const base = slugify(title);
@@ -92,6 +121,7 @@ export const store = {
       body: JSON.stringify({ locale, item }),
     });
     db.sections[section] = upsertItem(db.sections[section], locale, item);
+    await refreshSection(section);
     db.updatedAt[section] = new Date().toISOString();
   },
   async renameItem(section: string, oldId: string, newId: string, locale: Locale, item: Dict) {
@@ -125,13 +155,13 @@ export const store = {
   async createFilm(id: string, title = '') {
     const safeId = assertId(id);
     for (const locale of LOCALES as Locale[]) {
-      await store.saveItem('films', locale, createEmptyFilm(safeId, title));
+      await store.saveItem('films', locale, createEmptyFilm(safeId, locale === 'vi' ? title : ''));
     }
   },
   async createItem(section: string, id: string, title = '') {
     const safeId = assertId(id);
     for (const locale of LOCALES as Locale[]) {
-      await store.saveItem(section, locale, createEmptyItem(safeId, title));
+      await store.saveItem(section, locale, createEmptyItem(safeId, locale === 'vi' ? title : ''));
     }
   },
   newId(section: string, title: string): string {

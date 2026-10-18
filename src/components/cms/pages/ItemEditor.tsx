@@ -94,8 +94,8 @@ export default function ItemEditor() {
       {!draft ? (
         <section className="card">
           <h3 style={{ marginTop: 0 }}>Bản dịch này chưa có</h3>
-          <p className="subtle">Mục <strong>{id}</strong> chưa có nội dung ở {locale.toUpperCase()}. Nội dung phải do bạn nhập lại.</p>
-          <button type="button" className="btn" onClick={() => setDraft(createEmptyItem(id, ''))}>Tạo bản dịch trống</button>
+          <p className="subtle">Mục <strong>{id}</strong> chưa có nội dung ở {locale.toUpperCase()}. Ảnh dùng chung với ngôn ngữ khác, chỉ phần chữ là bạn tự nhập.</p>
+          <button type="button" className="btn" onClick={() => setDraft({ ...createEmptyItem(id, ''), ...store.sharedMedia(section, id) })}>Tạo bản dịch trống</button>
         </section>
       ) : (
         <>

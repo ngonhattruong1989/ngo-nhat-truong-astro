@@ -68,6 +68,7 @@ npx wrangler secret put AUTH_SECRET
 - Pasting an R2/public URL into any image field is supported, including legacy `/uploads/…` paths.
 - Renaming the title changes the slug only when **Lưu** is pressed; the item id, the three locale copies and the R2 folder are all moved (`copyPrefix` → `deletePrefix`).
 - Deleting a block removes it from all three locales and deletes its R2 folder. Invariant: what the CMS does not reference should not stay in R2.
+- Images/video are shared across the three locales: saving media in one language copies it to the other two (`src/lib/cms/media-sync.mjs`), while text stays per-locale and empty for translations you have not written yet. `scripts/sync-media-d1.mjs --local|--remote` backfills existing rows.
 - Limits: images 15 MB, video 60 MB (Worker memory cap). Sanitizer keeps `<video>` and YouTube `<iframe>` only.
 - `PUBLIC_MEDIA_BASE_URL` (default `https://public.ngonhattruong.com`) is the public R2 domain used for previews; `/media/<key>` remains the Worker fallback in local dev.
 

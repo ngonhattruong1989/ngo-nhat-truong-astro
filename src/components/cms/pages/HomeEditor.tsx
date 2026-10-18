@@ -18,7 +18,21 @@ export default function HomeEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setData(store.get('home'));
+    const loaded = store.get('home');
+    if (!loaded) { setData(loaded); return; }
+    // Ảnh dùng chung: ô nào trống thì lấy từ ngôn ngữ khác.
+    const codes: Locale[] = ['vi', 'en', 'fr'];
+    for (const field of ['logo', 'heroImages'] as const) {
+      const source = codes.map((code) => loaded[code]?.[field]).find((value) => (Array.isArray(value) ? value.length : Boolean(value)));
+      if (!source) continue;
+      for (const code of codes) {
+        const value = loaded[code]?.[field];
+        if (Array.isArray(value) ? value.length === 0 : !value) {
+          if (loaded[code]) loaded[code] = { ...loaded[code], [field]: source };
+        }
+      }
+    }
+    setData(loaded);
     setStatus(null);
   }, []);
 
@@ -31,7 +45,22 @@ export default function HomeEditor() {
   ) as Record<Locale, boolean>;
 
   function update(patch: Record<string, unknown>) {
-    setData((current) => (current ? { ...current, [locale]: { ...current[locale], ...patch } } : current));
+    setData((current) => {
+      if (!current) return current;
+      const next = { ...current, [locale]: { ...current[locale], ...patch } };
+      // Ảnh dùng chung 3 ngôn ngữ; chữ thì mỗi ngôn ngữ tự nhập.
+      if ('logo' in patch || 'heroImages' in patch) {
+        for (const code of ['vi', 'en', 'fr'] as Locale[]) {
+          if (code === locale || !next[code]) continue;
+          next[code] = {
+            ...next[code],
+            ...('logo' in patch ? { logo: patch.logo } : {}),
+            ...('heroImages' in patch ? { heroImages: patch.heroImages } : {}),
+          };
+        }
+      }
+      return next;
+    });
   }
 
   async function save() {
