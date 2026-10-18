@@ -841,6 +841,7 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 }
 
 /* === PAINTING LIGHTBOX === */
+/* Mặc định ẩn: JS bật bằng inline style display:flex khi mở tranh. */
 .painting-lightbox {
     position: fixed;
     top: 0;
@@ -849,7 +850,7 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
     height: 100%;
     background: rgba(0, 0, 0, 0.92);
     z-index: 3000;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease;
