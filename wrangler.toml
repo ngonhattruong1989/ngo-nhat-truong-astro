@@ -4,6 +4,9 @@ account_id = "7f3ac865c1b6f8baf7bd7a10795077b9"
 compatibility_date = "2026-10-17"
 compatibility_flags = ["nodejs_compat"]
 
+[vars]
+ADMIN_USERNAME = "ngonhattruong"
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
