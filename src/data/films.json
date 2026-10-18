@@ -35,7 +35,8 @@
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       },
       {
         "id": "hai-chu-chau",
@@ -61,7 +62,8 @@
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       },
       {
         "id": "ba-oi-dung-noi-doi",
@@ -76,7 +78,8 @@
         "crew": "<p>Cast: Ngô Nhật Trường, Cô Nhum, Vũ Nguyễn Uy Nhân</p><p>Director and Screenwriter: Phạm Hữu Trí</p><p>Director's Consultant: NSND. Đào Bá Sơn</p><p>Producer: Thục Mai</p><p>Co-Producer: Thảo Quiêng</p><p>Project Manager: Phạm Văn Nam</p><p>Cinematographer: Nguyễn Tùng Lâm</p><p>Production Designer: Dzuy Tom</p><p>Art Director: Hoàng Bảo Uyên</p><p>First Assistant Director: Lê Diễm Quỳnh</p><p>Second Assistant Director: Kon Lớn</p><p>Script Supervisor: Hồ Minh Khoa</p><p>Gaffer: Khoa Too</p><p>Assistant Camera: Đặng Xuân Hoàng, Nguyễn Kim Hậu</p><p>Focus Puller: Văn Ngọc Thành</p><p>Best boy: Nguyễn Trung Hiếu, Gia Bảo, Mai Ngọc Hiền</p><p>Assistant Production Design: Ruby</p><p>Set Design and Set Decorator: Nicholas Nguyễn, Kaii Khải Hân, HaiBkk</p><p>Wardrobe: Minh Thảo</p><p>Make-up Artist: Bia Huyền</p><p>Sound Recordist: Crister Nguyên</p><p>Storyboard Artist: Phạm Hữu Trí</p><p>Production Assistant: Khương Ngọc, Vương Linh</p><p>Post-Producer: Thục Mai, Thảo Quiêng</p><p>Post-Production Supervisor: Văn Ngọc Thành</p><p>Editor: Phạm Hữu Trí</p><p>Colorist: Nguyễn Tùng Lâm</p><p>Music Composer: Huy Đẹp Trai</p><p>Sound Design and Mastering: [Đang cập nhật]</p>",
         "bts": [
           "https://assets.phamhuutri.com/assets/short-films/BODND/BTS/BODND-BTS-1.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       }
     ]
   },
@@ -116,7 +119,8 @@
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       },
       {
         "id": "hai-chu-chau",
@@ -142,7 +146,8 @@
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       }
     ]
   },
@@ -182,7 +187,8 @@
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-3.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-4.jpeg",
           "/films/phuc-sinh/BTS/phuc-sinh-BTS-5.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       },
       {
         "id": "hai-chu-chau",
@@ -208,7 +214,8 @@
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-10.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-11.jpeg",
           "/films/hai-chu-chau/BTS/hai-chu-chau-BTS-12.jpeg"
-        ]
+        ],
+        "videoUrl": ""
       }
     ]
   }

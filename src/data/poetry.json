@@ -10,7 +10,8 @@
         "thumbnail": "",
         "date": "29/01/2026",
         "excerpt": "Chỉ cần một hơi thở nhẹ, là bao phép lạ hiển bày...",
-        "content": "Châu báu chất đầy thế giới\nTôi đem tặng bạn sáng nay\nMột vốc kim cương sáng chói\nLong lanh suốt cả đêm ngày."
+        "content": "Châu báu chất đầy thế giới\nTôi đem tặng bạn sáng nay\nMột vốc kim cương sáng chói\nLong lanh suốt cả đêm ngày.",
+        "html": "<p>Châu báu chất đầy thế giới<br>Tôi đem tặng bạn sáng nay<br>Một vốc kim cương sáng chói<br>Long lanh suốt cả đêm ngày.</p>"
       },
       {
         "id": "nhanh-cay-truoc-san",
@@ -18,7 +19,8 @@
         "thumbnail": "",
         "date": "20/01/2026",
         "excerpt": "Lặng yên nhìn nhành cây lớn lên trong nắng sớm...",
-        "content": "Sáng nay cây dậy sớm\nĐón nắng vàng trên cao\nLòng ta cũng xôn xao\nMột niềm vui nho nhỏ."
+        "content": "Sáng nay cây dậy sớm\nĐón nắng vàng trên cao\nLòng ta cũng xôn xao\nMột niềm vui nho nhỏ.",
+        "html": "<p>Sáng nay cây dậy sớm<br>Đón nắng vàng trên cao<br>Lòng ta cũng xôn xao<br>Một niềm vui nho nhỏ.</p>"
       }
     ]
   },
@@ -33,7 +35,8 @@
         "thumbnail": "",
         "date": "29/01/2026",
         "excerpt": "Just a gentle breath, and miracles are revealed...",
-        "content": "Treasures fill the world so wide\nI gift to you this morning tide\nA handful of diamonds bright\nSparkling through the day and night."
+        "content": "Treasures fill the world so wide\nI gift to you this morning tide\nA handful of diamonds bright\nSparkling through the day and night.",
+        "html": "<p>Treasures fill the world so wide<br>I gift to you this morning tide<br>A handful of diamonds bright<br>Sparkling through the day and night.</p>"
       },
       {
         "id": "nhanh-cay-truoc-san",
@@ -41,7 +44,8 @@
         "thumbnail": "",
         "date": "20/01/2026",
         "excerpt": "Quietly watching the branch grow in the early sunlight...",
-        "content": "This morning the tree woke early\nTo catch the golden sun so high\nMy heart also stirs softly\nA small joy passing by."
+        "content": "This morning the tree woke early\nTo catch the golden sun so high\nMy heart also stirs softly\nA small joy passing by.",
+        "html": "<p>This morning the tree woke early<br>To catch the golden sun so high<br>My heart also stirs softly<br>A small joy passing by.</p>"
       }
     ]
   },
@@ -56,7 +60,8 @@
         "thumbnail": "",
         "date": "29/01/2026",
         "excerpt": "Juste un souffle doux, et les miracles se révèlent...",
-        "content": "Des trésors remplissent le monde\nJe te les offre ce matin\nUne poignée de diamants brillants\nÉtincelants nuit et jour."
+        "content": "Des trésors remplissent le monde\nJe te les offre ce matin\nUne poignée de diamants brillants\nÉtincelants nuit et jour.",
+        "html": "<p>Des trésors remplissent le monde<br>Je te les offre ce matin<br>Une poignée de diamants brillants<br>Étincelants nuit et jour.</p>"
       },
       {
         "id": "nhanh-cay-truoc-san",
@@ -64,7 +69,8 @@
         "thumbnail": "",
         "date": "20/01/2026",
         "excerpt": "Regarder tranquillement la branche grandir sous le soleil matinal...",
-        "content": "Ce matin l'arbre s'est levé tôt\nPour attraper le soleil d'or\nMon cœur s'émeut aussi\nUne petite joie en douceur."
+        "content": "Ce matin l'arbre s'est levé tôt\nPour attraper le soleil d'or\nMon cœur s'émeut aussi\nUne petite joie en douceur.",
+        "html": "<p>Ce matin l'arbre s'est levé tôt<br>Pour attraper le soleil d'or<br>Mon cœur s'émeut aussi<br>Une petite joie en douceur.</p>"
       }
     ]
   }

@@ -1,0 +1,9 @@
+---
+import CmsLayout from '../../layouts/CmsLayout.astro';
+import App from '../../components/cms/App';
+
+export const prerender = false;
+---
+<CmsLayout title="Quản trị nội dung">
+  <App client:only="react" />
+</CmsLayout>

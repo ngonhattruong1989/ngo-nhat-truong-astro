@@ -10,7 +10,8 @@
         "thumbnail": "",
         "date": "Cập nhật: 01/2026",
         "excerpt": "Những bản piano nhẹ nhàng hòa cùng tiếng mưa.",
-        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Tiếng mưa đêm (Improvisation)\n\n(Bấm vào đây để nghe thử)"
+        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Tiếng mưa đêm (Improvisation)\n\n(Bấm vào đây để nghe thử)",
+        "html": "<p>1. Raindrop (Chopin)<br>2. Kiss the Rain (Yiruma)<br>3. Tiếng mưa đêm (Improvisation)</p><p>(Bấm vào đây để nghe thử)</p>"
       },
       {
         "id": "thien-ca-hoi-tho",
@@ -18,7 +19,8 @@
         "thumbnail": "",
         "date": "2025",
         "excerpt": "Âm nhạc hỗ trợ thiền định và thư giãn sâu.",
-        "content": "Hít vào tâm tĩnh lặng.\nThở ra miệng mỉm cười.\nAn trú trong hiện tại.\nGiờ phút đẹp tuyệt vời."
+        "content": "Hít vào tâm tĩnh lặng.\nThở ra miệng mỉm cười.\nAn trú trong hiện tại.\nGiờ phút đẹp tuyệt vời.",
+        "html": "<p>Hít vào tâm tĩnh lặng.<br>Thở ra miệng mỉm cười.<br>An trú trong hiện tại.<br>Giờ phút đẹp tuyệt vời.</p>"
       }
     ]
   },
@@ -33,7 +35,8 @@
         "thumbnail": "",
         "date": "Updated: 01/2026",
         "excerpt": "Gentle piano pieces blending with the sound of rain.",
-        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Night Rain (Improvisation)\n\n(Click here to listen)"
+        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Night Rain (Improvisation)\n\n(Click here to listen)",
+        "html": "<p>1. Raindrop (Chopin)<br>2. Kiss the Rain (Yiruma)<br>3. Night Rain (Improvisation)</p><p>(Click here to listen)</p>"
       },
       {
         "id": "thien-ca-hoi-tho",
@@ -41,7 +44,8 @@
         "thumbnail": "",
         "date": "2025",
         "excerpt": "Music supporting meditation and deep relaxation.",
-        "content": "Breathing in, I calm body and mind.\nBreathing out, I smile.\nDwelling in the present moment.\nI know this is a wonderful moment."
+        "content": "Breathing in, I calm body and mind.\nBreathing out, I smile.\nDwelling in the present moment.\nI know this is a wonderful moment.",
+        "html": "<p>Breathing in, I calm body and mind.<br>Breathing out, I smile.<br>Dwelling in the present moment.<br>I know this is a wonderful moment.</p>"
       }
     ]
   },
@@ -56,7 +60,8 @@
         "thumbnail": "",
         "date": "Mis à jour : 01/2026",
         "excerpt": "Morceaux de piano doux se mêlant au bruit de la pluie.",
-        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Pluie nocturne (Improvisation)\n\n(Cliquez ici pour écouter)"
+        "content": "1. Raindrop (Chopin)\n2. Kiss the Rain (Yiruma)\n3. Pluie nocturne (Improvisation)\n\n(Cliquez ici pour écouter)",
+        "html": "<p>1. Raindrop (Chopin)<br>2. Kiss the Rain (Yiruma)<br>3. Pluie nocturne (Improvisation)</p><p>(Cliquez ici pour écouter)</p>"
       },
       {
         "id": "thien-ca-hoi-tho",
@@ -64,7 +69,8 @@
         "thumbnail": "",
         "date": "2025",
         "excerpt": "Musique pour la méditation et la relaxation profonde.",
-        "content": "J'inspire et je calme mon corps.\nJ'expire et je souris.\nDemeurant dans le moment présent.\nJe sais que c'est un moment merveilleux."
+        "content": "J'inspire et je calme mon corps.\nJ'expire et je souris.\nDemeurant dans le moment présent.\nJe sais que c'est un moment merveilleux.",
+        "html": "<p>J'inspire et je calme mon corps.<br>J'expire et je souris.<br>Demeurant dans le moment présent.<br>Je sais que c'est un moment merveilleux.</p>"
       }
     ]
   }

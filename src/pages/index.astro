@@ -124,6 +124,7 @@ const allSectionData = {
     </script>
 
     <script>
+        import { bodyHtml, filmVideoHTML } from '../lib/render.mjs';
         // --- 1. GLOBAL STATE ---
         let currentLang = 'vi';
         let currentSectionId = 'home';
@@ -277,6 +278,16 @@ const allSectionData = {
             const data = fullData[currentLang];
             if (!data) return;
 
+            // Trang canvas (Về tôi, Liên hệ): nội dung là một khối HTML tự do.
+            if (typeof data.html === 'string') {
+                dynamicDisplay.innerHTML = `
+                    <div class="dynamic-content fade-in">
+                        <h2>${data.title || ''}</h2>
+                        <div class="rich">${data.html}</div>
+                    </div>`;
+                return;
+            }
+
             // CASE A: GRID LAYOUT
             if (data.layout === 'grid') {
                 const isFilmSection = currentSectionId === 'films';
@@ -415,7 +426,7 @@ const allSectionData = {
                                 ${headerHTML}
                                 <div class="item-body">
                                     ${item.excerpt ? `<p><strong>${item.excerpt}</strong></p>` : ''}
-                                    ${item.content ? `<div style="white-space: pre-line; margin-top:10px;">${item.content}</div>` : ''}
+                                    ${bodyHtml(item)}
                                 </div>
                             </div>
                         `;
@@ -482,11 +493,7 @@ const allSectionData = {
                         ${durationHTML}
                     </div>
 
-                    <div class="video-wrapper-limit">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/${film.youtubeId}" frameborder="0" allowfullscreen></iframe>
-                        </div>
-                    </div>
+                    ${filmVideoHTML(film) ? `<div class="video-wrapper-limit"><div class="video-container">${filmVideoHTML(film)}</div></div>` : ''}
 
                     ${posterHTML}
                     ${stillsHTML}
@@ -543,7 +550,7 @@ const allSectionData = {
                     ${item.date ? `<div class="film-meta"><span class="meta-line">${item.date}</span></div>` : ''}
                     ${thumbnailHTML}
                     ${item.excerpt ? `<p style="font-style: italic; margin-bottom: 20px; color: #555;">${item.excerpt}</p>` : ''}
-                    ${item.content ? `<div style="white-space: pre-line; line-height: 1.8; font-size: 15px;">${item.content}</div>` : ''}
+                    ${bodyHtml(item)}
                     <div style="height:50px"></div>
                 </div>
             `;

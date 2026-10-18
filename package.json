@@ -14,9 +14,28 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.4.0",
-    "astro": "^7.4.0"
+    "@astrojs/react": "^7.1.0",
+    "@tiptap/core": "^2.27.3",
+    "@tiptap/extension-heading": "^2.27.3",
+    "@tiptap/extension-image": "^2.27.3",
+    "@tiptap/extension-link": "^2.27.3",
+    "@tiptap/extension-paragraph": "^2.27.3",
+    "@tiptap/extension-placeholder": "^2.27.3",
+    "@tiptap/extension-text-align": "^2.27.3",
+    "@tiptap/extension-text-style": "^2.27.3",
+    "@tiptap/extension-underline": "^2.27.3",
+    "@tiptap/pm": "^2.27.3",
+    "@tiptap/react": "^2.27.3",
+    "@tiptap/starter-kit": "^2.27.3",
+    "astro": "^7.4.0",
+    "oxc-transform-react": "^0.145.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.6"
   },
   "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
     "wrangler": "^4.151.1"
   }
 }

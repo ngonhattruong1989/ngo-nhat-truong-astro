@@ -14,7 +14,8 @@
         "excerpt": "",
         "content": "@malaline"
       }
-    ]
+    ],
+    "html": "<p>Điện thoại: <a href=\"tel:+84949452277\" class=\"contact-link\">+84 (0) 949 452 277</a>\nEmail: <a href=\"mailto:kejazz1989@gmail.com\" class=\"contact-link\">kejazz1989@gmail.com</a>\nFacebook: <a href=\"https://www.facebook.com/kejazz1989\" target=\"_blank\" class=\"contact-link\">Ngô Nhật Trường</a></p><h3>instagram</h3><p>@malaline</p>"
   },
   "en": {
     "title": "contact",
@@ -25,7 +26,8 @@
         "excerpt": "",
         "content": "Phone: <a href=\"tel:+84949452277\" class=\"contact-link\">+84 (0) 949 452 277</a>\nEmail: <a href=\"mailto:kejazz1989@gmail.com\" class=\"contact-link\">kejazz1989@gmail.com</a>\nFacebook: <a href=\"https://www.facebook.com/kejazz1989\" target=\"_blank\" class=\"contact-link\">Ngô Nhật Trường</a>"
       }
-    ]
+    ],
+    "html": "<p>Phone: <a href=\"tel:+84949452277\" class=\"contact-link\">+84 (0) 949 452 277</a>\nEmail: <a href=\"mailto:kejazz1989@gmail.com\" class=\"contact-link\">kejazz1989@gmail.com</a>\nFacebook: <a href=\"https://www.facebook.com/kejazz1989\" target=\"_blank\" class=\"contact-link\">Ngô Nhật Trường</a></p>"
   },
   "fr": {
     "title": "contact",
@@ -36,6 +38,7 @@
         "excerpt": "",
         "content": "Téléphone: <a href=\"tel:+84949452277\" class=\"contact-link\">+84 (0) 949 452 277</a>\nEmail: <a href=\"mailto:kejazz1989@gmail.com\" class=\"contact-link\">kejazz1989@gmail.com</a>\nFacebook: <a href=\"https://www.facebook.com/kejazz1989\" target=\"_blank\" class=\"contact-link\">Ngô Nhật Trường</a>"
       }
-    ]
+    ],
+    "html": "<p>Téléphone: <a href=\"tel:+84949452277\" class=\"contact-link\">+84 (0) 949 452 277</a>\nEmail: <a href=\"mailto:kejazz1989@gmail.com\" class=\"contact-link\">kejazz1989@gmail.com</a>\nFacebook: <a href=\"https://www.facebook.com/kejazz1989\" target=\"_blank\" class=\"contact-link\">Ngô Nhật Trường</a></p>"
   }
 }
