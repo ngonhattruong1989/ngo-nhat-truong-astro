@@ -37,6 +37,11 @@ const allSectionData = {
 ---
 
 <BaseLayout>
+    <!-- Splash: logo lớn ở lần vào đầu, click để mờ dần và mở website -->
+    <div id="intro-screen">
+        <img src={homeLogo} alt="Ngô Nhật Trường Logo">
+    </div>
+
     <div class="wrapper">
         <!-- Header -->
         <header class="header">
@@ -141,6 +146,23 @@ const allSectionData = {
 
         // --- 3. INIT ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Splash chỉ hiện khi lần cuối xem cách đây hơn 30 phút; click để vào web.
+            const introScreen = document.getElementById('intro-screen');
+            if (introScreen) {
+                if (document.documentElement.classList.contains('skip-intro')) {
+                    introScreen.remove();
+                } else {
+                    const dismissIntro = () => {
+                        if (introScreen.classList.contains('hidden')) return;
+                        introScreen.classList.add('hidden');
+                        try { localStorage.setItem('nnt:splashAt', String(Date.now())); } catch (e) {}
+                        window.setTimeout(() => introScreen.remove(), 750);
+                    };
+                    introScreen.addEventListener('click', dismissIntro);
+                    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') dismissIntro(); });
+                }
+            }
+
             // Language switcher
             document.querySelectorAll('.lang-opt').forEach(btn => {
                 btn.addEventListener('click', function() {

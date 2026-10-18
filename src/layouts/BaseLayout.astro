@@ -14,6 +14,13 @@ const { title = "ngô nhật trường" } = Astro.props;
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <script is:inline>
+      // Splash chỉ hiện khi lần cuối xem cách đây hơn 30 phút (reload không hiện lại).
+      try {
+        var at = Number(localStorage.getItem('nnt:splashAt') || 0);
+        if (at && Date.now() - at < 30 * 60 * 1000) document.documentElement.classList.add('skip-intro');
+      } catch (e) {}
+    </script>
 </head>
 <body>
     <slot />
