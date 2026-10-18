@@ -265,6 +265,10 @@ body {
     opacity: 1;
 }
 
+html.skip-intro #intro-screen {
+    display: none;
+}
+
 #intro-screen.hidden {
     opacity: 0;
     visibility: hidden;

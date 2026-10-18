@@ -146,13 +146,20 @@ const allSectionData = {
 
         // --- 3. INIT ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Intro screen
+            // Splash: chỉ hiện ở lần vào đầu tiên của phiên, reload không hiện lại.
             const introScreen = document.getElementById('intro-screen');
             if (introScreen) {
-                introScreen.addEventListener('click', function() {
-                    this.classList.add('hidden');
-                    setTimeout(() => { this.remove(); }, 1000);
-                });
+                if (document.documentElement.classList.contains('skip-intro')) {
+                    introScreen.remove();
+                } else {
+                    const dismissIntro = () => {
+                        introScreen.classList.add('hidden');
+                        try { sessionStorage.setItem('nnt:splash', '1'); } catch (e) {}
+                        window.setTimeout(() => introScreen.remove(), 900);
+                    };
+                    introScreen.addEventListener('click', dismissIntro);
+                    window.setTimeout(dismissIntro, 1800);
+                }
             }
 
             // Language switcher
@@ -163,18 +170,15 @@ const allSectionData = {
                 });
             });
 
-            // Navigation
+            // Navigation (đổi URL thật, không dùng hash)
             document.querySelectorAll('.navigation a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    if (currentSectionId !== targetId || targetId === 'films') {
-                        currentFilmIndex = -1;
-                    }
-                    currentSectionId = targetId;
-                    switchSection(targetId);
+                    goToSection(this.getAttribute('href').substring(1));
                 });
             });
+
+            window.addEventListener('popstate', () => renderLocation(false));
 
             // Slider
             document.getElementById('slide-prev')?.addEventListener('click', () => changeSlide(-1));
@@ -183,9 +187,9 @@ const allSectionData = {
             // Lightbox
             document.getElementById('img-lightbox')?.addEventListener('click', closeLightbox);
 
-            // Init language & menu
+            // Init language rồi render theo URL hiện tại (giữ nguyên khi reload)
             switchLanguage(currentLang);
-            highlightMenu('home');
+            renderLocation(false);
         });
 
         // --- 4. SLIDER ---
@@ -275,6 +279,52 @@ const allSectionData = {
                     }
                 }
             }
+        }
+
+        // --- 6b. ROUTER (path thật: /about, /films/phuc-sinh) ---
+        function pathForSection(id) {
+            return id === 'home' ? '/' : `/${id}`;
+        }
+
+        function goToSection(id, push = true) {
+            currentSectionId = id;
+            currentFilmIndex = -1;
+            closeFilmDetail(false);
+            if (push) history.pushState({ section: id }, '', pathForSection(id));
+            switchSection(id);
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        function sectionFromPath(pathname) {
+            const parts = pathname.split('/').filter(Boolean);
+            return { section: parts[0] || 'home', itemId: parts[1] || '' };
+        }
+
+        function openItemById(section, itemId) {
+            const data = getSectionData(section);
+            const payload = data ? data[currentLang] : null;
+            const items = payload && Array.isArray(payload.items) ? payload.items : [];
+            const index = items.findIndex(item => item && item.id === itemId);
+            if (index < 0) return false;
+            if (section === 'films') openFilmDetail(index, false, false);
+            else if (section === 'paintings') openPaintingDetail(index);
+            else openGenericDetail(index, false, false);
+            return true;
+        }
+
+        function renderLocation() {
+            const { section, itemId } = sectionFromPath(location.pathname);
+            const known = section === 'home' || Boolean(getSectionData(section));
+            if (!known) {
+                history.replaceState({ section: 'home' }, '', '/');
+                switchSection('home');
+                return;
+            }
+            currentSectionId = section;
+            currentFilmIndex = -1;
+            closeFilmDetail(false);
+            switchSection(section);
+            if (itemId) openItemById(section, itemId);
         }
 
         // --- 7. RENDER DYNAMIC CONTENT ---
@@ -448,11 +498,12 @@ const allSectionData = {
         }
 
         // --- 8. FILM DETAIL ---
-        function openFilmDetail(index, doScroll = true) {
+        function openFilmDetail(index, doScroll = true, push = true) {
             if (!window.currentGridData || !window.currentGridData[index]) return;
 
             currentFilmIndex = index;
             const film = window.currentGridData[index];
+            if (push && film.id) history.pushState({ section: 'films', item: film.id }, '', `/films/${film.id}`);
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');
 
@@ -533,11 +584,12 @@ const allSectionData = {
         }
 
         // --- 8b. GENERIC DETAIL ---
-        function openGenericDetail(index, doScroll = true) {
+        function openGenericDetail(index, doScroll = true, push = true) {
             if (!window.currentGridData || !window.currentGridData[index]) return;
 
             currentFilmIndex = index;
             const item = window.currentGridData[index];
+            if (push && item.id) history.pushState({ section: currentSectionId, item: item.id }, '', `/${currentSectionId}/${item.id}`);
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');
 
@@ -675,7 +727,10 @@ const allSectionData = {
         });
 
         // --- 9. CLOSE FILM DETAIL ---
-        function closeFilmDetail() {
+        function closeFilmDetail(syncUrl = true) {
+            if (syncUrl && location.pathname.split('/').filter(Boolean).length > 1) {
+                history.pushState({ section: currentSectionId }, '', pathForSection(currentSectionId));
+            }
             currentFilmIndex = -1;
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');

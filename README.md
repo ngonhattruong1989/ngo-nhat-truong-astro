@@ -97,3 +97,9 @@ Every image field and every gallery thumbnail has a **Chỉnh sửa ảnh** acti
 - export caps the long edge at 2400px and **overwrites the same R2 object**, so the URL never changes; the first crop copies the untouched bytes to `.originals/<key>` and the editor offers «Đặt lại về ảnh gốc» to put them back;
 - every image on the site (films, uploads, home hero, logos) is served from R2 at `https://public.ngonhattruong.com/<key>`, so the crop overwrite is immediately visible without rebuilding anything;
 - the browser cannot read R2 pixels directly (no CORS), so the editor loads bytes through `GET /api/cms/image?url=…` (session-protected, private hosts blocked).
+
+## Routing & splash
+
+- The site is a single Astro entry (`src/pages/[...path].astro`) that renders section views on the client: `/`, `/about`, `/films`, `/films/<slug>`, `/poets/<id>`… Navigation uses `history.pushState`, so URLs are real and shareable.
+- Reloading keeps the current URL: `/films/phuc-sinh` reopens that film, `/about` reopens the canvas. `popstate` restores the previous view.
+- The logo splash (`#intro-screen`) shows once per browser session: an inline script in `BaseLayout.astro` adds `skip-intro` when `sessionStorage['nnt:splash']` is set, so reloads and later visits go straight to content. It dismisses itself after 1.8s or on click.
