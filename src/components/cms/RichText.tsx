@@ -107,6 +107,7 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
 
   return (
     <div>
+      <div className="rich-editor-top">
       <div className="toolbar">
         <div className="tb-group">
           <button type="button" className="tb" title="Hoàn tác (Cmd/Ctrl+Z)" onClick={() => chain().undo().run()} disabled={!editor.can().undo()}>↶</button>
@@ -224,6 +225,7 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
         ) : (
           <span className="image-tools-hint">Bấm vào một ảnh trong canvas để chỉnh khung hiển thị (rộng bao nhiêu % và canh lề).</span>
         )}
+      </div>
       </div>
 
       <EditorContent editor={editor} />

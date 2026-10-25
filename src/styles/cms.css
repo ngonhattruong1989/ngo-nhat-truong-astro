@@ -160,10 +160,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .locale-tab .dot.missing { background: #c9cec9; }
 
 /* Toolbar + ProseMirror */
+.rich-editor-top { position: sticky; top: 0; z-index: 6; }
 .toolbar {
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
   padding: 7px 9px; border: 1px solid #dce2dc; border-bottom: 0;
-  border-radius: 8px 8px 0 0; background: #fafbfa; position: sticky; top: 0; z-index: 5;
+  border-radius: 8px 8px 0 0; background: #fafbfa;
 }
 .tb-group { display: inline-flex; gap: 2px; align-items: center; padding-right: 6px; margin-right: 4px; border-right: 1px solid #e3e8e3; }
 .tb {
