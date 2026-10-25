@@ -974,7 +974,10 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
     padding: 24px 32px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* safe center: nội dung ngắn thì canh giữa, dài thì bắt đầu từ trên cùng.
+       Thiếu `safe` thì flexbox cắt mất phần đầu (title) và không cuộn ngược lên được. */
+    justify-content: flex-start;
+    justify-content: safe center;
     min-width: 0;
 }
 
