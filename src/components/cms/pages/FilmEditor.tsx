@@ -4,9 +4,9 @@ import LocaleTabs from '../LocaleTabs';
 import RichText from '../RichText';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
-import PreviewPane from '../PreviewPane';
+import PreviewFrame, { ViewTabs } from '../PreviewFrame';
 import SaveBar from '../SaveBar';
-import { upload, store, openPreview, type Dict, type Locale } from '../../../lib/cms/client';
+import { upload, store, type Dict, type Locale } from '../../../lib/cms/client';
 import { createEmptyFilm } from '../../../lib/cms/content-model.mjs';
 import { youtubeId } from '../../../lib/cms/youtube.mjs';
 
@@ -21,6 +21,7 @@ export default function FilmEditor() {
   const [savedAt, setSavedAt] = useState('');
   const [present, setPresent] = useState<Record<Locale, boolean>>({ vi: false, en: false, fr: false });
   const [storedTitle, setStoredTitle] = useState('');
+  const [view, setView] = useState<'edit' | 'preview'>('edit');
 
   useEffect(() => {
     const item = store.item('films', id, locale);
@@ -65,7 +66,7 @@ export default function FilmEditor() {
       const locales = store.localesFor('films', id);
       setPresent({ vi: locales.includes('vi'), en: locales.includes('en'), fr: locales.includes('fr') });
       setSavedAt(new Date().toISOString());
-      setStatus({ kind: 'ok', message: 'Đã lưu vào D1 (mock). Website cập nhật ngay.' });
+      setStatus({ kind: 'ok', message: 'Đã lưu vào D1. Website cập nhật ngay.' });
       window.setTimeout(() => setStatus(null), 3500);
     } catch (error: any) {
       setStatus({ kind: 'error', message: error?.message || 'Lưu thất bại.' });
@@ -82,6 +83,7 @@ export default function FilmEditor() {
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <LocaleTabs value={locale} onChange={setLocale} present={present} />
+          <ViewTabs value={view} onChange={setView} />
         </div>
       </div>
 
@@ -96,7 +98,10 @@ export default function FilmEditor() {
         </section>
       ) : (
         <>
-          <div className="editor-grid">
+          {view === 'preview' ? (
+            <PreviewFrame section="films" id={id} locale={locale} payload={{ title: draft.title || '', items: [draft] }} />
+          ) : (
+          <div className="editor-grid single">
             <div>
               <section className="card">
                 <h3 className="card-title">1. Thông tin phim</h3>
@@ -161,24 +166,15 @@ export default function FilmEditor() {
                 />
               </section>
             </div>
-
-            <PreviewPane
-              title={draft.title || ''}
-              meta={[draft.genre, draft.year, draft.duration].filter(Boolean).join(' · ')}
-              html={draft.crew || ''}
-              cover={draft.poster || draft.thumbnail}
-              isFilm
-              videoUrl={draft.videoUrl}
-              youtubeId={draft.youtubeId}
-            />
           </div>
+          )}
 
           <SaveBar
             savedAt={savedAt}
             status={status}
             onSave={save}
-            liveHref="/#films"
-            extra={<><button type="button" className="btn ghost" onClick={() => draft && openPreview('films', id, locale, draft)}>Preview thật ↗</button><button type="button" className="btn ghost" onClick={() => navigate('/films')}>← Danh sách</button></>}
+            liveHref={`/films/${id}`}
+            extra={<button type="button" className="btn ghost" onClick={() => navigate('/films')}>← Danh sách</button>}
           />
         </>
       )}

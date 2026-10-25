@@ -40,45 +40,48 @@ export function clampRect(rect, width, height) {
 }
 
 // Kéo một góc; giữ góc đối diện cố định và giữ tỉ lệ nếu ratio > 0.
+// Vùng chọn không bao giờ được vượt ra ngoài ảnh: chỉ thu nhỏ được, không nới rộng
+// quá kích thước thật của ảnh (width × height tính theo pixel gốc).
 export function resizeRect(start, handle, dx, dy, width, height, ratio) {
-  const left = start.x;
-  const top = start.y;
-  const right = start.x + start.w;
-  const bottom = start.y + start.h;
+  const west = handle.includes('w');
+  const east = handle.includes('e');
+  const north = handle.includes('n');
+  const south = handle.includes('s');
 
-  let nextLeft = left;
-  let nextTop = top;
-  let nextRight = right;
-  let nextBottom = bottom;
+  // Góc đối diện là điểm neo: phần ảnh còn lại từ neo tới mép chính là giới hạn.
+  const anchorX = west ? start.x + start.w : start.x;
+  const anchorY = north ? start.y + start.h : start.y;
+  const maxW = Math.max(MIN_SIZE, west ? anchorX : width - anchorX);
+  const maxH = Math.max(MIN_SIZE, north ? anchorY : height - anchorY);
 
-  if (handle.includes('w')) nextLeft = Math.min(left + dx, right - MIN_SIZE);
-  if (handle.includes('e')) nextRight = Math.max(right + dx, left + MIN_SIZE);
-  if (handle.includes('n')) nextTop = Math.min(top + dy, bottom - MIN_SIZE);
-  if (handle.includes('s')) nextBottom = Math.max(bottom + dy, top + MIN_SIZE);
-
-  let w = nextRight - nextLeft;
-  let h = nextBottom - nextTop;
+  let w = start.w + (east ? dx : west ? -dx : 0);
+  let h = start.h + (south ? dy : north ? -dy : 0);
 
   if (ratio > 0) {
     if (Math.abs(dx) >= Math.abs(dy)) h = w / ratio;
     else w = h * ratio;
-    if (handle.includes('w')) nextLeft = nextRight - w;
-    if (handle.includes('n')) nextTop = nextBottom - h;
-    if (handle.includes('e')) nextRight = nextLeft + w;
-    if (handle.includes('s')) nextBottom = nextTop + h;
+    // Thu lại để vừa cả hai chiều mà vẫn đúng tỉ lệ.
+    const fit = Math.min(maxW / w, maxH / h);
+    if (fit < 1) {
+      w *= fit;
+      h *= fit;
+    }
+    if (w < MIN_SIZE) { w = MIN_SIZE; h = w / ratio; }
+    if (h < MIN_SIZE) { h = MIN_SIZE; w = h * ratio; }
+  } else {
+    w = Math.min(Math.max(w, MIN_SIZE), maxW);
+    h = Math.min(Math.max(h, MIN_SIZE), maxH);
   }
 
-  let x = Math.min(nextLeft, nextRight);
-  let y = Math.min(nextTop, nextBottom);
-  w = Math.abs(nextRight - nextLeft);
-  h = Math.abs(nextBottom - nextTop);
+  w = Math.round(w);
+  h = Math.round(h);
 
-  w = Math.max(w, MIN_SIZE);
-  h = Math.max(h, MIN_SIZE);
+  let x = west ? anchorX - w : anchorX;
+  let y = north ? anchorY - h : anchorY;
   x = Math.min(Math.max(x, 0), width - w);
   y = Math.min(Math.max(y, 0), height - h);
 
-  return { x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) };
+  return { x: Math.round(x), y: Math.round(y), w, h };
 }
 
 export function moveRect(start, dx, dy, width, height) {

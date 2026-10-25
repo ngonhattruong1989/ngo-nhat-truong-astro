@@ -46,6 +46,21 @@ test('keeps text-align/font-size styles but drops position and url()', () => {
   assert.ok(!out.includes('url('));
 });
 
+test('keeps the display box of an image (width % + alignment) across a save', () => {
+  const out = sanitizeHtml('<img src="x.jpg" data-width="60" data-align="center" style="width:60%;max-width:100%;height:auto;display:block;margin-left:auto;margin-right:auto">');
+  assert.match(out, /data-width="60"/);
+  assert.match(out, /data-align="center"/);
+  assert.match(out, /width: 60%/);
+  assert.match(out, /margin-left: auto/);
+});
+
+test('drops css expressions and odd units in image geometry', () => {
+  const out = sanitizeHtml('<img src="x.jpg" style="width:expression(alert(1));margin-left:url(x);display:fixed">');
+  assert.ok(!out.includes('expression'));
+  assert.ok(!out.includes('url('));
+  assert.ok(!out.includes('display'));
+});
+
 test('empty or non-string input returns empty string', () => {
   assert.equal(sanitizeHtml(''), '');
   assert.equal(sanitizeHtml(null), '');

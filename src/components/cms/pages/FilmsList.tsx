@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LocaleTabs from '../LocaleTabs';
 import DeleteTileButton from '../DeleteTileButton';
+import SectionSettings from '../SectionSettings';
 import { previewSrc, store, type Locale } from '../../../lib/cms/client';
 
 export default function FilmsList() {
@@ -34,6 +35,8 @@ export default function FilmsList() {
           <button type="button" className="btn" onClick={() => void create()}>+ Thêm phim</button>
         </div>
       </div>
+
+      <SectionSettings section="films" locale={locale} showLayout={false} />
 
       <div className="grid-cards">
         {ids.map((id) => {

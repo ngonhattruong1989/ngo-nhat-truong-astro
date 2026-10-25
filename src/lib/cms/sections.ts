@@ -21,3 +21,11 @@ export const SECTION_ORDER = [
 ];
 
 export const ITEM_SECTIONS = ['music', 'paintings', 'poetry', 'artwork', 'spaces', 'blog'];
+
+// Khoá section trong CMS khác đường dẫn ngoài website ở hai chỗ này.
+const SITE_PATH: Record<string, string> = { poetry: '/poets', spaces: '/space', home: '/' };
+
+export function sitePathFor(section: string, id = ''): string {
+  const base = SITE_PATH[section] || `/${section}`;
+  return id ? `${base}/${id}` : base;
+}

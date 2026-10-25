@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import LocaleTabs from '../LocaleTabs';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
+import PreviewFrame, { ViewTabs } from '../PreviewFrame';
 import SaveBar from '../SaveBar';
 import { store, type Locale, type SectionPayload } from '../../../lib/cms/client';
 
@@ -16,6 +17,7 @@ export default function HomeEditor() {
   const [status, setStatus] = useState<Status>(null);
   const [savedAt, setSavedAt] = useState('');
   const [saving, setSaving] = useState(false);
+  const [view, setView] = useState<'edit' | 'preview'>('edit');
 
   useEffect(() => {
     const loaded = store.get('home');
@@ -87,10 +89,16 @@ export default function HomeEditor() {
           <h1>Trang chủ</h1>
           <p className="subtle">Logo, tên, tagline, lời chào và ảnh hero — mỗi ngôn ngữ một bộ, không có field cứng.</p>
         </div>
-        <LocaleTabs value={locale} onChange={setLocale} present={present} />
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <LocaleTabs value={locale} onChange={setLocale} present={present} />
+          <ViewTabs value={view} onChange={setView} />
+        </div>
       </div>
 
-      <div className="editor-grid">
+      {view === 'preview' ? (
+        <PreviewFrame section="home" locale={locale} payload={payload} />
+      ) : (
+      <div className="editor-grid single">
         <div>
           <div className="card">
             <div className="card-head"><h2>Nhận diện</h2><span className="subtle">hiển thị ở header và màn hình mở đầu</span></div>
@@ -134,28 +142,16 @@ export default function HomeEditor() {
             />
           </div>
         </div>
-
-        <aside>
-          <div className="preview-card">
-            <div className="preview-label">Preview</div>
-            <div style={{ padding: 16 }}>
-              {heroImages[0] ? <img src={heroImages[0]} alt="" className="media-preview" /> : <div className="tile-cover tile-cover-type" style={{ height: 140 }}><span>hero</span></div>}
-              <div style={{ marginTop: 14, fontFamily: "'Cormorant Garamond', serif", fontSize: 26, lineHeight: 1.2 }}>{payload.title || 'tên hiển thị'}</div>
-              <p className="subtle" style={{ marginTop: 6 }}>{payload.tagline || 'tagline'}</p>
-              <p style={{ marginTop: 12, fontSize: 14, lineHeight: 1.7, color: '#3d4a40' }}>{payload.intro}</p>
-              <div className="subtle" style={{ marginTop: 12 }}>{heroImages.length} ảnh hero · {locale.toUpperCase()}</div>
-            </div>
-          </div>
-        </aside>
       </div>
+      )}
 
       <SaveBar
         savedAt={savedAt}
         saving={saving}
         status={status}
         onSave={save}
-        liveHref="/#home"
-        extra={<button type="button" className="btn ghost" onClick={() => window.open('/#home', '_blank')}>Xem ngoài web ↗</button>}
+        liveHref="/"
+        extra={<button type="button" className="btn ghost" onClick={() => window.open('/', '_blank')}>Xem ngoài web ↗</button>}
       />
     </>
   );

@@ -223,12 +223,3 @@ export async function restoreImage(url: string) {
   return request('/api/cms/image', { method: 'POST', body: form });
 }
 
-// Preview thật: lưu draft vào sessionStorage rồi mở trang render bằng CSS của site.
-export function openPreview(section: string, id: string, locale: string, item: unknown) {
-  try {
-    sessionStorage.setItem('cms:draft', JSON.stringify({ section, id, locale, item }));
-  } catch {
-    /* storage full — preview sẽ dùng nội dung đã lưu */
-  }
-  window.open(`/admin/preview?section=${encodeURIComponent(section)}&id=${encodeURIComponent(id)}&locale=${encodeURIComponent(locale)}`, '_blank');
-}

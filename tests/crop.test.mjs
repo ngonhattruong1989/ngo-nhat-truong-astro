@@ -41,6 +41,27 @@ test('moveRect clamps translation to the image bounds', () => {
   assert.deepEqual(moveRect({ x: 100, y: 100, w: 200, h: 200 }, -500, 20, 800, 600), { x: 0, y: 120, w: 200, h: 200 });
 });
 
+test('resizeRect can never grow past the image bounds', () => {
+  const start = { x: 200, y: 150, w: 300, h: 200 };
+  const huge = resizeRect(start, 'se', 5000, 5000, 1000, 800, 0);
+  assert.deepEqual(huge, { x: 200, y: 150, w: 800, h: 650 });
+
+  const west = resizeRect(start, 'nw', -5000, -5000, 1000, 800, 0);
+  assert.equal(west.x, 0);
+  assert.equal(west.y, 0);
+  assert.equal(west.x + west.w, 500); // mép phải (điểm neo) không đổi
+  assert.equal(west.y + west.h, 350);
+});
+
+test('resizeRect keeps a ratio inside the bounds instead of overflowing', () => {
+  const start = { x: 0, y: 0, w: 400, h: 225 };
+  const next = resizeRect(start, 'se', 10000, 10000, 1000, 1000, 16 / 9);
+  assert.ok(next.w <= 1000 && next.h <= 1000);
+  assert.equal(next.x, 0);
+  assert.equal(next.y, 0);
+  assert.ok(Math.abs(next.w / next.h - 16 / 9) < 0.01);
+});
+
 test('outputSize caps the exported width', () => {
   assert.deepEqual(outputSize({ w: 4800, h: 2700 }, 2400), { width: 2400, height: 1350 });
   assert.deepEqual(outputSize({ w: 800, h: 600 }, 2400), { width: 800, height: 600 });

@@ -1110,17 +1110,10 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
 .rich a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .rich-plain { white-space: pre-line; }
 
-.preview-shell { max-width: 820px; margin: 0 auto; padding: 24px 20px 80px; }
-.preview-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 12px/1.4 Inter, system-ui, sans-serif; color: #718078; border-bottom: 1px solid #e5e9e5; padding-bottom: 12px; margin-bottom: 28px; }
-.preview-bar a { color: #203f2c; text-decoration: none; }
-.preview-article h1 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 34px; line-height: 1.2; margin: 0 0 8px; }
-.preview-meta { font: 11.5px/1.5 Inter, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #6b6b6b; margin: 0 0 22px; }
-.preview-poster { max-width: 320px; width: 100%; height: auto; display: block; margin: 18px 0 24px; }
-.preview-video { margin: 0 0 24px; }
-.preview-gallery { margin: 28px 0; }
-.preview-gallery h3 { font: 600 15px/1.4 Inter, sans-serif; margin: 0 0 10px; }
-.preview-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
-.preview-gallery-grid img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4 / 3; border-radius: 2px; }
+/* Preview trong CMS: cùng khổ nội dung với website thật (wrapper 1200px - padding 40px). */
+.preview-stage { min-height: 100vh; background: #fff; }
+.preview-content { padding: 40px 0 80px; }
+.preview-content .dynamic-content h2 { margin-top: 0; }
 
 .painting-lb-desc p { margin: 0 0 14px; }
 .painting-lb-desc p:last-child { margin-bottom: 0; }

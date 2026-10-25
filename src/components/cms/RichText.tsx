@@ -4,11 +4,11 @@ import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
-import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextStyle from '@tiptap/extension-text-style';
 import { FontSize, SpacedHeading, SpacedParagraph } from './tiptap-extensions';
-import { VideoBlock, YoutubeBlock } from './media-nodes';
+import { RichImage, VideoBlock, YoutubeBlock } from './media-nodes';
+import { clampWidth, fitWidth } from '../../lib/cms/image-box.mjs';
 import MediaDialog from './MediaDialog';
 import type { MediaTarget, UploadFn } from '../../lib/cms/client';
 
@@ -26,6 +26,7 @@ type Props = {
 
 export default function RichText({ value, onChange, placeholder = 'Bắt đầu viết…', mediaContext, upload }: Props) {
   const [dialog, setDialog] = useState<'image' | 'video' | 'youtube' | null>(null);
+  const [tick, setTick] = useState(0);
 
   const editor = useEditor({
     extensions: [
@@ -43,7 +44,7 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
       Underline,
       Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: 'noopener noreferrer' } }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Image.configure({ inline: false, allowBase64: false }),
+      RichImage.configure({ inline: false, allowBase64: false }),
       VideoBlock,
       YoutubeBlock,
       Placeholder.configure({ placeholder }),
@@ -57,8 +58,52 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
     if ((value || '') !== editor.getHTML()) editor.commands.setContent(value || '', false);
   }, [value, editor]);
 
+  // Cần re-render khi con trỏ nhảy sang một ảnh khác để thanh chỉnh khung ảnh đúng trạng thái.
+  useEffect(() => {
+    if (!editor) return;
+    const bump = () => setTick((n) => n + 1);
+    editor.on('selectionUpdate', bump);
+    editor.on('update', bump);
+    return () => {
+      editor.off('selectionUpdate', bump);
+      editor.off('update', bump);
+    };
+  }, [editor]);
+
   if (!editor) return null;
   const chain = () => editor.chain().focus() as any;
+
+  const imageActive = editor.isActive('image');
+  const imageAttrs = imageActive ? editor.getAttributes('image') : {};
+  const imageWidth = clampWidth(imageAttrs.width ?? 100);
+  const imageAlign = imageAttrs.align === 'center' || imageAttrs.align === 'right' ? imageAttrs.align : 'left';
+  const columnPx = editor.view.dom.clientWidth || 0;
+
+  function setImageAttr(patch: Record<string, unknown>) {
+    chain().updateAttributes('image', patch).run();
+  }
+
+  // Ảnh đang chọn trong editor (ProseMirror gắn class này cho node được chọn).
+  function selectedImage(): HTMLImageElement | null {
+    return editor!.view.dom.querySelector('img.ProseMirror-selectednode') as HTMLImageElement | null;
+  }
+
+  function fitToNatural() {
+    const element = selectedImage();
+    if (!element) return;
+    setImageAttr({ width: fitWidth(element.naturalWidth, columnPx) });
+  }
+
+  // Chèn ảnh với khung vừa đúng ảnh gốc: không phóng to, không tràn hết chiều ngang.
+  function insertImage(src: string) {
+    const column = editor!.view.dom.clientWidth || 0;
+    const insert = (width: number) => chain().setImage({ src, width }).run();
+    if (!column) { insert(100); return; }
+    const probe = new window.Image();
+    probe.onload = () => insert(fitWidth(probe.naturalWidth, column));
+    probe.onerror = () => insert(100);
+    probe.src = src;
+  }
 
   return (
     <div>
@@ -150,6 +195,37 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
           <button type="button" className="tb" title="Xóa định dạng" onClick={() => chain().unsetAllMarks().clearNodes().run()}>⌫</button>
         </div>
       </div>
+
+      <div className={`image-tools ${imageActive ? 'is-active' : ''}`} data-selection={tick}>
+        {imageActive ? (
+          <>
+            <span className="image-tools-label">Khung ảnh</span>
+            <input
+              className="image-range"
+              type="range"
+              min={10}
+              max={100}
+              step={5}
+              value={imageWidth}
+              title="Bề rộng khung ảnh trên website"
+              onChange={(event) => setImageAttr({ width: Number(event.target.value) })}
+            />
+            <span className="image-tools-value">
+              {imageWidth}%{columnPx ? ` · ≈${Math.round((columnPx * imageWidth) / 100)}px` : ''}
+            </span>
+            <div className="tb-group" style={{ borderRight: 0 }}>
+              <button type="button" className={`tb ${imageAlign === 'left' ? 'on' : ''}`} title="Canh trái" onClick={() => setImageAttr({ align: 'left' })}>⇤</button>
+              <button type="button" className={`tb ${imageAlign === 'center' ? 'on' : ''}`} title="Canh giữa" onClick={() => setImageAttr({ align: 'center' })}>↔</button>
+              <button type="button" className={`tb ${imageAlign === 'right' ? 'on' : ''}`} title="Canh phải" onClick={() => setImageAttr({ align: 'right' })}>⇥</button>
+            </div>
+            <button type="button" className="tb" title="Rộng đúng bằng ảnh gốc, không phóng to" onClick={fitToNatural}>Vừa ảnh gốc</button>
+            <button type="button" className="tb" title="Toàn chiều ngang cột nội dung" onClick={() => setImageAttr({ width: 100, align: 'left' })}>Toàn ngang</button>
+          </>
+        ) : (
+          <span className="image-tools-hint">Bấm vào một ảnh trong canvas để chỉnh khung hiển thị (rộng bao nhiêu % và canh lề).</span>
+        )}
+      </div>
+
       <EditorContent editor={editor} />
       <MediaDialog
         open={dialog !== null}
@@ -157,7 +233,7 @@ export default function RichText({ value, onChange, placeholder = 'Bắt đầu 
         target={{ ...mediaContext, kind: 'images' }}
         upload={upload}
         onClose={() => setDialog(null)}
-        onInsertImage={(src) => chain().setImage({ src }).run()}
+        onInsertImage={insertImage}
         onInsertVideo={(src) => chain().insertContent({ type: 'videoBlock', attrs: { src } }).run()}
         onInsertYoutube={(src) => chain().insertContent({ type: 'youtubeBlock', attrs: { src } }).run()}
       />

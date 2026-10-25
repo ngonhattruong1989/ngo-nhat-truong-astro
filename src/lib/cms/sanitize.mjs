@@ -4,14 +4,25 @@ const ALLOWED_TAGS = new Set([
   'video', 'iframe',
 ]);
 const VOID_TAGS = new Set(['br', 'hr', 'img']);
-const ALLOWED_ATTRS = new Set(['href', 'src', 'poster', 'alt', 'title', 'class', 'target', 'rel']);
+const ALLOWED_ATTRS = new Set(['href', 'src', 'poster', 'alt', 'title', 'class', 'target', 'rel', 'data-width', 'data-align']);
 const URL_ATTRS = new Set(['href', 'src', 'poster']);
 const VIDEO_ATTRS = new Set(['src', 'poster', 'preload', 'width', 'height', 'class', 'style']);
 const VIDEO_BOOLEAN_ATTRS = new Set(['controls', 'loop', 'muted', 'playsinline', 'autoplay']);
 const STYLE_PROPS = new Set([
   'font-size', 'font-weight', 'font-style', 'text-align', 'text-decoration',
   'line-height', 'margin-bottom', 'margin-top',
+  // Khung hiển thị của ảnh (rộng bao nhiêu %, canh lề nào).
+  'width', 'max-width', 'height', 'margin-left', 'margin-right', 'display',
 ]);
+// Các thuộc tính hình học phải đúng dạng số/đơn vị, không nhận biểu thức CSS.
+const STYLE_VALUES = {
+  width: /^(?:\d{1,3}(?:\.\d+)?%|\d{1,4}px|auto)$/,
+  'max-width': /^(?:\d{1,3}(?:\.\d+)?%|\d{1,4}px|none)$/,
+  height: /^(?:\d{1,4}px|auto)$/,
+  'margin-left': /^(?:auto|-?\d{1,4}(?:\.\d+)?(?:px|%))$/,
+  'margin-right': /^(?:auto|-?\d{1,4}(?:\.\d+)?(?:px|%))$/,
+  display: /^(?:block|inline-block|inline)$/,
+};
 const SAFE_SCHEMES = new Set(['http', 'https', 'mailto', 'tel']);
 const YOUTUBE_EMBED = /^https:\/\/(?:www\.)?(?:youtube\.com|youtube-nocookie\.com)\/embed\/[A-Za-z0-9_-]{6,20}(?:\?[A-Za-z0-9_=&%.-]*)?$/;
 const DROP_WITH_CONTENT = /<(script|style|object|embed|noscript|template)\b[\s\S]*?<\/\1>/gi;
@@ -53,6 +64,8 @@ function safeStyle(value) {
       const val = decl.slice(idx + 1).trim();
       if (!STYLE_PROPS.has(prop)) return '';
       if (/url\s*\(|expression\s*\(|javascript:|@import/i.test(val)) return '';
+      const pattern = STYLE_VALUES[prop];
+      if (pattern && !pattern.test(val)) return '';
       return `${prop}: ${val}`;
     })
     .filter(Boolean)

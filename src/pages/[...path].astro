@@ -168,9 +168,11 @@ if (routeItem) {
     </div>
 
     <!-- Client-side data and scripts -->
-    <script define:vars={{ uiTranslations, allSectionData }}>
+    <script define:vars={{ uiTranslations, allSectionData, homeData }}>
         window.__UI_TRANSLATIONS = uiTranslations;
         window.__SECTION_DATA = allSectionData;
+        // Trang chủ (tagline, lời chào, hero) là nguồn sự thật của phần đầu trang.
+        window.__HOME_DATA = homeData;
     </script>
 
     <script>
@@ -252,7 +254,10 @@ if (routeItem) {
         // --- 5. LANGUAGE ---
         function switchLanguage(lang) {
             currentLang = lang;
-            const translations = window.__UI_TRANSLATIONS;
+            const translations = window.__UI_TRANSLATIONS || {};
+            const content = translations[lang];
+            const homeData = window.__HOME_DATA || {};
+            const homeCopy = homeData[lang] || {};
 
             // Update language buttons
             document.querySelectorAll('.lang-opt').forEach(btn => {
@@ -263,15 +268,18 @@ if (routeItem) {
             });
 
             // Translate static content
-            const content = translations[lang];
-            if (content) {
-                const taglineEl = document.querySelector('.tagline');
-                const footerEl = document.querySelector('.footer p');
-                const homeIntroEl = document.querySelector('.intro-text p');
+            // Tagline + lời chào thuộc trang chủ (CMS › Trang chủ). Bản dịch giao diện chỉ là fallback.
+            const taglineEl = document.querySelector('.tagline');
+            const footerEl = document.querySelector('.footer p');
+            const homeIntroEl = document.querySelector('.intro-text p');
 
-                if (taglineEl) taglineEl.textContent = content.tagline;
+            const tagline = homeCopy.tagline || content?.tagline || '';
+            const intro = homeCopy.intro || content?.homeWelcome || '';
+            if (taglineEl && tagline) taglineEl.textContent = tagline;
+            if (homeIntroEl && intro) homeIntroEl.textContent = intro;
+
+            if (content) {
                 if (footerEl) footerEl.textContent = content.footer;
-                if (homeIntroEl) homeIntroEl.textContent = content.homeWelcome;
 
                 // Translate menu
                 const menuItems = document.querySelectorAll('.navigation a');

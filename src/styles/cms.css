@@ -149,6 +149,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 
 /* Editor layout */
 .editor-grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; align-items: start; }
+.editor-grid.single { grid-template-columns: minmax(0, 1fr); }
 .locale-tabs { display: inline-flex; gap: 4px; background: #eef1ee; padding: 4px; border-radius: 9px; }
 .locale-tab {
   border: 0; background: transparent; border-radius: 7px; padding: 7px 12px;
@@ -212,24 +213,37 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .media-preview img { width: 100%; max-height: 190px; object-fit: cover; display: block; }
 .media-preview video { width: 100%; max-height: 220px; display: block; }
 
-/* Preview */
-.preview { position: sticky; top: 20px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.preview-head {
-  display: flex; justify-content: space-between; align-items: center; padding: 10px 14px;
-  border-bottom: 1px solid var(--line); background: #fafbfa; font-size: 11.5px; color: var(--muted);
+/* Preview: một tab riêng, khung rộng đúng bằng website thật */
+.view-tabs { display: inline-flex; gap: 4px; background: #eef1ee; padding: 4px; border-radius: 9px; }
+.view-tab {
+  border: 0; background: transparent; border-radius: 7px; padding: 7px 14px;
+  font-size: 12.5px; color: #4d5a50; cursor: pointer;
 }
-.preview-body { padding: 30px 26px; max-height: calc(100vh - 190px); overflow: auto; }
-.preview-video { margin: 10px 0 18px; }
-.preview-empty { aspect-ratio: 16/9; display: grid; place-items: center; background: #f2f4f2; color: #a4b0a7; font-size: 12px; }
-.site-preview { font-family: 'Cormorant Garamond', serif; color: #232323; font-size: 15px; line-height: 1.8; }
-.site-preview h1, .site-preview h2 { font-weight: 500; font-size: 26px; line-height: 1.25; margin: 0 0 14px; }
-.site-preview h3 { font-size: 18px; font-weight: 600; margin: 22px 0 8px; font-family: Inter, sans-serif; }
-.site-preview p { margin: 0 0 16px; }
-.site-preview a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
-.site-preview img { max-width: 100%; height: auto; }
-.site-preview video, .site-preview iframe { max-width: 100%; }
-.site-preview blockquote { border-left: 2px solid #cfcfcf; margin: 0 0 16px; padding-left: 14px; font-style: italic; }
-.site-preview ul, .site-preview ol { padding-left: 22px; margin: 0 0 16px; }
+.view-tab.active { background: #fff; color: var(--accent); font-weight: 650; box-shadow: 0 1px 2px #00000010; }
+
+.preview-tab { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.preview-tab-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 10px 14px; border-bottom: 1px solid var(--line); background: #fafbfa;
+  font-size: 11.5px; color: var(--muted);
+}
+.preview-tab-head a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.preview-tab-body { position: relative; background: #eceeec; overflow: hidden; height: calc(100vh - 240px); min-height: 540px; }
+.preview-tab-body iframe {
+  position: absolute; top: 0; border: 0; background: #fff; display: block;
+  transform-origin: top left;
+}
+
+/* Thanh chỉnh khung ảnh trong canvas */
+.image-tools {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 7px 9px; border: 1px solid #dce2dc; border-top: 0;
+  background: #fbfcfb; font-size: 12px; color: #4d5a50; min-height: 42px;
+}
+.image-tools-hint { color: #8b968e; font-size: 11.5px; }
+.image-range { width: 160px; accent-color: #203f2c; }
+.image-tools-value { font-size: 11.5px; color: #516057; font-variant-numeric: tabular-nums; min-width: 96px; }
+.ProseMirror img.ProseMirror-selectednode { outline: 2px solid #203f2c; outline-offset: 2px; }
 
 /* Savebar */
 .savebar {
@@ -252,8 +266,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 
 @media (max-width: 1100px) {
   .editor-grid { grid-template-columns: 1fr; }
-  .preview { position: static; }
-  .preview-body { max-height: none; }
 }
 
 @media (max-width: 760px) {

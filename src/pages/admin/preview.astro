@@ -2,7 +2,7 @@
 import { env } from 'cloudflare:workers';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getSectionData } from '../../lib/cms/content.mjs';
-import { previewItemHTML, escapeHtml } from '../../lib/render.mjs';
+import { previewPageHTML } from '../../lib/render.mjs';
 
 export const prerender = false;
 
@@ -10,38 +10,36 @@ const url = Astro.url;
 const section = url.searchParams.get('section') || '';
 const id = url.searchParams.get('id') || '';
 const locale = url.searchParams.get('locale') || 'vi';
-const data = await getSectionData(section, env.DB);
-const payload = data?.[locale] || {};
-const item = (payload.items || []).find((entry: any) => entry.id === id);
-const canvas = typeof payload.html === 'string' ? payload.html : '';
-const initial = item
-  ? previewItemHTML({ section, item })
-  : `<article class="preview-article"><h1>${escapeHtml(payload.title || '')}</h1><div class="rich">${canvas}</div></article>`;
+const data = section ? await getSectionData(section, env.DB) : null;
+const payload = (data && (data[locale] || data.vi)) || {};
+const initial = data ? previewPageHTML({ section, payload, itemId: id }) : '';
 ---
+
 <BaseLayout title="Preview">
-  <div class="preview-shell">
-    <div class="preview-bar">
-      <span>Preview · {item ? 'nội dung đã lưu' : 'trang canvas'} · {locale.toUpperCase()}</span>
-      <a href={`/admin/${section}/${id}`}>← Về editor</a>
+  <div class="preview-stage">
+    <div class="wrapper">
+      <div class="content preview-content" id="preview-root" set:html={initial}></div>
     </div>
-    <div id="preview-root" set:html={initial}></div>
   </div>
 
   <script>
-    import { previewItemHTML } from '../../lib/render.mjs';
+    import { previewPageHTML } from '../../lib/render.mjs';
 
-    const raw = sessionStorage.getItem('cms:draft');
-    if (raw) {
-      try {
-        const draft = JSON.parse(raw);
-        const params = new URLSearchParams(location.search);
-        if (draft.section === params.get('section') && draft.id === params.get('id') && draft.item) {
-          const root = document.getElementById('preview-root');
-          if (root) root.innerHTML = previewItemHTML({ section: draft.section, item: draft.item });
-        }
-      } catch {
-        /* ignore malformed draft */
-      }
-    }
+    const root = document.getElementById('preview-root');
+
+    // CMS đẩy bản nháp (chưa lưu) sang; luôn render bằng CSS và markup của website thật.
+    window.addEventListener('message', (event) => {
+      if (event.origin !== location.origin) return;
+      const message = event.data;
+      if (!message || message.type !== 'cms:preview' || !root) return;
+      root.innerHTML = previewPageHTML({
+        section: message.section || '',
+        payload: message.payload || {},
+        itemId: message.itemId || message.id || '',
+      });
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    });
+
+    parent.postMessage({ type: 'cms:preview-ready' }, location.origin);
   </script>
 </BaseLayout>

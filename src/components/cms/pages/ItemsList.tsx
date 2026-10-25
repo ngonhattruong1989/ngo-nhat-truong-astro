@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import LocaleTabs from '../LocaleTabs';
 import DeleteTileButton from '../DeleteTileButton';
+import SectionSettings from '../SectionSettings';
 import { previewSrc, store, type Locale } from '../../../lib/cms/client';
 import { SECTION_META } from '../../../lib/cms/sections';
 
@@ -38,6 +39,8 @@ export default function ItemsList() {
           <button type="button" className="btn" onClick={() => void create()}>+ Thêm mục</button>
         </div>
       </div>
+
+      <SectionSettings section={section} locale={locale} />
 
       <div className="grid-cards">
         {ids.map((id) => {

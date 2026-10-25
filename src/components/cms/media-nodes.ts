@@ -1,4 +1,38 @@
 import { Node, mergeAttributes } from '@tiptap/core';
+import Image from '@tiptap/extension-image';
+import { imageBoxStyle, normalizeAlign, readAlign, readWidth } from '../../lib/cms/image-box.mjs';
+
+// Ảnh trong canvas: ngoài src/alt còn có khung hiển thị (width % + canh lề).
+// Chỉ thu nhỏ được trong cột nội dung nên website không còn ảnh tràn hết chiều ngang.
+export const RichImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      width: {
+        default: 100,
+        parseHTML: (element: HTMLElement) => readWidth(element),
+        renderHTML: () => ({}),
+      },
+      align: {
+        default: 'left',
+        parseHTML: (element: HTMLElement) => readAlign(element),
+        renderHTML: () => ({}),
+      },
+    };
+  },
+  renderHTML({ node, HTMLAttributes }: any) {
+    const width = node.attrs.width ?? 100;
+    const align = node.attrs.align ?? 'left';
+    return [
+      'img',
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        'data-width': String(Math.round(Number(width)) || 100),
+        'data-align': normalizeAlign(align),
+        style: imageBoxStyle(width, align),
+      }),
+    ];
+  },
+});
 
 export const VideoBlock = Node.create({
   name: 'videoBlock',

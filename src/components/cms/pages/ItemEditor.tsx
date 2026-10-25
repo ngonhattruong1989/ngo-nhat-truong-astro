@@ -4,12 +4,12 @@ import LocaleTabs from '../LocaleTabs';
 import RichText from '../RichText';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
-import PreviewPane from '../PreviewPane';
+import PreviewFrame, { ViewTabs } from '../PreviewFrame';
 import SaveBar from '../SaveBar';
-import { upload, store, openPreview, type Dict, type Locale } from '../../../lib/cms/client';
+import { upload, store, type Dict, type Locale } from '../../../lib/cms/client';
 import { createEmptyItem } from '../../../lib/cms/content-model.mjs';
 import { legacyHtml } from '../../../lib/cms/legacy.mjs';
-import { SECTION_META } from '../../../lib/cms/sections';
+import { SECTION_META, sitePathFor } from '../../../lib/cms/sections';
 
 type Status = { kind: 'ok' | 'error'; message: string } | null;
 
@@ -22,6 +22,7 @@ export default function ItemEditor() {
   const [savedAt, setSavedAt] = useState('');
   const [present, setPresent] = useState<Record<Locale, boolean>>({ vi: false, en: false, fr: false });
   const [storedTitle, setStoredTitle] = useState('');
+  const [view, setView] = useState<'edit' | 'preview'>('edit');
   const meta = SECTION_META[section];
 
   const contentField = section === 'paintings' ? 'description' : 'html';
@@ -68,7 +69,7 @@ export default function ItemEditor() {
       const locales = store.localesFor(section, id);
       setPresent({ vi: locales.includes('vi'), en: locales.includes('en'), fr: locales.includes('fr') });
       setSavedAt(new Date().toISOString());
-      setStatus({ kind: 'ok', message: 'Đã lưu vào D1 (mock). Website cập nhật ngay.' });
+      setStatus({ kind: 'ok', message: 'Đã lưu vào D1. Website cập nhật ngay.' });
       window.setTimeout(() => setStatus(null), 3500);
     } catch (error: any) {
       setStatus({ kind: 'error', message: error?.message || 'Lưu thất bại.' });
@@ -88,6 +89,7 @@ export default function ItemEditor() {
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <LocaleTabs value={locale} onChange={setLocale} present={present} />
+          <ViewTabs value={view} onChange={setView} />
         </div>
       </div>
 
@@ -99,7 +101,10 @@ export default function ItemEditor() {
         </section>
       ) : (
         <>
-          <div className="editor-grid">
+          {view === 'preview' ? (
+            <PreviewFrame section={section} id={id} locale={locale} payload={{ title: draft.title || '', items: [draft] }} />
+          ) : (
+          <div className="editor-grid single">
             <div>
               <section className="card">
                 <h3 className="card-title">1. Thông tin</h3>
@@ -143,21 +148,15 @@ export default function ItemEditor() {
                 />
               </section>
             </div>
-
-            <PreviewPane
-              title={draft.title || ''}
-              meta={[draft.date, draft.medium].filter(Boolean).join(' · ')}
-              html={content}
-              cover={draft.thumbnail}
-            />
           </div>
+          )}
 
           <SaveBar
             savedAt={savedAt}
             status={status}
             onSave={save}
-            liveHref={`/#${section}`}
-            extra={<><button type="button" className="btn ghost" onClick={() => draft && openPreview(section, id, locale, draft)}>Preview thật ↗</button><button type="button" className="btn ghost" onClick={() => navigate(`/${section}`)}>← Danh sách</button></>}
+            liveHref={sitePathFor(section, id)}
+            extra={<button type="button" className="btn ghost" onClick={() => navigate(`/${section}`)}>← Danh sách</button>}
           />
         </>
       )}
