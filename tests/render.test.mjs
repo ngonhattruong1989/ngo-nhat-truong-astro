@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML, previewPageHTML, thumbnailStyle } from '../src/lib/render.mjs';
+import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML, previewPageHTML, previewFilmHubHTML, thumbnailStyle } from '../src/lib/render.mjs';
 
 test('bodyHtml prefers the v2 html field', () => {
   assert.equal(bodyHtml({ html: '<p>mới</p>', content: 'cũ' }), '<p>mới</p>');
@@ -52,6 +52,23 @@ test('previewItemHTML renders a collage item (artwork) like the painting lightbo
   assert.match(html, /<span>Ngày<\/span>/);
   const en = previewItemHTML({ section: 'artwork', locale: 'en', item: { id: 'a', title: 'Wrap', medium: 'wool', date: '2025' } });
   assert.match(en, /<span>Medium<\/span>/);
+});
+
+test('previewFilmHubHTML puts both role groups on the one films page', () => {
+  const html = previewFilmHubHTML({
+    title: 'phim',
+    description: 'tat ca',
+    rolePages: { actor: { title: 'diễn viên' }, 'production-designer': { title: 'production designer' } },
+    items: [
+      { id: 'a', title: 'A', roles: ['actor'] },
+      { id: 'b', title: 'B', roles: ['production-designer'] },
+      { id: 'c', title: 'C' },
+    ],
+  });
+  assert.equal((html.match(/film-role-group/g) || []).length, 3, '2 nhóm vai trò + nhóm chưa gán');
+  assert.match(html, /diễn viên/);
+  assert.match(html, /production designer/);
+  assert.match(html, /Chưa gán vai trò/);
 });
 
 test('previewPageHTML filters a films role page to that role and uses its copy', () => {

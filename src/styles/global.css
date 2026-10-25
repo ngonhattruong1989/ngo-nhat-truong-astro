@@ -310,6 +310,19 @@ h1, h2, h3, h4, h5, p, .quote, .tagline {
     color: #3973f5;
 }
 
+/* === TRANG PHIM: nhiều nhóm vai trò trong một trang === */
+.film-hub { display: block; }
+.film-role-group { margin-bottom: 64px; }
+.film-role-group:last-child { margin-bottom: 0; }
+.film-role-group h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0 0 4px;
+}
+.film-role-group .gallery-grid { margin-top: 18px; }
+
 /* === FILM GRID === */
 .gallery-grid {
     display: grid;

@@ -104,8 +104,7 @@ if (routeItem) {
                 <ul>
                     <li><a href="/">trang chủ</a></li>
                     <li><a href="/about">về tôi</a></li>
-                    <li><a href="/films/actor">diễn viên</a></li>
-                    <li><a href="/films/production-designer">production designer</a></li>
+                    <li><a href="/films">phim</a></li>
                     <li><a href="/music">nhạc</a></li>
                     <li><a href="/paintings">tranh</a></li>
                     <li><a href="/poets">thơ</a></li>
@@ -396,6 +395,47 @@ if (routeItem) {
         }
 
         // --- 7. RENDER DYNAMIC CONTENT ---
+        const UNASSIGNED_LABELS = { vi: 'khác', en: 'other', fr: 'autres' };
+
+        // Một card phim; index là vị trí trong danh sách đầy đủ nên nhóm nào cũng mở đúng phim.
+        function filmCardHTML(item, index) {
+            if (item.thumbnail) {
+                return `<div class="gallery-item" data-item-index="${index}">
+                    <img src="${item.thumbnail}" alt="${item.title}">
+                    <div class="gallery-title">${item.title}</div>
+                </div>`;
+            }
+            return `<div class="gallery-item gallery-item-text" data-item-index="${index}">
+                <div class="gallery-text-card">
+                    <div class="gallery-text-title">${item.title}</div>
+                    ${item.date ? `<div class="gallery-text-date">${item.date}</div>` : ''}
+                    ${item.excerpt ? `<div class="gallery-text-excerpt">${item.excerpt}</div>` : ''}
+                </div>
+                <div class="gallery-title">${item.title}</div>
+            </div>`;
+        }
+
+        // Trang /films: giữ một trang, bên trong chia nhóm theo vai trò (+ nhóm chưa gán nếu còn).
+        function filmHubData(data) {
+            const items = Array.isArray(data.items) ? data.items : [];
+            const groups = FILM_ROLES.map(role => {
+                const page = (data.rolePages || {})[role] || {};
+                return {
+                    role,
+                    title: page.title || role,
+                    description: page.description || '',
+                    items: items.filter(item => Array.isArray(item.roles) && item.roles.includes(role)),
+                };
+            });
+            // Chưa gán vai trò nào: giữ nguyên lưới phim như trước, không có tiêu đề nhóm.
+            if (!groups.some(group => group.items.length)) return data;
+            const unassigned = items.filter(item => !Array.isArray(item.roles) || item.roles.length === 0);
+            if (unassigned.length) {
+                groups.push({ role: '', title: UNASSIGNED_LABELS[currentLang] || 'khác', description: '', items: unassigned });
+            }
+            return { ...data, hub: true, groups, items };
+        }
+
         function renderDynamicPage(fullData) {
             const dynamicDisplay = document.getElementById('dynamic-display');
             if (!fullData || !dynamicDisplay) return;
@@ -403,7 +443,12 @@ if (routeItem) {
             let data = fullData[currentLang];
             if (!data) return;
 
-            // Phim tách thành 2 trang theo vai trò: lọc dự án + dùng tiêu đề/mô tả của vai trò.
+            // Trang /films: một trang, bên trong chia 2 nhóm vai trò (+ nhóm chưa gán nếu có).
+            if (currentSectionId === 'films' && !currentRole) {
+                data = filmHubData(data);
+            }
+
+            // /films/<role>: chỉ nhóm của vai trò đó.
             if (currentSectionId === 'films' && currentRole) {
                 const rolePage = (data.rolePages || {})[currentRole] || {};
                 const items = (Array.isArray(data.items) ? data.items : [])
@@ -429,41 +474,29 @@ if (routeItem) {
             // CASE A: GRID LAYOUT
             if (data.layout === 'grid') {
                 const isFilmSection = currentSectionId === 'films';
+                const all = Array.isArray(data.items) ? data.items : [];
+                const groups = data.hub ? (data.groups || []).filter(group => group.items.length) : null;
+
                 let html = `
                     <div class="dynamic-content fade-in">
                         <h2>${data.title}</h2>
                         ${data.description ? `<p class="dynamic-desc">${data.description}</p>` : ''}
-                        <div id="grid-view" class="gallery-grid">
                 `;
 
-                if (data.items) {
-                    data.items.forEach((item, index) => {
-                        if (item.thumbnail) {
-                            html += `
-                                <div class="gallery-item" data-item-index="${index}">
-                                    <img src="${item.thumbnail}" alt="${item.title}">
-                                    <div class="gallery-title">${item.title}</div>
-                                </div>
-                            `;
-                        } else {
-                            html += `
-                                <div class="gallery-item gallery-item-text" data-item-index="${index}">
-                                    <div class="gallery-text-card">
-                                        <div class="gallery-text-title">${item.title}</div>
-                                        ${item.date ? `<div class="gallery-text-date">${item.date}</div>` : ''}
-                                        ${item.excerpt ? `<div class="gallery-text-excerpt">${item.excerpt}</div>` : ''}
-                                    </div>
-                                    <div class="gallery-title">${item.title}</div>
-                                </div>
-                            `;
-                        }
-                    });
+                if (groups) {
+                    // Trang Phim: nhiều nhóm vai trò trong cùng một trang.
+                    html += `<div id="grid-view" class="film-hub">${groups.map(group => `
+                        <section class="film-role-group">
+                            <h3>${group.title}</h3>
+                            ${group.description ? `<p class="dynamic-desc">${group.description}</p>` : ''}
+                            <div class="gallery-grid">${group.items.map(item => filmCardHTML(item, all.indexOf(item))).join('')}</div>
+                        </section>`).join('')}</div>`;
+                } else {
+                    html += `<div id="grid-view" class="gallery-grid">${all.map(item => filmCardHTML(item, all.indexOf(item))).join('')}</div>`;
                 }
 
-                html += `</div>`; // đóng #grid-view
-
-                if (!data.items || data.items.length === 0) {
-                    html += `<p style="font-style:italic;color:#777">(Chưa có dự án nào ở vai trò này.)</p>`;
+                if (all.length === 0) {
+                    html += `<p style="font-style:italic;color:#777">(${currentRole ? 'Chưa có dự án nào ở vai trò này.' : 'Chưa có dự án nào.'})</p>`;
                 }
 
                 html += `<div id="detail-view"></div></div>`;
@@ -591,13 +624,18 @@ if (routeItem) {
             currentFilmIndex = index;
             const film = window.currentGridData[index];
             if (push && film.id) {
-                const role = currentRole && Array.isArray(film.roles) && film.roles.includes(currentRole) ? currentRole : '';
+                const roles = Array.isArray(film.roles) ? film.roles : [];
+                // URL chuẩn: vai trò đang xem, nếu không có thì vai trò đầu tiên của phim.
+                const role = (currentRole && roles.includes(currentRole)) ? currentRole : (roles[0] || '');
                 history.pushState({ section: 'films', item: film.id }, '', role ? `/films/${role}/${film.id}` : `/films/${film.id}`);
             }
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');
 
-            if (gridView) gridView.style.display = 'none';
+            if (gridView) {
+                gridView.dataset.prevDisplay = gridView.style.display || '';
+                gridView.style.display = 'none';
+            }
 
             // Poster
             let posterHTML = '';
@@ -683,7 +721,10 @@ if (routeItem) {
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');
 
-            if (gridView) gridView.style.display = 'none';
+            if (gridView) {
+                gridView.dataset.prevDisplay = gridView.style.display || '';
+                gridView.style.display = 'none';
+            }
 
             // Thumbnail dùng chung cách tính khung với ảnh trong canvas (thumbnailWidth/Align).
             let thumbnailHTML = '';
@@ -828,7 +869,8 @@ if (routeItem) {
 
             if (detailView) detailView.innerHTML = '';
             if (gridView) {
-                gridView.style.display = 'grid';
+                // Trả lại display gốc: lưới phim dùng CSS grid, trang Phim là khối nhiều nhóm.
+                gridView.style.display = gridView.dataset.prevDisplay || '';
                 gridView.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }

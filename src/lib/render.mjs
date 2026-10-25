@@ -1,5 +1,5 @@
 import { imageBoxStyle } from './cms/image-box.mjs';
-import { filterByRole, rolePageCopy } from './cms/roles.mjs';
+import { filterByRole, rolePageCopy, groupFilmsByRole, ROLE_LABELS } from './cms/roles.mjs';
 
 export function escapeHtml(value) {
   return String(value ?? '')
@@ -155,8 +155,36 @@ export function previewHomeHTML(payload = {}) {
 }
 
 // Bộ render dùng chung cho trang preview của CMS: chọn đúng khối theo section.
+// Trang Phim: một trang gồm các nhóm vai trò (đúng như ngoài website).
+export function previewFilmHubHTML(payload = {}, locale = 'vi') {
+  const { groups, unassigned } = groupFilmsByRole(payload.items);
+  // Chưa gán vai trò: trang Phim vẫn là một lưới bình thường.
+  if (!groups.some((group) => group.items.length)) {
+    return previewSectionHTML({ title: payload.title, description: payload.description, layout: payload.layout, items: payload.items });
+  }
+  const blocks = groups
+    .filter((group) => group.items.length)
+    .map((group) => {
+      const copy = rolePageCopy(payload, group.role);
+      return `<section class="film-role-group"><h3>${escapeHtml(copy.title)}</h3>${
+        copy.description ? `<p class="dynamic-desc">${copy.description}</p>` : ''
+      }<div class="gallery-grid">${group.items.map((item) => (item.thumbnail
+        ? `<div class="gallery-item"><img src="${escapeHtml(item.thumbnail)}" alt="${escapeHtml(item.title || '')}"><div class="gallery-title">${escapeHtml(item.title || '')}</div></div>`
+        : `<div class="gallery-item gallery-item-text"><div class="gallery-text-card"><div class="gallery-text-title">${escapeHtml(item.title || '')}</div></div></div>`)).join('')}</div></section>`;
+    });
+  if (unassigned.length) {
+    blocks.push(`<section class="film-role-group"><h3>${escapeHtml((ROLE_LABELS[locale] || ROLE_LABELS.vi).unassigned)}</h3><div class="gallery-grid">${unassigned
+      .map((item) => `<div class="gallery-item gallery-item-text"><div class="gallery-text-card"><div class="gallery-text-title">${escapeHtml(item.title || '')}</div></div></div>`)
+      .join('')}</div></section>`);
+  }
+  return `<div class="dynamic-content"><h2>${escapeHtml(payload.title || '')}</h2>${
+    payload.description ? `<p class="dynamic-desc">${payload.description}</p>` : ''
+  }<div class="film-hub">${blocks.join('')}</div></div>`;
+}
+
 export function previewPageHTML({ section, payload = {}, itemId = '', locale = 'vi', role = '' }) {
   if (section === 'home') return previewHomeHTML(payload);
+  if (section === 'films' && !role && !itemId) return previewFilmHubHTML(payload, locale);
   // Trang vai trò của phim: lọc dự án + tiêu đề/mô tả riêng.
   if (role) {
     const copy = rolePageCopy(payload, role);

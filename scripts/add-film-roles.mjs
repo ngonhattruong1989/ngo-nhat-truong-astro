@@ -9,7 +9,7 @@
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { ensureFilmRoles, expandMenu } from '../src/lib/cms/roles.mjs';
+import { ensureFilmRoles, expandMenu, collapseMenu } from '../src/lib/cms/roles.mjs';
 import { sectionUpdateSql } from '../src/lib/cms/layouts.mjs';
 
 const [mode, ...rest] = process.argv.slice(2);
@@ -18,11 +18,13 @@ async function readJson(path) {
   return JSON.parse(await readFile(resolve(path), 'utf8'));
 }
 
-function withMenu(ui, locale) {
+function withMenu(ui, mode = 'expand') {
   const next = structuredClone(ui);
   for (const code of Object.keys(next)) {
     if (!next[code] || typeof next[code] !== 'object') continue;
-    next[code].menu = expandMenu(next[code].menu, code);
+    next[code].menu = mode === 'collapse'
+      ? collapseMenu(next[code].menu, code)
+      : expandMenu(next[code].menu, code);
   }
   return next;
 }
@@ -43,8 +45,18 @@ if (mode === 'seed') {
   const ui = withMenu(await readJson(uiIn));
   await writeFile(resolve(out), sectionUpdateSql('films', films) + sectionUpdateSql('ui-translations', ui));
   console.log(`sql written: ${out} · menu ${ui.vi.menu.length} mục`);
+} else if (mode === 'collapse') {
+  // Trả menu về một mục "phim" duy nhất (trang Phim chứa 2 nhóm vai trò).
+  const [target = 'src/data/ui-translations.json', out] = rest;
+  const ui = withMenu(await readJson(target), 'collapse');
+  await writeFile(resolve(target), `${JSON.stringify(ui, null, 2)}\n`);
+  console.log(`menu collapsed: ${target} · ${ui.vi.menu.length} mục`);
+  if (out) {
+    await writeFile(resolve(out), sectionUpdateSql('ui-translations', ui));
+    console.log(`sql written: ${out}`);
+  }
 } else {
-  console.log('usage: seed [filmsPath] [uiPath] | sql <films.json> <ui-translations.json> [out.sql]');
+  console.log('usage: seed [filmsPath] [uiPath] | sql <films.json> <ui-translations.json> [out.sql] | collapse [uiPath] [out.sql]');
   process.exitCode = 1;
 }
 

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   FILM_ROLES, normalizeRoles, hasRole, filterByRole, filmPath, parseFilmPath, rolePageCopy, roleLabel,
+  groupFilmsByRole, collapseMenu, expandMenu,
 } from '../src/lib/cms/roles.mjs';
 
 test('normalizeRoles keeps the two known roles, deduped and ordered', () => {
@@ -48,6 +49,31 @@ test('rolePageCopy prefers the role-specific copy and falls back to the films pa
   assert.deepEqual(rolePageCopy(payload, 'actor'), { title: 'diễn viên', description: 'tất cả' });
   assert.deepEqual(rolePageCopy(payload, 'production-designer'), { title: 'phim', description: 'tất cả' });
   assert.deepEqual(rolePageCopy({}, 'actor'), { title: '', description: '' });
+});
+
+test('groupFilmsByRole keeps the two role groups plus the unassigned bucket', () => {
+  const items = [
+    { id: 'a', roles: ['actor'] },
+    { id: 'b', roles: ['production-designer'] },
+    { id: 'c', roles: ['actor', 'production-designer'] },
+    { id: 'd' },
+  ];
+  const { groups, unassigned } = groupFilmsByRole(items);
+  assert.deepEqual(groups.map((g) => g.role), ['actor', 'production-designer']);
+  assert.deepEqual(groups[0].items.map((i) => i.id), ['a', 'c']);
+  assert.deepEqual(groups[1].items.map((i) => i.id), ['b', 'c']);
+  assert.deepEqual(unassigned.map((i) => i.id), ['d']);
+});
+
+test('menu keeps a single films entry, whichever direction it is migrated', () => {
+  const base = ['trang chủ', 'về tôi', 'phim', 'nhạc', 'tranh'];
+  const expanded = expandMenu(base, 'vi');
+  assert.equal(expanded.length, 6);
+  assert.deepEqual(expanded.slice(2, 4), ['diễn viên', 'production designer']);
+  assert.deepEqual(collapseMenu(expanded, 'vi'), base);
+  assert.deepEqual(collapseMenu(base, 'vi'), base, 'idempotent');
+  const enBase = ['home', 'about', 'films', 'music'];
+  assert.equal(collapseMenu(expandMenu(enBase, 'en'), 'en')[2], 'films');
 });
 
 test('roleLabel localises the role names', () => {
