@@ -25,7 +25,9 @@ export default function ItemEditor() {
   const [view, setView] = useState<'edit' | 'preview'>('edit');
   const meta = SECTION_META[section];
 
-  const contentField = section === 'paintings' ? 'description' : 'html';
+  // Tranh và Artwork cùng một kiểu trình bày collage: chữ nằm trong `description`.
+  const collage = section === 'paintings' || section === 'artwork';
+  const contentField = collage ? 'description' : 'html';
 
   useEffect(() => {
     const item = store.item(section, id, locale);
@@ -126,7 +128,7 @@ export default function ItemEditor() {
                 </div>
                 <div className="row-2">
                   <div className="field"><label>Ngày</label><input className="input" value={draft.date || ''} onChange={(event) => set('date', event.target.value)} placeholder="01/2026" /></div>
-                  {section === 'paintings' ? (
+                  {collage ? (
                     <div className="field"><label>Chất liệu</label><input className="input" value={draft.medium || ''} onChange={(event) => set('medium', event.target.value)} placeholder="gouache trên giấy dó" /></div>
                   ) : null}
                 </div>

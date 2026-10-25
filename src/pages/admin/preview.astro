@@ -12,7 +12,7 @@ const id = url.searchParams.get('id') || '';
 const locale = url.searchParams.get('locale') || 'vi';
 const data = section ? await getSectionData(section, env.DB) : null;
 const payload = (data && (data[locale] || data.vi)) || {};
-const initial = data ? previewPageHTML({ section, payload, itemId: id }) : '';
+const initial = data ? previewPageHTML({ section, payload, itemId: id, locale }) : '';
 ---
 
 <BaseLayout title="Preview">
@@ -36,6 +36,7 @@ const initial = data ? previewPageHTML({ section, payload, itemId: id }) : '';
         section: message.section || '',
         payload: message.payload || {},
         itemId: message.itemId || message.id || '',
+        locale: message.locale || 'vi',
       });
       window.scrollTo({ top: 0, behavior: 'auto' });
     });

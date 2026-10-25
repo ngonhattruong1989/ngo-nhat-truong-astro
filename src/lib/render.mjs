@@ -38,9 +38,39 @@ function galleryHTML(label, list) {
     .join('')}</div></section>`;
 }
 
-// Chi tiết một mục, dùng đúng class của website thật (global.css) để preview không lệch.
-export function previewItemHTML({ section, item }) {
+const COLLAGE_SECTIONS = new Set(['paintings', 'artwork']);
+const META_LABELS = {
+  vi: { medium: 'Chất liệu', date: 'Ngày' },
+  en: { medium: 'Medium', date: 'Date' },
+  fr: { medium: 'Matériau', date: 'Date' },
+};
+
+// Mục của trang collage (Tranh, Artwork): ảnh + thông tin như panel lightbox ngoài website.
+export function previewCollageItemHTML({ item, locale = 'vi' }) {
   if (!item) return '';
+  const labels = META_LABELS[locale] || META_LABELS.vi;
+  const images = Array.isArray(item.images) && item.images.length
+    ? item.images.filter(Boolean)
+    : (item.thumbnail ? [item.thumbnail] : []);
+  return `<div class="preview-painting">
+    <div class="preview-painting-media">${images.length
+      ? images.map((src) => `<img src="${escapeHtml(src)}" alt="">`).join('')
+      : '<div class="preview-painting-empty">Chưa có ảnh</div>'}</div>
+    <div class="preview-painting-info">
+      <h2>${escapeHtml(item.title || '')}</h2>
+      <div class="preview-painting-meta">
+        ${item.medium ? `<div><span>${labels.medium}</span><strong>${escapeHtml(item.medium)}</strong></div>` : ''}
+        ${item.date ? `<div><span>${labels.date}</span><strong>${escapeHtml(item.date)}</strong></div>` : ''}
+      </div>
+      ${item.description ? `<div class="preview-painting-desc">${item.description}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+// Chi tiết một mục, dùng đúng class của website thật (global.css) để preview không lệch.
+export function previewItemHTML({ section, item, locale = 'vi' }) {
+  if (!item) return '';
+  if (COLLAGE_SECTIONS.has(section)) return previewCollageItemHTML({ item, locale });
   const isFilm = section === 'films';
   const meta = isFilm
     ? [item.genre, item.year, item.duration].filter(Boolean).join(' · ')
@@ -117,11 +147,11 @@ export function previewHomeHTML(payload = {}) {
 }
 
 // Bộ render dùng chung cho trang preview của CMS: chọn đúng khối theo section.
-export function previewPageHTML({ section, payload = {}, itemId = '' }) {
+export function previewPageHTML({ section, payload = {}, itemId = '', locale = 'vi' }) {
   if (section === 'home') return previewHomeHTML(payload);
   if (itemId) {
     const item = (payload.items || []).find((entry) => entry?.id === itemId);
-    return item ? previewItemHTML({ section, item }) : '';
+    return item ? previewItemHTML({ section, item, locale }) : '';
   }
   if (typeof payload.html === 'string') return previewCanvasHTML(payload);
   return previewSectionHTML({

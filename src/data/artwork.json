@@ -1,7 +1,7 @@
 {
   "vi": {
     "title": "artwork",
-    "layout": "grid",
+    "layout": "collage",
     "description": "Những thử nghiệm kỹ thuật số và thiết kế ý niệm.",
     "items": [
       {
@@ -11,7 +11,10 @@
         "date": "2025",
         "excerpt": "Thiết kế poster cho phim ngắn độc lập.",
         "content": "Sử dụng kỹ thuật Collage Art để tái hiện cảm giác ngột ngạt nhưng rực rỡ của mùa hè nhiệt đới.",
-        "html": "<p>Sử dụng kỹ thuật Collage Art để tái hiện cảm giác ngột ngạt nhưng rực rỡ của mùa hè nhiệt đới.</p>"
+        "html": "<p>Sử dụng kỹ thuật Collage Art để tái hiện cảm giác ngột ngạt nhưng rực rỡ của mùa hè nhiệt đới.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Sử dụng kỹ thuật Collage Art để tái hiện cảm giác ngột ngạt nhưng rực rỡ của mùa hè nhiệt đới.</p>"
       },
       {
         "id": "digital-sketch-pho",
@@ -20,13 +23,16 @@
         "date": "2024",
         "excerpt": "Ký họa trên iPad.",
         "content": "Những phác thảo nhanh về chuyển động của dòng người và ánh đèn đô thị.",
-        "html": "<p>Những phác thảo nhanh về chuyển động của dòng người và ánh đèn đô thị.</p>"
+        "html": "<p>Những phác thảo nhanh về chuyển động của dòng người và ánh đèn đô thị.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Những phác thảo nhanh về chuyển động của dòng người và ánh đèn đô thị.</p>"
       }
     ]
   },
   "en": {
     "title": "artwork",
-    "layout": "grid",
+    "layout": "collage",
     "description": "Digital experiments and conceptual designs.",
     "items": [
       {
@@ -36,7 +42,10 @@
         "date": "2025",
         "excerpt": "Poster design for an independent short film.",
         "content": "Using Collage Art technique to recreate the stifling yet brilliant atmosphere of a tropical summer.",
-        "html": "<p>Using Collage Art technique to recreate the stifling yet brilliant atmosphere of a tropical summer.</p>"
+        "html": "<p>Using Collage Art technique to recreate the stifling yet brilliant atmosphere of a tropical summer.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Using Collage Art technique to recreate the stifling yet brilliant atmosphere of a tropical summer.</p>"
       },
       {
         "id": "digital-sketch-pho",
@@ -45,13 +54,16 @@
         "date": "2024",
         "excerpt": "iPad sketches.",
         "content": "Quick sketches capturing the movement of crowds and city lights.",
-        "html": "<p>Quick sketches capturing the movement of crowds and city lights.</p>"
+        "html": "<p>Quick sketches capturing the movement of crowds and city lights.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Quick sketches capturing the movement of crowds and city lights.</p>"
       }
     ]
   },
   "fr": {
     "title": "artwork",
-    "layout": "grid",
+    "layout": "collage",
     "description": "Expérimentations numériques et conceptions conceptuelles.",
     "items": [
       {
@@ -61,7 +73,10 @@
         "date": "2025",
         "excerpt": "Conception d'affiche pour un court métrage indépendant.",
         "content": "Utilisation de la technique du Collage Art pour recréer l'atmosphère étouffante mais brillante d'un été tropical.",
-        "html": "<p>Utilisation de la technique du Collage Art pour recréer l'atmosphère étouffante mais brillante d'un été tropical.</p>"
+        "html": "<p>Utilisation de la technique du Collage Art pour recréer l'atmosphère étouffante mais brillante d'un été tropical.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Utilisation de la technique du Collage Art pour recréer l'atmosphère étouffante mais brillante d'un été tropical.</p>"
       },
       {
         "id": "digital-sketch-pho",
@@ -70,7 +85,10 @@
         "date": "2024",
         "excerpt": "Croquis sur iPad.",
         "content": "Croquis rapides capturant le mouvement des foules et les lumières de la ville.",
-        "html": "<p>Croquis rapides capturant le mouvement des foules et les lumières de la ville.</p>"
+        "html": "<p>Croquis rapides capturant le mouvement des foules et les lumières de la ville.</p>",
+        "images": [],
+        "medium": "",
+        "description": "<p>Croquis rapides capturant le mouvement des foules et les lumières de la ville.</p>"
       }
     ]
   }

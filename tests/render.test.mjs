@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bodyHtml, escapeHtml, filmVideoHTML } from '../src/lib/render.mjs';
+import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML } from '../src/lib/render.mjs';
 
 test('bodyHtml prefers the v2 html field', () => {
   assert.equal(bodyHtml({ html: '<p>mới</p>', content: 'cũ' }), '<p>mới</p>');
@@ -23,6 +23,29 @@ test('filmVideoHTML prefers videoUrl over youtubeId', () => {
   const youtube = filmVideoHTML({ youtubeId: 'w9I_AQBpKps' });
   assert.match(youtube, /<iframe src="https:\/\/www\.youtube\.com\/embed\/w9I_AQBpKps"/);
   assert.equal(filmVideoHTML({}), '');
+});
+
+test('previewItemHTML renders a collage item (artwork) like the painting lightbox', () => {
+  const html = previewItemHTML({
+    section: 'artwork',
+    item: { id: 'a', title: 'Blossom wrap', images: ['https://cdn/1.jpg'], medium: '', date: '2025', description: '<p>len móc</p>' },
+  });
+  assert.match(html, /class="preview-painting"/);
+  assert.match(html, /Blossom wrap/);
+  assert.match(html, /len móc/);
+  assert.match(html, /<span>Ngày<\/span>/);
+  const en = previewItemHTML({ section: 'artwork', locale: 'en', item: { id: 'a', title: 'Wrap', medium: 'wool', date: '2025' } });
+  assert.match(en, /<span>Medium<\/span>/);
+});
+
+test('previewSectionHTML renders artwork items as a collage grid', () => {
+  const html = previewSectionHTML({
+    title: 'artwork',
+    layout: 'collage',
+    items: [{ id: 'a', title: 'Blossom wrap', thumbnail: 'https://cdn/1.jpg' }],
+  });
+  assert.match(html, /class="collage-grid"/);
+  assert.match(html, /class="collage-item"/);
 });
 
 test('escapeHtml escapes markup', () => {

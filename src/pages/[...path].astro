@@ -359,7 +359,8 @@ if (routeItem) {
             const index = items.findIndex(item => item && item.id === itemId);
             if (index < 0) return false;
             if (section === 'films') openFilmDetail(index, false, false);
-            else if (section === 'paintings') openPaintingDetail(index);
+            // Trang collage (Tranh, Artwork) mở bằng lightbox, không có trang chi tiết riêng.
+            else if (payload && payload.layout === 'collage') openPaintingDetail(index);
             else openGenericDetail(index, false, false);
             return true;
         }
