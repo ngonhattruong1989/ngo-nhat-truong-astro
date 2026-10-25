@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML, thumbnailStyle } from '../src/lib/render.mjs';
+import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML, previewPageHTML, thumbnailStyle } from '../src/lib/render.mjs';
 
 test('bodyHtml prefers the v2 html field', () => {
   assert.equal(bodyHtml({ html: '<p>mới</p>', content: 'cũ' }), '<p>mới</p>');
@@ -52,6 +52,24 @@ test('previewItemHTML renders a collage item (artwork) like the painting lightbo
   assert.match(html, /<span>Ngày<\/span>/);
   const en = previewItemHTML({ section: 'artwork', locale: 'en', item: { id: 'a', title: 'Wrap', medium: 'wool', date: '2025' } });
   assert.match(en, /<span>Medium<\/span>/);
+});
+
+test('previewPageHTML filters a films role page to that role and uses its copy', () => {
+  const payload = {
+    title: 'phim',
+    description: 'tat ca',
+    layout: 'grid',
+    rolePages: { actor: { title: 'diễn viên', description: 'phim tôi đóng' } },
+    items: [
+      { id: 'a', title: 'A', roles: ['actor'] },
+      { id: 'b', title: 'B', roles: ['production-designer'] },
+    ],
+  };
+  const html = previewPageHTML({ section: 'films', payload, role: 'actor' });
+  assert.match(html, /diễn viên/);
+  assert.match(html, /phim tôi đóng/);
+  assert.match(html, /\bA\b/);
+  assert.ok(!html.includes('>B<'), 'dự án không thuộc vai trò không được render');
 });
 
 test('previewSectionHTML renders artwork items as a collage grid', () => {

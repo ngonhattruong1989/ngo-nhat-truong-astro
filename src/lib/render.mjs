@@ -1,4 +1,5 @@
 import { imageBoxStyle } from './cms/image-box.mjs';
+import { filterByRole, rolePageCopy } from './cms/roles.mjs';
 
 export function escapeHtml(value) {
   return String(value ?? '')
@@ -154,8 +155,18 @@ export function previewHomeHTML(payload = {}) {
 }
 
 // Bộ render dùng chung cho trang preview của CMS: chọn đúng khối theo section.
-export function previewPageHTML({ section, payload = {}, itemId = '', locale = 'vi' }) {
+export function previewPageHTML({ section, payload = {}, itemId = '', locale = 'vi', role = '' }) {
   if (section === 'home') return previewHomeHTML(payload);
+  // Trang vai trò của phim: lọc dự án + tiêu đề/mô tả riêng.
+  if (role) {
+    const copy = rolePageCopy(payload, role);
+    return previewSectionHTML({
+      title: copy.title,
+      description: copy.description,
+      layout: payload.layout,
+      items: filterByRole(payload.items, role),
+    });
+  }
   if (itemId) {
     const item = (payload.items || []).find((entry) => entry?.id === itemId);
     return item ? previewItemHTML({ section, item, locale }) : '';

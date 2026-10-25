@@ -10,9 +10,10 @@ const url = Astro.url;
 const section = url.searchParams.get('section') || '';
 const id = url.searchParams.get('id') || '';
 const locale = url.searchParams.get('locale') || 'vi';
+const role = url.searchParams.get('role') || '';
 const data = section ? await getSectionData(section, env.DB) : null;
 const payload = (data && (data[locale] || data.vi)) || {};
-const initial = data ? previewPageHTML({ section, payload, itemId: id, locale }) : '';
+const initial = data ? previewPageHTML({ section, payload, itemId: id, locale, role }) : '';
 ---
 
 <BaseLayout title="Preview">
@@ -37,6 +38,7 @@ const initial = data ? previewPageHTML({ section, payload, itemId: id, locale })
         payload: message.payload || {},
         itemId: message.itemId || message.id || '',
         locale: message.locale || 'vi',
+        role: message.role || '',
       });
       window.scrollTo({ top: 0, behavior: 'auto' });
     });

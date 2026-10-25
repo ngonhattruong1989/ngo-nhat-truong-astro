@@ -45,9 +45,12 @@ const SECTION_LOOKUP: Record<string, any> = {
   poets: poetryData, artwork: artworkData, space: spacesData, blog: blogData, contact: contactData,
 };
 
+const FILM_ROLES = ['actor', 'production-designer'];
 const routeParts = Astro.url.pathname.split('/').filter(Boolean);
 const routeSection = routeParts[0] || 'home';
-const routeItemId = routeParts[1] || '';
+// /films/<role> và /films/<role>/<id>; /films/<id> vẫn là deep link cũ.
+const routeRole = routeSection === 'films' && FILM_ROLES.includes(routeParts[1]) ? routeParts[1] : '';
+const routeItemId = (routeRole ? routeParts[2] : routeParts[1]) || '';
 const routeLabel = SECTION_LABELS[routeSection] || routeSection;
 const routePayload = SECTION_LOOKUP[routeSection]?.vi;
 const routeItem = routeItemId
@@ -74,8 +77,9 @@ if (routeItem) {
     : (routeItem.thumbnail || routeItem.images?.[0] || '/og-image.jpg');
   metaType = routeSection === 'films' ? 'video.movie' : 'article';
 } else if (routeSection !== 'home') {
-  metaTitle = `${routeLabel} — ngô nhật trường`;
-  metaDescription = plain(routePayload?.description || routePayload?.title) || metaDescription;
+  const rolePage = routeRole ? (routePayload?.rolePages?.[routeRole] || {}) : null;
+  metaTitle = `${rolePage?.title || routeLabel} — ngô nhật trường`;
+  metaDescription = plain(rolePage?.description || routePayload?.description || routePayload?.title) || metaDescription;
 }
 ---
 
@@ -98,16 +102,17 @@ if (routeItem) {
 
             <nav class="navigation">
                 <ul>
-                    <li><a href="#home">trang chủ</a></li>
-                    <li><a href="#about">về tôi</a></li>
-                    <li><a href="#films">phim</a></li>
-                    <li><a href="#music">nhạc</a></li>
-                    <li><a href="#paintings">tranh</a></li>
-                    <li><a href="#poets">thơ</a></li>
-                    <li><a href="#artwork">artwork</a></li>
-                    <li><a href="#space">không gian</a></li>
-                    <li><a href="#blog">blog</a></li>
-                    <li><a href="#contact">liên hệ</a></li>
+                    <li><a href="/">trang chủ</a></li>
+                    <li><a href="/about">về tôi</a></li>
+                    <li><a href="/films/actor">diễn viên</a></li>
+                    <li><a href="/films/production-designer">production designer</a></li>
+                    <li><a href="/music">nhạc</a></li>
+                    <li><a href="/paintings">tranh</a></li>
+                    <li><a href="/poets">thơ</a></li>
+                    <li><a href="/artwork">artwork</a></li>
+                    <li><a href="/space">không gian</a></li>
+                    <li><a href="/blog">blog</a></li>
+                    <li><a href="/contact">liên hệ</a></li>
                 </ul>
             </nav>
 
@@ -180,6 +185,7 @@ if (routeItem) {
         // --- 1. GLOBAL STATE ---
         let currentLang = 'vi';
         let currentSectionId = 'home';
+        let currentRole = '';          // '' | 'actor' | 'production-designer' (chỉ dùng cho films)
         let currentFilmIndex = -1;
 
         // --- 2. DATA ACCESS ---
@@ -216,11 +222,11 @@ if (routeItem) {
                 });
             });
 
-            // Navigation (đổi URL thật, không dùng hash)
+            // Navigation: mỗi mục là một đường dẫn thật (/films/actor, /music…)
             document.querySelectorAll('.navigation a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    goToSection(this.getAttribute('href').substring(1));
+                    navigateTo(this.getAttribute('href') || '/');
                 });
             });
 
@@ -298,17 +304,17 @@ if (routeItem) {
         }
 
         // --- 6. NAVIGATION ---
-        function highlightMenu(targetId) {
+        function highlightMenu(pathname) {
+            const path = pathname || location.pathname;
             document.querySelectorAll('.navigation a').forEach(link => {
-                link.classList.remove('nav-active');
-                if (link.getAttribute('href').substring(1) === targetId) {
-                    link.classList.add('nav-active');
-                }
+                const href = link.getAttribute('href') || '/';
+                const active = href === '/' ? path === '/' : (path === href || path.startsWith(`${href}/`));
+                link.classList.toggle('nav-active', active);
             });
         }
 
         function switchSection(targetId) {
-            highlightMenu(targetId);
+            highlightMenu();
             const dynamicDisplay = document.getElementById('dynamic-display');
 
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('section-active'));
@@ -333,30 +339,37 @@ if (routeItem) {
             }
         }
 
-        // --- 6b. ROUTER (path thật: /about, /films/phuc-sinh) ---
-        function pathForSection(id) {
-            return id === 'home' ? '/' : `/${id}`;
-        }
+        // --- 6b. ROUTER (path thật: /about, /films/actor, /films/actor/phuc-sinh) ---
+        const FILM_ROLES = ['actor', 'production-designer'];
 
-        function goToSection(id, push = true) {
-            currentSectionId = id;
-            currentFilmIndex = -1;
-            closeFilmDetail(false);
-            if (push) history.pushState({ section: id }, '', pathForSection(id));
-            switchSection(id);
-            window.scrollTo({ top: 0, behavior: 'auto' });
+        function pathForSection(id, role = '') {
+            if (id === 'home') return '/';
+            if (id === 'films' && role) return `/films/${role}`;
+            return `/${id}`;
         }
 
         function sectionFromPath(pathname) {
             const parts = pathname.split('/').filter(Boolean);
-            return { section: parts[0] || 'home', itemId: parts[1] || '' };
+            const section = parts[0] || 'home';
+            if (section === 'films' && FILM_ROLES.includes(parts[1])) {
+                return { section, role: parts[1], itemId: parts[2] || '' };
+            }
+            return { section, role: '', itemId: parts[1] || '' };
+        }
+
+        // Điều hướng theo một đường dẫn thật (dùng cho nav, back/forward, mở phim).
+        function navigateTo(path, push = true) {
+            if (push) history.pushState({ path }, '', path);
+            renderLocation();
         }
 
         function openItemById(section, itemId) {
             const data = getSectionData(section);
             const payload = data ? data[currentLang] : null;
             const items = payload && Array.isArray(payload.items) ? payload.items : [];
-            const index = items.findIndex(item => item && item.id === itemId);
+            // Với phim, danh sách đang hiển thị đã lọc theo vai trò nên phải tìm trong đó.
+            const source = (section === 'films' && Array.isArray(window.currentGridData)) ? window.currentGridData : items;
+            const index = source.findIndex(item => item && item.id === itemId);
             if (index < 0) return false;
             if (section === 'films') openFilmDetail(index, false, false);
             // Trang collage (Tranh, Artwork) mở bằng lightbox, không có trang chi tiết riêng.
@@ -366,7 +379,7 @@ if (routeItem) {
         }
 
         function renderLocation() {
-            const { section, itemId } = sectionFromPath(location.pathname);
+            const { section, role, itemId } = sectionFromPath(location.pathname);
             const known = section === 'home' || Boolean(getSectionData(section));
             if (!known) {
                 history.replaceState({ section: 'home' }, '', '/');
@@ -374,10 +387,12 @@ if (routeItem) {
                 return;
             }
             currentSectionId = section;
+            currentRole = role;
             currentFilmIndex = -1;
             closeFilmDetail(false);
             switchSection(section);
             if (itemId) openItemById(section, itemId);
+            highlightMenu(location.pathname);
         }
 
         // --- 7. RENDER DYNAMIC CONTENT ---
@@ -385,8 +400,21 @@ if (routeItem) {
             const dynamicDisplay = document.getElementById('dynamic-display');
             if (!fullData || !dynamicDisplay) return;
 
-            const data = fullData[currentLang];
+            let data = fullData[currentLang];
             if (!data) return;
+
+            // Phim tách thành 2 trang theo vai trò: lọc dự án + dùng tiêu đề/mô tả của vai trò.
+            if (currentSectionId === 'films' && currentRole) {
+                const rolePage = (data.rolePages || {})[currentRole] || {};
+                const items = (Array.isArray(data.items) ? data.items : [])
+                    .filter(item => Array.isArray(item.roles) && item.roles.includes(currentRole));
+                data = {
+                    ...data,
+                    items,
+                    title: rolePage.title || data.title,
+                    description: rolePage.description ?? data.description,
+                };
+            }
 
             // Trang canvas (Về tôi, Liên hệ): nội dung là một khối HTML tự do.
             if (typeof data.html === 'string') {
@@ -432,7 +460,13 @@ if (routeItem) {
                     });
                 }
 
-                html += `</div><div id="detail-view"></div></div>`;
+                html += `</div>`; // đóng #grid-view
+
+                if (!data.items || data.items.length === 0) {
+                    html += `<p style="font-style:italic;color:#777">(Chưa có dự án nào ở vai trò này.)</p>`;
+                }
+
+                html += `<div id="detail-view"></div></div>`;
                 dynamicDisplay.innerHTML = html;
 
                 // Store current grid data
@@ -556,7 +590,10 @@ if (routeItem) {
 
             currentFilmIndex = index;
             const film = window.currentGridData[index];
-            if (push && film.id) history.pushState({ section: 'films', item: film.id }, '', `/films/${film.id}`);
+            if (push && film.id) {
+                const role = currentRole && Array.isArray(film.roles) && film.roles.includes(currentRole) ? currentRole : '';
+                history.pushState({ section: 'films', item: film.id }, '', role ? `/films/${role}/${film.id}` : `/films/${film.id}`);
+            }
             const gridView = document.getElementById('grid-view');
             const detailView = document.getElementById('detail-view');
 
@@ -783,7 +820,7 @@ if (routeItem) {
         // --- 9. CLOSE FILM DETAIL ---
         function closeFilmDetail(syncUrl = true) {
             if (syncUrl && location.pathname.split('/').filter(Boolean).length > 1) {
-                history.pushState({ section: currentSectionId }, '', pathForSection(currentSectionId));
+                history.pushState({ section: currentSectionId }, '', pathForSection(currentSectionId, currentRole));
             }
             currentFilmIndex = -1;
             const gridView = document.getElementById('grid-view');

@@ -248,6 +248,16 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .media-box-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .ProseMirror img.ProseMirror-selectednode { outline: 2px solid #203f2c; outline-offset: 2px; }
 
+/* Vai trò phim */
+.role-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 16px; }
+.role-filters .subtle { font-size: 12px; }
+.chip-count { font-variant-numeric: tabular-nums; opacity: 0.7; margin-left: 2px; }
+.role-page-block {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px;
+  padding-top: 10px; margin-top: 6px; border-top: 1px solid #f0f3f0;
+}
+@media (max-width: 760px) { .role-page-block { grid-template-columns: 1fr; } }
+
 /* Savebar */
 .savebar {
   position: sticky; bottom: 12px; z-index: 20; display: flex; justify-content: space-between; align-items: center;

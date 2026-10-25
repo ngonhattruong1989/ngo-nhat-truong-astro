@@ -152,10 +152,10 @@ export const store = {
     const next = reorderItem(db.sections[section], locale, id, direction);
     await store.saveSection(section, next);
   },
-  async createFilm(id: string, title = '') {
+  async createFilm(id: string, title = '', roles: string[] = []) {
     const safeId = assertId(id);
     for (const locale of LOCALES as Locale[]) {
-      await store.saveItem('films', locale, createEmptyFilm(safeId, locale === 'vi' ? title : ''));
+      await store.saveItem('films', locale, { ...createEmptyFilm(safeId, locale === 'vi' ? title : ''), roles });
     }
   },
   async createItem(section: string, id: string, title = '') {

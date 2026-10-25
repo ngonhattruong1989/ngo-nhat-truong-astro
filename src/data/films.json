@@ -36,7 +36,8 @@
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-4.jpeg",
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-5.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       },
       {
         "id": "hai-chu-chau",
@@ -63,7 +64,8 @@
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-11.jpeg",
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-12.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       },
       {
         "id": "ba-oi-dung-noi-doi",
@@ -79,9 +81,20 @@
         "bts": [
           "https://assets.phamhuutri.com/assets/short-films/BODND/BTS/BODND-BTS-1.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       }
-    ]
+    ],
+    "rolePages": {
+      "actor": {
+        "title": "diễn viên",
+        "description": "Những bộ phim Trường tham gia với vai trò diễn viên."
+      },
+      "production-designer": {
+        "title": "production designer",
+        "description": "Những bộ phim Trường thiết kế mỹ thuật và bối cảnh."
+      }
+    }
   },
   "en": {
     "title": "films",
@@ -120,7 +133,8 @@
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-4.jpeg",
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-5.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       },
       {
         "id": "hai-chu-chau",
@@ -147,9 +161,20 @@
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-11.jpeg",
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-12.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       }
-    ]
+    ],
+    "rolePages": {
+      "actor": {
+        "title": "actor",
+        "description": "Films Trường performed in."
+      },
+      "production-designer": {
+        "title": "production designer",
+        "description": "Films Trường designed."
+      }
+    }
   },
   "fr": {
     "title": "films",
@@ -188,7 +213,8 @@
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-4.jpeg",
           "https://public.ngonhattruong.com/films/phuc-sinh/bts/phuc-sinh-BTS-5.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       },
       {
         "id": "hai-chu-chau",
@@ -215,8 +241,19 @@
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-11.jpeg",
           "https://public.ngonhattruong.com/films/hai-chu-chau/bts/hai-chu-chau-BTS-12.jpeg"
         ],
-        "videoUrl": ""
+        "videoUrl": "",
+        "roles": []
       }
-    ]
+    ],
+    "rolePages": {
+      "actor": {
+        "title": "acteur",
+        "description": "Films dans lesquels Trường a joué."
+      },
+      "production-designer": {
+        "title": "production designer",
+        "description": "Films que Trường a conçus."
+      }
+    }
   }
 }

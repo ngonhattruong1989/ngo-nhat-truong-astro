@@ -33,6 +33,11 @@ test('syncItemMedia ignores text-only saves', () => {
   assert.deepEqual(next, base);
 });
 
+test('roles are shared across locales like media', () => {
+  const next = syncItemMedia(base, 'vi', { id: 'sen-trang', roles: ['actor'] });
+  assert.deepEqual(next.en.items[0].roles, ['actor']);
+});
+
 test('pickMedia only keeps known media fields', () => {
   assert.deepEqual(pickMedia({ title: 'a', poster: 'p', stills: [] }), { poster: 'p', stills: [] });
 });
