@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML } from '../src/lib/render.mjs';
+import { bodyHtml, escapeHtml, filmVideoHTML, previewItemHTML, previewSectionHTML, thumbnailStyle } from '../src/lib/render.mjs';
 
 test('bodyHtml prefers the v2 html field', () => {
   assert.equal(bodyHtml({ html: '<p>mới</p>', content: 'cũ' }), '<p>mới</p>');
@@ -23,6 +23,22 @@ test('filmVideoHTML prefers videoUrl over youtubeId', () => {
   const youtube = filmVideoHTML({ youtubeId: 'w9I_AQBpKps' });
   assert.match(youtube, /<iframe src="https:\/\/www\.youtube\.com\/embed\/w9I_AQBpKps"/);
   assert.equal(filmVideoHTML({}), '');
+});
+
+test('thumbnailStyle gives the thumbnail the same % box as canvas images', () => {
+  assert.match(thumbnailStyle({}), /width:100%/);
+  assert.match(thumbnailStyle({ thumbnailWidth: 40 }), /width:40%/);
+  assert.match(thumbnailStyle({ thumbnailWidth: 40, thumbnailAlign: 'center' }), /margin-left:auto;margin-right:auto/);
+  assert.match(thumbnailStyle({ thumbnailWidth: 500 }), /width:100%/);
+});
+
+test('previewItemHTML applies the thumbnail width on a grid item', () => {
+  const html = previewItemHTML({
+    section: 'music',
+    item: { id: 'a', title: 'Album', thumbnail: 'https://cdn/cover.jpg', thumbnailWidth: 50, thumbnailAlign: 'center' },
+  });
+  assert.match(html, /width:50%/);
+  assert.match(html, /margin-left:auto;margin-right:auto/);
 });
 
 test('previewItemHTML renders a collage item (artwork) like the painting lightbox', () => {

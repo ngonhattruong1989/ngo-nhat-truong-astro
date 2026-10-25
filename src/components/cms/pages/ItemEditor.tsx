@@ -4,6 +4,7 @@ import LocaleTabs from '../LocaleTabs';
 import RichText from '../RichText';
 import MediaUploader from '../MediaUploader';
 import MediaGallery from '../MediaGallery';
+import MediaBoxControl from '../MediaBoxControl';
 import PreviewFrame, { ViewTabs } from '../PreviewFrame';
 import SaveBar from '../SaveBar';
 import { upload, store, type Dict, type Locale } from '../../../lib/cms/client';
@@ -47,6 +48,10 @@ export default function ItemEditor() {
     setDraft((current) => (current ? { ...current, [field]: value } : current));
   }
 
+  function setMany(patch: Dict) {
+    setDraft((current) => (current ? { ...current, ...patch } : current));
+  }
+
   // Slug chỉ đổi khi bấm Lưu.
   function changeTitle(value: string) {
     set('title', value);
@@ -80,6 +85,11 @@ export default function ItemEditor() {
 
   const content = draft ? (draft[contentField] || legacyHtml(draft.content || '')) : '';
   const hasGallery = Array.isArray(draft?.images) || ['paintings', 'artwork', 'spaces'].includes(section);
+  // Thumbnail chỉ hiện to hết cột ở trang chi tiết của section dạng lưới; collage dùng ảnh card,
+  // list không hiện thumbnail nên không đặt điều khiển ở đó (tránh nút không có tác dụng).
+  const sectionData = store.get(section) || {};
+  const sectionLayout = sectionData[locale]?.layout || sectionData.vi?.layout;
+  const showThumbnailBox = sectionLayout === 'grid';
 
   return (
     <>
@@ -133,6 +143,17 @@ export default function ItemEditor() {
                   ) : null}
                 </div>
                 <MediaUploader label="Thumbnail" value={draft.thumbnail || ''} onChange={(url) => set('thumbnail', url)} target={{ scope: 'item', page: section, id: draft.id, kind: 'thumbnail' }} />
+                {showThumbnailBox && draft.thumbnail ? (
+                  <MediaBoxControl
+                    width={draft.thumbnailWidth ?? 100}
+                    align={draft.thumbnailAlign || 'left'}
+                    onChange={(patch) => setMany({
+                      ...(patch.width !== undefined ? { thumbnailWidth: patch.width } : {}),
+                      ...(patch.align ? { thumbnailAlign: patch.align } : {}),
+                    })}
+                    hint="Thumbnail hiện ở đầu trang chi tiết của mục. 100% là toàn chiều ngang như trước; thay đổi này dùng chung cho cả 3 ngôn ngữ."
+                  />
+                ) : null}
                 {hasGallery ? (
                   <MediaGallery label="Bộ ảnh" items={draft.images || []} onChange={(items) => set('images', items)} target={{ scope: 'item', page: section, id: draft.id, kind: 'images' }} kind="images" />
                 ) : null}

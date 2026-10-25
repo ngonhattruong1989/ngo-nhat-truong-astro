@@ -1,7 +1,8 @@
 export const LOCALES = ['vi', 'en', 'fr'];
 
 // Ảnh/video dùng chung cho cả 3 ngôn ngữ; chữ thì mỗi ngôn ngữ tự nhập.
-export const ITEM_MEDIA_FIELDS = ['poster', 'thumbnail', 'stills', 'bts', 'images', 'videoUrl'];
+// thumbnailWidth/thumbnailAlign: khung hiển thị của chính ảnh thumbnail nên đi theo ảnh (dùng chung 3 ngôn ngữ).
+export const ITEM_MEDIA_FIELDS = ['poster', 'thumbnail', 'thumbnailWidth', 'thumbnailAlign', 'stills', 'bts', 'images', 'videoUrl'];
 export const HOME_MEDIA_FIELDS = ['logo', 'heroImages'];
 
 export function pickMedia(item, fields = ITEM_MEDIA_FIELDS) {

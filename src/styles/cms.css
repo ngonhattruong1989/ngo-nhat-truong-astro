@@ -244,6 +244,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .image-tools-hint { color: #8b968e; font-size: 11.5px; }
 .image-range { width: 160px; accent-color: #203f2c; }
 .image-tools-value { font-size: 11.5px; color: #516057; font-variant-numeric: tabular-nums; min-width: 96px; }
+.media-box { padding: 10px 12px; border: 1px solid #e5e9e5; border-radius: 8px; background: #fbfcfb; margin-top: -6px; }
+.media-box-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .ProseMirror img.ProseMirror-selectednode { outline: 2px solid #203f2c; outline-offset: 2px; }
 
 /* Savebar */

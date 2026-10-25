@@ -176,7 +176,7 @@ if (routeItem) {
     </script>
 
     <script>
-        import { bodyHtml, filmVideoHTML } from '../lib/render.mjs';
+        import { bodyHtml, filmVideoHTML, thumbnailStyle } from '../lib/render.mjs';
         // --- 1. GLOBAL STATE ---
         let currentLang = 'vi';
         let currentSectionId = 'home';
@@ -648,10 +648,11 @@ if (routeItem) {
 
             if (gridView) gridView.style.display = 'none';
 
+            // Thumbnail dùng chung cách tính khung với ảnh trong canvas (thumbnailWidth/Align).
             let thumbnailHTML = '';
             if (item.thumbnail) {
                 thumbnailHTML = `<div style="margin-bottom: 30px;">
-                    <img src="${item.thumbnail}" style="max-width: 100%; height: auto; border-radius: 2px;" class="zoomable">
+                    <img src="${item.thumbnail}" style="${thumbnailStyle(item)};border-radius: 2px;" class="zoomable">
                 </div>`;
             }
 

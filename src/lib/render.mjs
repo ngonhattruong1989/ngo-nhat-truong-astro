@@ -1,3 +1,5 @@
+import { imageBoxStyle } from './cms/image-box.mjs';
+
 export function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -29,6 +31,11 @@ export function filmVideoHTML(film) {
 // Ảnh trong canvas: cỡ khung do CMS đặt (xem image-box.mjs), ảnh cũ mặc định 100%.
 export function imageBoxStyleAttr(style) {
   return style ? ` style="${escapeHtml(style)}"` : '';
+}
+
+// Thumbnail của một mục: cùng cách tính % như ảnh trong canvas, mặc định 100% như cũ.
+export function thumbnailStyle(item) {
+  return imageBoxStyle(item?.thumbnailWidth ?? 100, item?.thumbnailAlign || 'left');
 }
 
 function galleryHTML(label, list) {
@@ -91,7 +98,7 @@ export function previewItemHTML({ section, item, locale = 'vi' }) {
   return `<div class="film-detail-view">
     <h2>${escapeHtml(item.title || '')}</h2>
     ${meta ? `<div class="film-meta"><span class="meta-line">${escapeHtml(meta)}</span></div>` : ''}
-    ${item.thumbnail ? `<div style="margin-bottom:30px"><img src="${escapeHtml(item.thumbnail)}" alt="" style="max-width:100%;height:auto;border-radius:2px"></div>` : ''}
+    ${item.thumbnail ? `<div style="margin-bottom:30px"><img src="${escapeHtml(item.thumbnail)}" alt="" style="${escapeHtml(thumbnailStyle(item))};border-radius:2px"></div>` : ''}
     ${item.excerpt ? `<p style="font-style:italic;margin-bottom:20px;color:#555">${escapeHtml(item.excerpt)}</p>` : ''}
     ${bodyHtml(item)}
     ${Array.isArray(item.images) && item.images.length ? galleryHTML('Bộ ảnh', item.images) : ''}
